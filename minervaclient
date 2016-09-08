@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
 execfile("minerva_http.py")
-import argparse,sys
+import argparse,sys,json
+state = {}
 
 def parse_args():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
+	parser.add_argument("-j","--job",help="A unique name used to track which CRNs remain to be registered for (for automation purposes)")
 	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
 	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
@@ -17,32 +19,67 @@ def parse_args():
 	global always_dry_run
 	if always_dry_run:
 		args.no_register = True
-	
+
+	if args.job is None:
+		args.job = False
+
 	return args
 
 def course_ref_type(arg):
 	return arg[0].isalpha()
+
+def save_state(job,data):
+	global state
+	f = open("state.dat","w")
+	state[job].extend(data)
+	f.write(json.dumps(state))
+	f.close()
+
+def restore_state(job,courses):
+	global state
+	state = json.loads(open("state.dat").read())
+	if job in state:
+		courses = list(set(courses) - set(state[job]))
+		print courses
+	else:
+		state[job] = []
+
+	return courses
 
 def main():
 	args = parse_args()
 	codes_given = course_ref_type(args.course[0])
 	term = args.term
 
+
+		
 	for course in args.course:
 		if codes_given != course_ref_type(course):
 			print "ERROR: Course codes cannot be combined with CRNs"
 			sys.exit(MinervaError.user_error)
 
+	
+	if args.job:
+		courses = restore_state(args.job,args.course)
+		if not courses:
+			print "**** Congratulations, you've gotten into all your courses ****"
+			sys.exit(0)
 		
 	if codes_given:
-		minerva_check_register(term,args.course,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register)
+		data = minerva_check_register(term,courses,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register)
 	else:
 
 		if args.require_all or args.require_reg:
 			print "ERROR: When using CRNs, it is not possible to verify the state of classes before attempting registration."
 			sys.exit(MinervaError.user_error)
 
-		minerva_fast_register(term,args.course,dry_run=args.no_register)
+		data = minerva_fast_register(term,courses,dry_run=args.no_register)
+
+	
+	# If we're still here, nothing bad happened, hopefully
+	if args.job:
+		save_state(args.job,data)
+
 
 
 main()

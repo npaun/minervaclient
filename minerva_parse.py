@@ -137,7 +137,7 @@ def determine_state(record):
 	if record['select'] == MinervaState.closed:
 		record['_state'] = record['select']
 	elif record['reg']['rem'] > 0:
-		if record['wait']['act'] < 0:
+		if record['wait']['act'] <= 0:
 			record['_state'] = MinervaState.register
 		elif record['wait']['rem'] > 0:
 			record['_state'] = MinervaState.wait_places_remaining

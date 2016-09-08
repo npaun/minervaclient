@@ -112,6 +112,7 @@ def minerva_reg_courses(text,crns):
 
 def minerva_check_courses(courses,codes,require_all = False,require_reg = False):
 	crns = []
+	course_ok = []
 
 	for code in codes:
 		valid_state = False
@@ -145,6 +146,7 @@ def minerva_check_courses(courses,codes,require_all = False,require_reg = False)
 
 			if not require_reg or (require_reg and valid_state):
 				crns.append(course['crn'])
+				course_ok.append(course['_code'])
 		else:
 			print "* Minerva prohibits registration."
 			print "\t\t The status on Minerva is " + course['status'] 
@@ -157,7 +159,7 @@ def minerva_check_courses(courses,codes,require_all = False,require_reg = False)
 		print "* No courses can be registered. Failure."
 		sys.exit(MinervaError.course_none)
 
-	return crns
+	return (crns,course_ok)
 
 # Attempts to register for a course by CRN without checking for room
 # Example: minerva_fast_register('201609',['814'])
@@ -168,19 +170,23 @@ def minerva_fast_register(term,crns,dry_run = False):
 	print "* You will be registered in the following CRNs " + str(crns)
 	if not dry_run:
 		minerva_reg_courses(courses,crns)
+	
+	return crns
 
 # Attempts to register for a course by course code, first checking for room in the course
 # Example: minerva_check_register('201609',['COMP-206-001','MATH-240-001'])
 def minerva_check_register(term,course_codes,require_all = False,require_reg = False,dry_run = False):
 	minerva_login()
 	courses = minerva_search_courses(term,course_codes)
-	crns = minerva_check_courses(courses,course_codes,require_all,require_reg)
+	crns,course_ok = minerva_check_courses(courses,course_codes,require_all,require_reg)
 	current = minerva_get_registered(term)
 
 
 	print "* You will be registered in the following CRNs " + str(crns)
 	if not dry_run:
 		minerva_reg_courses(current,crns)
+
+	return course_ok
 
 
 #vi: ft=python
