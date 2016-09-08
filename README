@@ -1,0 +1,38 @@
+# Minervac
+### The Minerva Client
+
+`minervac` is a CLI client for Minerva's course registration features. At present, it can register for courses by CRN and by course code (checking for available places first). It can also remember what courses you have already registered in, and thus can be used in an automated fashion in order to register in full courses.  
+The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
+
+## See also
+
+* If you don't need to make changes to your registration, use `Minervabot` instead. It is probably way better: https://github.com/zafarali/minerva-bot
+
+## Installation
+
+1. `minervac` uses the `requests` and `bs4` modules for Python. Install them with `pip`, I guess.
+2. Copy `config` to `config.local` and fill in your credentials.
+
+## Usage
+
+* To register for a set of courses: `minervac -t 2016-FALL COMP-251-001 MATH-240-001`
+* To register by CRN (faster): `minervac -t 2016-FALL 814`
+* To save the courses registered and only register for remaining courses each time: `minervac -j compstuff -t 2016-FALL COMP-273-002 COMP-396-001`
+* For a full description of available options: `minervac -h`
+
+## Automated Usage
+
+* Put it in your `crontab`. This way, the `minervac` will automatically be run at the time interval you choose, and you will receive an email indicating the status of your course registration job.
+	* If you don't have `cron`, you may need to write a long-running loop or use your OS' job scheduling facility. Oh, and by the way, your OS sucks.
+* You may need to actually implement the `-d` option (delay) to avoid getting yourself banned from Minerva.
+* Av example crontab line: `00     *       *       *       *       minervac -dj compstuff -t 2016FALL 814 20620 33`
+
+## WARNING
+
+1. You are solely responsible for deciding if `minervac` is compliant with McGill's policies, and if you want to assume this risk.
+2. `minervac` might mess up your course schedule in a very bad sort of way.
+3. `minervac` might suddenly stop working if Minerva is changed.
+4. Minerva is a horrible, horrible program and may give you a serious headache if you try to extend this program.
+5. This program was badly written, in a rush, and might have some serious design flaws.
+6. I'm not actually a Python programmer.
+7. May give CS hipsters a headache.
