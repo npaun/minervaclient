@@ -65,7 +65,9 @@ def main():
 		if not courses:
 			print "**** Congratulations, you've gotten into all your courses ****"
 			sys.exit(0)
-		
+	else:
+		courses = args.course
+
 	if codes_given:
 		data = minerva_check_register(term,courses,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register)
 	else:
