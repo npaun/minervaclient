@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-import auth_http
-from local_logic import *
+import reg
+from minerva_common import *
 import config_local
 
 import argparse,sys,json
@@ -15,7 +15,7 @@ def parse_args():
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
 	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
 	parser.add_argument("-d","--delay",help="[TODO] Introduces random delays between requests and before starting, to help you better fit in as a human.")
-	parser.add_argument("-P","--public-search",help="Do not log into Minerva to search !!! This option can only be used to register for the waitlist !!!",action="store_true")
+	parser.add_argument("-P","--public-search",help="[BUGGY] Do not log into Minerva to search !!! This option can only be used to register for the waitlist !!!",action="store_true")
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.add_argument("-q","--quiet",help="[TODO] Only print output for successful registration",action="store_true")
 	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
@@ -74,14 +74,14 @@ def main():
 		courses = args.course
 
 	if codes_given:
-		data = auth_http.minerva_check_register(term,courses,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register,public_search=args.public_search)
+		data = reg.check_register(term,courses,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register,public_search=args.public_search)
 	else:
 
 		if args.require_all or args.require_reg:
 			print "ERROR: When using CRNs, it is not possible to verify the state of classes before attempting registration."
 			sys.exit(MinervaError.user_error)
 
-		data = auth_http.minerva_fast_register(term,courses,dry_run=args.no_register)
+		data = reg.fast_register(term,courses,dry_run=args.no_register)
 
 	
 	# If we're still here, nothing bad happened, hopefully

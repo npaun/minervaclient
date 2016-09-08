@@ -1,5 +1,5 @@
 import requests,urllib,StringIO,csv
-from local_logic import *
+from minerva_common import *
 
 def build_request(term,codes):
 	req = [
