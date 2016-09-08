@@ -11,7 +11,7 @@ The program is implemented in Python and currently is very hacky. Pull requests 
 
 ## Installation
 
-1. `minervac` uses the `requests` and `bs4` modules for Python. Install them with `pip`, I guess.
+1. `minervac` uses the `requests` and `beautifulsoup4` modules for Python. Install them with `pip`, I guess.
 2. Copy `config` to `config.local` and fill in your credentials.
 
 ## Usage
