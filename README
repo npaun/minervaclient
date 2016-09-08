@@ -4,7 +4,7 @@
 `minervac` is a CLI client for Minerva's course registration features. At present, it can register for courses by CRN and by course code (checking for available places first). It can also remember what courses you have already registered in and will not keep re-registering after you're in.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
-!(http://cs.mcgill.ca/~npaun/ss-minervac-1.png)['Screenshot of Minervac']
+![http://cs.mcgill.ca/~npaun/ss-minervac-1.png]('Screenshot of Minervac')
 
 ## See also
 
