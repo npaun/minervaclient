@@ -14,7 +14,10 @@ def parse_args():
 	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
 	args = parser.parse_args()
 	args.term = get_term_code(args.term)
-
+	global always_dry_run
+	if always_dry_run:
+		args.no_register = True
+	
 	return args
 
 def course_ref_type(arg):

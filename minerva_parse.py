@@ -106,7 +106,7 @@ def parse_entry(cells):
 
 	keys = ['crn','subject','course','section','type','credits','title','days','time']
 	for cell,key in zip(cells[1:9],keys):
-		cell = cell.text
+		cell = cell.text.encode('ascii','ignore')  # Because this stuff is used elsewhere in the program
 		if cell == ' ': cell = None
 		record[key] = cell
 
