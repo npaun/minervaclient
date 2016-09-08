@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+execfile("minerva_http.py")
+import argparse,sys
+
+def parse_args():
+	parser = argparse.ArgumentParser()
+	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.add_argument("-q","--quiet",help="Only print output for successful registration",action="store_true")
+	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
+	parser.add_argument("-S","--required-state",help="Only register for courses in the given state (reg or reg_wait) NOTE: Only allowed when course codes are given.",type=int)
+	parser.add_argument("-t","--term",help="The term (e.g. 201609 is Fall 2016) in which to register for these courses",required=True)
+	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
+	args = parser.parse_args()
+	
+	return args
+
+def course_ref_type(arg):
+	return arg[0].isalpha()
+
+def main():
+	args = parse_args()
+	codes_given = course_ref_type(args.course[0])
+	for course in args.course:
+		if codes_given != course_ref_type(course):
+			print "ERROR: Course codes cannot be combined with CRNs"
+			sys.exit(3)
+
+	
+	if codes_given:
+		minerva_check_register(args.term,args.course)
+	else:
+
+		minerva_fast_register(args.term,args.course)
+
+
+main()
+
+
+# vi: ft=python
