@@ -8,11 +8,12 @@ def parse_args():
 	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.add_argument("-q","--quiet",help="Only print output for successful registration",action="store_true")
 	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
-	parser.add_argument("-S","--required-state",help="Only register for courses in the given state (reg or reg_wait) NOTE: Only allowed when course codes are given.",type=int)
-	parser.add_argument("-t","--term",help="The term (e.g. 201609 is Fall 2016) in which to register for these courses",required=True)
+	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
+	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
 	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
 	args = parser.parse_args()
-	
+	args.term = get_term_code(args.term)
+
 	return args
 
 def course_ref_type(arg):
@@ -21,17 +22,23 @@ def course_ref_type(arg):
 def main():
 	args = parse_args()
 	codes_given = course_ref_type(args.course[0])
+	term = args.term
+
 	for course in args.course:
 		if codes_given != course_ref_type(course):
 			print "ERROR: Course codes cannot be combined with CRNs"
-			sys.exit(3)
+			sys.exit(MinervaError.user_error)
 
-	
+		
 	if codes_given:
-		minerva_check_register(args.term,args.course)
+		minerva_check_register(term,args.course,require_all=args.require_all,require_reg=args.require_reg)
 	else:
 
-		minerva_fast_register(args.term,args.course)
+		if args.require_all or args.require_reg:
+			print "ERROR: When using CRNs, it is not possible to verify the state of classes before attempting registration."
+			sys.exit(MinervaError.user_error)
+
+		minerva_fast_register(term,args.course)
 
 
 main()

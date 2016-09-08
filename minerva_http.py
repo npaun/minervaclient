@@ -2,9 +2,11 @@
 
 import requests
 import urllib
+import sys
 #from bs4 import BeautifulSoup
 
 execfile('minerva_parse.py')
+execfile('minerva_local_logic.py')
 execfile('config.local')
 
 s = requests.Session()
@@ -74,7 +76,6 @@ def make_course_request(term,subjects):
 			('path','1')
 		])	#This is seriously what Minerva shoves into a search form 
 
-	print urllib.urlencode(request)
 	return urllib.urlencode(request)
 
 def dummy_course_request(term):
@@ -106,35 +107,56 @@ def minerva_reg_courses(text,crns):
 		wait_request = quick_add_wait(r.text)
 		r = minerva_post('bwckcoms.P_Regs',wait_request)
 		result = quick_add_status(r.text)
+	elif result == MinervaError.reg_fail:
+		sys.exit(MinervaError.reg_fail)
 
-def minerva_check_courses(courses,codes):
+def minerva_check_courses(courses,codes,require_all = False,require_reg = False):
 	crns = []
 
 	for code in codes:
+		valid_state = False
+
+		if code not in courses:
+			print "* Course %s cannot be found. Failure." % code
+			sys.exit(MinervaError.course_not_found)
+
 		course = courses[code]
-		print course
 		sys.stdout.write("[" + code + "] ")
+
 		if course['select'] == MinervaState.possible:
 			sys.stdout.write("* Minerva permits registration ")
 			if course['_state'] == MinervaState.register:
 				sys.stdout.write("in course.\n")
+				valid_state = True
 			elif course['_state'] == MinervaState.wait:
 				sys.stdout.write("on waitlist.\n")
+				valid_state = True
 				print "\t\t You will be in position " + str(course['wait']['act'] + 1) + "."
 			elif course['_state'] == MinervaState.wait_places_remaining:
 				sys.stdout.write("on waitlist, and places remain in the course.\n")
+				valid_state = True
 				print "\t\t You will be in position " + str(course['wait']['act'] + 1) + "."
 			elif course['_state'] == MinervaState.full:
 				sys.stdout.write("but waitlist is reported full.\n")
+			elif course['_state'] == MinervaState.full_places_remaining:
+				sys.stdout.write("but waitlist is reported full (places remain in the class).\n")
 			else:
 				sys.stdout.write("but the current state is unexpected.\n")
 
-
-			crns.append(course['crn'])
+			if not require_reg or (require_reg and valid_state):
+				crns.append(course['crn'])
 		else:
 			print "* Minerva prohibits registration."
+			print "\t\t The status on Minerva is " + course['status'] 
 
-	
+
+	if require_all and len(courses) != len(crns):
+		print "* Some courses cannot be registered. The require all constraint is unsatisfiable."
+		sys.exit(MinervaError.require_unsatisfiable)
+	elif len(crns) == 0:
+		print "* No courses can be registered. Failure."
+		sys.exit(MinervaError.course_none)
+
 	return crns
 
 # Attempts to register for a course by CRN without checking for room
@@ -146,10 +168,10 @@ def minerva_fast_register(term,crns):
 
 # Attempts to register for a course by course code, first checking for room in the course
 # Example: minerva_check_register('201609',['COMP-206-001','MATH-240-001'])
-def minerva_check_register(term,course_codes):
+def minerva_check_register(term,course_codes,require_all = False,require_reg = False):
 	minerva_login()
 	courses = minerva_search_courses(term,course_codes)
-	crns = minerva_check_courses(courses,course_codes)
+	crns = minerva_check_courses(courses,course_codes,require_all,require_reg)
 	current = minerva_get_registered(term)
 	minerva_reg_courses(current,crns)
 

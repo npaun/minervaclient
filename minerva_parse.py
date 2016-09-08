@@ -6,9 +6,9 @@ import sys
 import codecs
 
 class MinervaState:
-	register,wait,closed,possible,unknown,wait_places_remaining,full = range(7)
+	register,wait,closed,possible,unknown,wait_places_remaining,full,full_places_remaining = range(8)
 class MinervaError:
-	reg_ok,reg_fail,reg_wait = range(3)
+	reg_ok,reg_fail,reg_wait,course_none,course_not_found,user_error,net_error,require_unsatisfiable = range(8)
 
 def quick_add_insert(text,crns):
 	html = BeautifulSoup(text,'html.parser')
@@ -137,10 +137,12 @@ def determine_state(record):
 	if record['select'] == MinervaState.closed:
 		record['_state'] = record['select']
 	elif record['reg']['rem'] > 0:
-		if record['wait']['act'] <= 0:
+		if record['wait']['act'] < 0:
 			record['_state'] = MinervaState.register
 		elif record['wait']['rem'] > 0:
 			record['_state'] = MinervaState.wait_places_remaining
+		else:
+			record['_state'] = MinervaState.full_places_remaining
 	elif record['wait']['rem'] > 0:
 			record['_state'] = MinervaState.wait
 	elif record['wait']['rem'] <= 0:
