@@ -87,7 +87,6 @@ def quick_add_wait(text):
 
 		request.append((input['name'], val))
 	
-	print request	
 	return urllib.urlencode(request)
 
 def parse_entry(cells):
