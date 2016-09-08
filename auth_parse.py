@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import urllib
 import sys
 import codecs
+from local_logic import *
 
 class MinervaState:
 	register,wait,closed,possible,unknown,wait_places_remaining,full,full_places_remaining = range(8)

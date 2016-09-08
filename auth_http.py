@@ -3,17 +3,14 @@
 import requests
 import urllib
 import sys
-#from bs4 import BeautifulSoup
 
-execfile('minerva_parse.py')
-execfile('minerva_local_logic.py')
-execfile('config.local')
+#################
+import auth_parse, config_local,pub_search
+from local_logic import *
 
-s = requests.Session()
 cookie_data = {}
 referer = ""
-
-
+s = requests.Session()
 
 def minerva_get(func):
 	print "? " + func
@@ -35,7 +32,7 @@ def minerva_post(func,req):
 
 def minerva_login():
 	minerva_get("twbkwbis.P_WWWLogin")
-	minerva_post("twbkwbis.P_ValLogin",{'sid': id, 'PIN': pin})
+	minerva_post("twbkwbis.P_ValLogin",{'sid': config_local.id, 'PIN': config_local.pin})
 	r = minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")
 	minerva_get('twbkwbis.P_GenMenu?name=bmenu.P_RegMnu&param_name=SRCH_MODE&param_val=NON_NT')
 
@@ -92,7 +89,7 @@ def minerva_search_courses(term,course_codes):
 	
 	
 	r = minerva_post("bwskfcls.P_GetCrse_Advanced",make_course_request(term,subjects))
-	return course_search(r.text)
+	return auth_parse.course_search(r.text)
 
 def minerva_get_registered(term):
 	minerva_get("bwskfreg.P_AltPin")
@@ -100,13 +97,13 @@ def minerva_get_registered(term):
 	return r.text
 
 def minerva_reg_courses(text,crns):
-	request = quick_add_insert(text,crns)
+	request = auth_parse.quick_add_insert(text,crns)
 	r = minerva_post('bwckcoms.P_Regs',request)
-	result = quick_add_status(r.text)
+	result = auth_parse.quick_add_status(r.text)
 	if result == MinervaError.reg_wait:
-		wait_request = quick_add_wait(r.text)
+		wait_request = auth_parse.quick_add_wait(r.text)
 		r = minerva_post('bwckcoms.P_Regs',wait_request)
-		result = quick_add_status(r.text)
+		result = auth_parse.quick_add_status(r.text)
 	elif result == MinervaError.reg_fail:
 		sys.exit(MinervaError.reg_fail)
 
@@ -147,6 +144,14 @@ def minerva_check_courses(courses,codes,require_all = False,require_reg = False)
 			if not require_reg or (require_reg and valid_state):
 				crns.append(course['crn'])
 				course_ok.append(course['_code'])
+		elif course['select'] == MinervaState.only_waitlist_known:
+			if course['_state'] == MinervaState.wait:
+				print "* Minerva indicates room on waitlist." 
+				valid_state = True
+				crns.append(course['crn'])
+				course_ok.append(course['_code'])
+			else:
+				print "* Minerva does not show room on waitlist."
 		else:
 			print "* Minerva prohibits registration."
 			print "\t\t The status on Minerva is " + course['status'] 
@@ -175,10 +180,18 @@ def minerva_fast_register(term,crns,dry_run = False):
 
 # Attempts to register for a course by course code, first checking for room in the course
 # Example: minerva_check_register('201609',['COMP-206-001','MATH-240-001'])
-def minerva_check_register(term,course_codes,require_all = False,require_reg = False,dry_run = False):
-	minerva_login()
-	courses = minerva_search_courses(term,course_codes)
+def minerva_check_register(term,course_codes,require_all = False,require_reg = False,dry_run = False,public_search = False):
+	
+	if public_search:
+		courses = pub_search.search(term,course_codes)
+	else:
+		minerva_login()
+		courses = minerva_search_courses(term,course_codes)
+
 	crns,course_ok = minerva_check_courses(courses,course_codes,require_all,require_reg)
+
+	if public_search: minerva_login()
+
 	current = minerva_get_registered(term)
 
 
