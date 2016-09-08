@@ -161,19 +161,26 @@ def minerva_check_courses(courses,codes,require_all = False,require_reg = False)
 
 # Attempts to register for a course by CRN without checking for room
 # Example: minerva_fast_register('201609',['814'])
-def minerva_fast_register(term,crns):
+def minerva_fast_register(term,crns,dry_run = False):
 	minerva_login()
 	courses = minerva_get_registered(term)
-	minerva_reg_courses(courses,crns)
+
+	print "* You will be registered in the following CRNs " + str(crns)
+	if not dry_run:
+		minerva_reg_courses(courses,crns)
 
 # Attempts to register for a course by course code, first checking for room in the course
 # Example: minerva_check_register('201609',['COMP-206-001','MATH-240-001'])
-def minerva_check_register(term,course_codes,require_all = False,require_reg = False):
+def minerva_check_register(term,course_codes,require_all = False,require_reg = False,dry_run = False):
 	minerva_login()
 	courses = minerva_search_courses(term,course_codes)
 	crns = minerva_check_courses(courses,course_codes,require_all,require_reg)
 	current = minerva_get_registered(term)
-	minerva_reg_courses(current,crns)
+
+
+	print "* You will be registered in the following CRNs " + str(crns)
+	if not dry_run:
+		minerva_reg_courses(current,crns)
 
 
 #vi: ft=python

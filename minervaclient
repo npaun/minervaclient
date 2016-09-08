@@ -5,11 +5,12 @@ import argparse,sys
 
 def parse_args():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
-	parser.add_argument("-q","--quiet",help="Only print output for successful registration",action="store_true")
+	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
 	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
-	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
+	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
+	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.add_argument("-q","--quiet",help="Only print output for successful registration",action="store_true")
 	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
 	args = parser.parse_args()
 	args.term = get_term_code(args.term)
@@ -31,14 +32,14 @@ def main():
 
 		
 	if codes_given:
-		minerva_check_register(term,args.course,require_all=args.require_all,require_reg=args.require_reg)
+		minerva_check_register(term,args.course,require_all=args.require_all,require_reg=args.require_reg,dry_run=args.no_register)
 	else:
 
 		if args.require_all or args.require_reg:
 			print "ERROR: When using CRNs, it is not possible to verify the state of classes before attempting registration."
 			sys.exit(MinervaError.user_error)
 
-		minerva_fast_register(term,args.course)
+		minerva_fast_register(term,args.course,dry_run=args.no_register)
 
 
 main()
