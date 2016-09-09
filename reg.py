@@ -5,7 +5,7 @@ import urllib
 import sys
 
 #################
-import reg_parse, config_local,auth_search,pub_search
+import reg_parse,auth_search,pub_search
 from minerva_common import *
 
 def get_registered(term):

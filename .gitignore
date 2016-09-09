@@ -1,4 +1,4 @@
 .*.sw*
-config_local.py
+credentials_local.py
 state.dat
 *.pyc

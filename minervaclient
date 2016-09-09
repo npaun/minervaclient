@@ -2,7 +2,8 @@
 
 import reg,sched
 from minerva_common import *
-import config_local
+import config,credentials_local
+
 
 import argparse,sys,json
 state = {}
@@ -25,7 +26,7 @@ def parse_sched(subp):
 	parser = subp.add_parser('sched',help='Display your schedule or transcript')
 	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
 	parser.add_argument("-D","--diff-set",help="[TODO] Monitor the requested report for any changes compared with the previous reports in the diff set")
-	parser.add_argument("-r","--report",help="Choose which schedule report to display (see config_local.py to configure")
+	parser.add_argument("-r","--report",help="Choose which schedule report to display (see config.py to configure")
 	parser.add_argument("-l","--long",help="Show a detailed report of the schedule",action="store_true")
 	parser.add_argument("-s","--short",help="Show a brief report of the schedule",action="store_true")
 	parser.add_argument("-T","--transcript",help="[TODO] Show your transcript",action="store_true")
@@ -74,7 +75,7 @@ def exec_reg(args):
 	codes_given = course_ref_type(args.course[0])
 	term = get_term_code(args.term)
 	
-	if config_local.always_dry_run:
+	if credentials_local.always_dry_run:
 		args.no_register = True
 
 	if args.job is None:

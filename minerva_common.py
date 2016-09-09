@@ -1,4 +1,4 @@
-import config_local
+import credentials_local
 import requests
 
 cookie_data = {}
@@ -23,7 +23,7 @@ def minerva_post(func,req):
 
 def minerva_login():
 	minerva_get("twbkwbis.P_WWWLogin")
-	minerva_post("twbkwbis.P_ValLogin",{'sid': config_local.id, 'PIN': config_local.pin})
+	minerva_post("twbkwbis.P_ValLogin",{'sid': credentials_local.id, 'PIN': credentials_local.pin})
 	r = minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")
 	minerva_get('twbkwbis.P_GenMenu?name=bmenu.P_RegMnu&param_name=SRCH_MODE&param_val=NON_NT')
 

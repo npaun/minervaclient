@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from datetime import datetime
 from minerva_common import *
-import config_local
+import config
 import sys
 
 def parse_schedule(text,separate_wait = True):
@@ -37,10 +37,10 @@ def parse_schedule(text,separate_wait = True):
 		entry['_status_desc'],entry['_status_date'] = entry['status'].split(" on ")
 		entry['_status_desc'] = get_status_code(entry['_status_desc'],short=True)
 		
-		entry['_status_date'] = datetime.strptime(entry['_status_date'],'%b %d, %Y').strftime(config_local.date_fmt['short_date'])
+		entry['_status_date'] = datetime.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
 
 		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] != '':
-			entry['wait_notify_expires'] = datetime.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config_local.date_fmt['short_datetime'])
+			entry['wait_notify_expires'] = datetime.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config.date_fmt['short_datetime'])
 			entry['_action_desc'] = "[\033[1;32mReg by " + entry['wait_notify_expires'] + "\033[0m]"
 		elif 'wait_pos' in entry:
 			entry['_action_desc'] = "[#" + entry['wait_pos'] + " on waitlist]"
@@ -61,8 +61,8 @@ def parse_schedule(text,separate_wait = True):
 		entry['_building'] = entry['_building'].strip()
 
 		t_start,t_end = entry['time_range'].split(" - ")
-		t_start = datetime.strptime(t_start,'%I:%M %p').strftime(config_local.date_fmt['short_time'])
-		t_end = datetime.strptime(t_end,'%I:%M %p').strftime(config_local.date_fmt['short_time'])
+		t_start = datetime.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
+		t_end = datetime.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
 		t_range = '-'.join([t_start,t_end])
 		entry['_time'] = {}
 		entry['_time']['start'] = t_start
@@ -89,13 +89,13 @@ def print_sched(sched,columns):
 
 
 def print_sched_report(sched,report = 'default'):
-	if report not in config_local.reports:
+	if report not in config.reports:
 		print "Error! Report not found"
 		sys.exit(MinervaError.user_error)
 	
 
-	columns = config_local.reports[report]['columns']
-	fmt_string = config_local.reports[report]['format']
+	columns = config.reports[report]['columns']
+	fmt_string = config.reports[report]['format']
 	for entry in sched:
 			vals = []
 			for col in columns:
