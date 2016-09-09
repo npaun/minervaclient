@@ -35,12 +35,12 @@ It's way simpler than actually using Minerva!
 
 * Registration: `mnvc reg`
 	* To register for a set of courses: `mnvc reg -t FALL2016 COMP-251-001 MATH-240-001`
-	* To register by CRN (faster): `mnvc reg -t 2016-FALL 814 30302 30`
+	* To register by CRN (faster): `minervac reg -t 2016-FALL 814 30302 30`
 	* To save previously-registered courses and only register for what remains: `mnvc reg -j compstuff -t 2016-FALL COMP-273-002 COMP-396-001`
 	* **NOTE:** An option to search without logging in is provided. However, only waitlist information can be determined in this way, and its quality may be poor.
 * Scheduling: `mnvc sched`
 	* To display your schedule: `mnvc sched -t WINTER2017`
-	* To display more details, or less: `mnvc sched -lt SUMMER-2017` or `mnvc sched -st 2016WINTER-SUP`
+	* To display more details, or less: `mnvc sched -lt SUMMER-2017` or `minervac sched -st 2016WINTER-SUP`
 	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
 * For a full description of available options: `mnvc -h`
 
