@@ -4,6 +4,7 @@
 `minervac` is a CLI client for Minerva's course registration features. At present, it can register for courses by CRN and by course code (checking for available places first). It can also remember what courses you have already registered in and will not keep re-registering after you're in.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
+!['Screenshot of Minervac'](http://i.imgur.com/9FciOtv.png)
 ## See also
 
 * You could try seeing an advisor.
@@ -40,6 +41,7 @@ It's way simpler than actually using Minerva:
 ## WARNING
 
 1. You are solely responsible for deciding if `minervac` is compliant with McGill's policies, and if you want to assume this risk.
+    * Start reading here: [McGill Policy on the Responsible Use of IT Resources](http://www.mcgill.ca/secretariat/files/secretariat/responsible-use-of-mcgill-it-policy-on-the.pdf), but there are most definitely more policies that may be applicable to this program and its use.
 2. `minervac` might mess up your course schedule in a very bad sort of way.
 3. `minervac` might suddenly stop working if Minerva is changed.
 4. Minerva is a horrible, horrible program and may give you a serious headache if you try to extend this program.
