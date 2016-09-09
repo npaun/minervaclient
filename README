@@ -1,33 +1,44 @@
 # Minervac
 ### The Minerva Client
 
-`minervac` is a CLI client for Minerva's course registration features. At present, it can register for courses by CRN and by course code (checking for available places first). It can also remember what courses you have already registered in and will not keep re-registering after you're in.
+`minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule with custom reports, and can register for courses by CRN or course code. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
-!['Screenshot of Minervac'](http://i.imgur.com/9FciOtv.png)
+![Registering for a course](http://i.imgur.com/9FciOtv.png)
+
 ## See also
 
 * You could try seeing an advisor.
 * If you don't need to make changes to your registration, use `Minervabot` instead. It is probably way better: https://github.com/zafarali/minerva-bot
 
+## Goals
+
+The goals of this project are to create a simple and high-quality interface for the most-used features of Minerva. The user interface will be designed in accordance with UNIX priciples, thus, `minervac` will be easily programmable. Additionally, `minervac` will clearly explain how it is connecting to Minerva and provide a starting point for other projects that attempt to use the Minerva "API". This project is free and open-source.
+
 ## Installation
 
 1. `minervac` uses the `requests` and `beautifulsoup4` modules for Python.
 	* I think it's easiest to install them with `pip`? `sudo pip install requests beautifulsoup4`
-2. Copy `config.py` to `config_local.py` and fill in your credentials.
+2. Copy `credentials.py` to `credentials_local.py` and fill in your credentials.
+3. Edit `config.py` to setup various settings
 
 ## Usage
 
-It's way simpler than actually using Minerva:  
+It's way simpler than actually using Minerva!
 
-* To register for a set of courses: `minervac -t FALL2016 COMP-251-001 MATH-240-001`
-* To register by CRN (faster): `minervac -t 2016-FALL 814 30302 30`
-* To save the courses registered and only register for remaining courses each time: `minervac -j compstuff -t 2016-FALL COMP-273-002 COMP-396-001`
-* For a full description of available options: `minervac -h`
+* Registration: `mnvc reg`
+	* To register for a set of courses: `mnvc reg -t FALL2016 COMP-251-001 MATH-240-001`
+	* To register by CRN (faster): `mnvc reg -t 2016-FALL 814 30302 30`
+	* To save previously-registered courses and only register for what remains: `mnvc reg -j compstuff -t 2016-FALL COMP-273-002 COMP-396-001`
+	* **NOTE:** An option to search without logging in is provided. However, only waitlist information can be determined in this way, and its quality may be poor.
+* Scheduling: `mnvc sched`
+	* To display your schedule: `mnvc sched -t WINTER2017`
+	* To display more details, or less: `mnvc sched -lt SUMMER-2017` or `mnvc sched -st 2016WINTER-SUP`
+	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
+* For a full description of available options: `mnvc -h`
 
-**NOTE:** An option to search without logging in is provided. However, only waitlist information can be determined in this way, and its quality may be poor.
 
-## Automated Usage
+## Scheduling registration
 
 * Put it in your `crontab`. This way, the `minervac` will automatically be run at the time interval you choose, and you will receive an email indicating the status of your course registration job.
 	* If you don't have `cron`, you may need to write a long-running loop or use your OS' job scheduling facility. Oh, and by the way, your OS sucks.
@@ -36,7 +47,12 @@ It's way simpler than actually using Minerva:
 
 ## Further development
 
-* Show currently registered courses to so that I can do my entire course schedule without ever touching Minerva.
+* Producing a nicer looking timetable than Minerva.
+* Querying the unofficial transcript.
+* Displaying degree evaluation reports.
+* Monitoring schedules and transcripts for changes.
+* **Won't implement:** While it would be trivial to support dropping courses, I am worried that this may mess up people's schedules as Minerva does not perform truly atomic transactions. Furthermore, it may mess up my own schedule and so I don't want to test it. If you're braver than I am, please send me a pull request.
+* Support output formatters and more control over what this program prints.
 
 ## WARNING
 
