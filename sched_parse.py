@@ -105,7 +105,7 @@ def print_sched_report(sched,report = 'default'):
 			print fmt_string % tuple(vals)
 
 def course_details_report(text,report = 'default'):
-	wait,reg = parse_schedule(text)
+	reg,wait = parse_schedule(text)
 	if reg:
 		print ""
 		print "* Registered courses:"

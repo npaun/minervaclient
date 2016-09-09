@@ -59,9 +59,9 @@ def get_term_code(term):
 
 def get_status_code(status,short = False):
 	if short:
-		status_codes = {'Web Registered': 'R','(Add(ed) to Waitlist)': 'W', 'Web Drop': 'DROP'}
+		status_codes = {'Registered': 'R','Web Registered': 'R','(Add(ed) to Waitlist)': 'W', 'Web Drop': 'DROP'}
 	else:
-		status_codes = {'Web Registered': 'RW','(Add(ed) to Waitlist)': 'LW', 'Web Drop': 'DW'}
+		status_codes = {'Registered': 'R','Web Registered': 'RW','(Add(ed) to Waitlist)': 'LW', 'Web Drop': 'DW'}
 
 	return status_codes[status]
 
