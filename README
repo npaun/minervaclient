@@ -4,7 +4,6 @@
 `minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule with custom reports, and can register for courses by CRN or course code. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
-<img src="http://i.imgur.com/9FciOtv.png" width="75%"> <img src="http://i.imgur.com/J97ekip.png" width="75%">
 ![Registering for a course](http://i.imgur.com/9FciOtv.png) ![Displaying my schedule](http://i.imgur.com/J97ekip.png)
 
 ## Updates
