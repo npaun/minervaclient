@@ -61,14 +61,14 @@ def main():
 		
 	for course in args.course:
 		if codes_given != course_ref_type(course):
-			print "ERROR: Course codes cannot be combined with CRNs"
+			print "\033[1;31mERROR:\033[0m Course codes cannot be combined with CRNs"
 			sys.exit(MinervaError.user_error)
 
 	
 	if args.job:
 		courses = restore_state(args.job,args.course)
 		if not courses:
-			print "**** Congratulations, you've gotten into all your courses ****"
+			print "\033[1;32m**** Congratulations, you've gotten into all your courses ****\033[1m"
 			sys.exit(0)
 	else:
 		courses = args.course
@@ -78,8 +78,11 @@ def main():
 	else:
 
 		if args.require_all or args.require_reg:
-			print "ERROR: When using CRNs, it is not possible to verify the state of classes before attempting registration."
+			print "\033[1;31mERROR:\033[0m When using CRNs, it is not possible to verify the state of classes before attempting registration."
 			sys.exit(MinervaError.user_error)
+		elif args.public_search:
+			print "\033[1;31mERROR:\033[0m This feature is implemented only when searching by course code"
+			sys.exit(MinervaErrror.user_error)
 
 		data = reg.fast_register(term,courses,dry_run=args.no_register)
 

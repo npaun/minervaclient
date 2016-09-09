@@ -56,3 +56,26 @@ def get_term_code(term):
 		part = part_codes[part.upper()]
 
 	return year + part
+
+def get_status_code(status,short = False):
+	if short:
+		status_codes = {'Web Registered': 'R','(Add(ed) to Waitlist)': 'W', 'Web Drop': 'DROP'}
+	else:
+		status_codes = {'Web Registered': 'RW','(Add(ed) to Waitlist)': 'LW', 'Web Drop': 'DW'}
+
+	return status_codes[status]
+
+def get_type_abbrev(type):
+	types = {'Lecture': 'Lec','Tutorial': 'Tut','Conference': 'Conf','Seminar': 'Sem'}
+	if type in types:
+		return types[type]
+	else:
+		return type
+
+# Doesn't really do much. Just tries a few tricks to shorten the names of buildings
+def get_bldg_abbrev(location):
+	subs = {'Building': '','Biology': 'Bio.','Chemistry': 'Chem.','Physics': 'Phys.', 'Engineering': 'Eng.'}
+	for sub in subs:
+		location = location.replace(sub,subs[sub])
+
+	return location
