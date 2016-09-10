@@ -54,7 +54,6 @@ It's way simpler than actually using Minerva!
 
 * Put it in your `crontab`. This way, the `minervac` will automatically be run at the time interval you choose, and you will receive an email indicating the status of your course registration job.
 	* If you don't have `cron`, you may need to write a long-running loop or use your OS' job scheduling facility. Oh, and by the way, your OS sucks.
-* You may need to actually implement the `-d` option (delay) to avoid getting yourself banned from Minerva.
 * An example crontab line: `00     *       *       *       *       minervac -dj compstuff -t 2016FALL 814 20620 33`
 .  
 * Some ideas:

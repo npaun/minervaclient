@@ -15,7 +15,6 @@ def parse_reg(subp):
 	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
 	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
-	parser.add_argument("-d","--delay",help="[TODO] Introduces random delays between requests and before starting, to help you better fit in as a human.")
 	parser.add_argument("-P","--public-search",help="[BUGGY] Do not log into Minerva to search !!! This option can only be used to register for the waitlist !!!",action="store_true")
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.add_argument("-q","--quiet",help="[TODO] Only print output for successful registration",action="store_true")
@@ -31,7 +30,8 @@ def parse_sched(subp):
 	parser.add_argument("-s","--short",help="Show a brief report of the schedule",action="store_true")
 	parser.add_argument("-T","--transcript",help="[TODO] Show your transcript",action="store_true")
 	parser.add_argument("-V","--visual",help="Show a visual course timetable",action="store_true")
-	parser.add_argument("-C","--conflicts",help="[TODO] Show course conflicts",action="store_true")
+	parser.add_argument("--conflicts-only",help="Only show course conflicts",action="store_true")
+	parser.add_argument("--no-conflicts",help="Don't show course conflicts",action="store_true")
 	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
 	parser.add_argument("-d","--delay",help="[TODO] Introduces random delays between requests and before starting, to help you better fit in as a human.")
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
@@ -125,12 +125,14 @@ def exec_sched(args):
 		report = 'short'
 	elif args.visual:
 		report = 'timetable_default'
+	elif args.conflicts_only:
+		report = 'conflicts'
 	else:
 		report = 'default'
 
 
 	
-	sched.course_details(term,report,visual=args.visual)
+	sched.course_details(term,report,visual=args.visual,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
 
 
 main()

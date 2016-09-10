@@ -47,7 +47,7 @@ def parse_schedule(text,separate_wait = True):
 		elif 'wait_pos' in entry:
 			entry['_action_desc'] = "[#" + entry['wait_pos'] + " on waitlist]"
 		else:
-			entry['_action_desc'] = '\t\t\t'
+			entry['_action_desc'] = ''
 
 
 		sched_table = sched.findAll('td')
@@ -94,23 +94,46 @@ def print_sched(sched,columns):
 
 
 def print_sched_report(sched,report = 'default'):
+	(fmt,sched) = prepare_report(report,sched)
+
+	for entry in sched: apply_format(entry,fmt)
+
+def find_conflicts(sched,report = 'conflicts'):
+	(fmt,sched) = prepare_report(report,sched)
+
+	for i, curr in enumerate(sched[:-1]):
+		next = sched[i+1]
+
+		if not set(curr['days']).intersection(set(next['days'])): #This isn't quite right
+			continue 
+	
+		next_start = datetime.strptime(next['_time']['start'],config.date_fmt['short_time'])
+		curr_end = datetime.strptime(curr['_time']['end'],config.date_fmt['short_time'])
+		diff = int((next_start - curr_end).total_seconds() / 60)
+			
+		if diff <= 0:
+			print "* Conflict for %d mins" % -diff
+			apply_format(curr,fmt)
+			apply_format(next,fmt)
+
+def prepare_report(report,sched):
 	if report not in config.reports:
 		print "Error! Report not found"
 		sys.exit(MinervaError.user_error)
 	
+	report = config.reports[report]
+	sorted = multi_keysort(sched,report['sort'])
+	return ((report['columns'],report['format']),sorted)
 
-	columns = config.reports[report]['columns']
-	fmt_string = config.reports[report]['format']
-	sort = config.reports[report]['sort']
-
-	sched = multi_keysort(sched,sort)
-	for entry in sched:
-			vals = []
-			for col in columns:
-				vals.append(entry[col])
+def apply_format(entry,fmt):
+	columns, fmt_string = fmt
+	vals = []
+	for col in columns:
+		vals.append(entry[col])
 				
 
-			print fmt_string % tuple(vals)
+	sys.stdout.write(fmt_string % tuple(vals))
+
 
 # Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.
 def multi_keysort(items, columns):
@@ -140,6 +163,10 @@ def course_details_report(text,report = 'default'):
 		print ""
 		print "* Waitlist:"
 		print_sched_report(wait,report)
+
+def conflict_report(text,report = 'conflicts'):
+	sched = parse_schedule(text,separate_wait = False)
+	find_conflicts(sched,report)
 
 
 # vi: ft=python
