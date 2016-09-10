@@ -149,20 +149,45 @@ def timetable_html(timetable,report = 'timetable_default'):
 	days = ['M','T','W','R','F','S','U']
 	day_names = {'M': 'Monday','T': 'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
 
+	print """
+	<link rel="stylesheet" href="sched.css"/>
+	<table class='sched-table'>
+		<thead class='sched-header'>
+			<tr>
+				<th>Monday</th>
+				<th>Tuesday</th>
+				<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+				<th>Sunday</th>
+			</tr>
+		</thead>
+	"""
+
 	for time in course_times:
-		sys.stdout.write(timeslot_format(time) + "\t")
+		print """
+		<tr class='sched-row'>
+			<th class='sched-timeslot'>{time}</th>
+		""".format(time=timeslot_format(time))
+
 		for day in days:
 			if time in timetable:
 				for day_code in timetable[time]:
 					if day in day_code:
-						sys.stdout.write("\t" + timetable[time][day_code][0]+"|")
+						print "\t<td class='sched-entry'>{entry}</td>".format(entry=timetable[time][day_code][0])
 					else:
-						sys.stdout.write("\t--------|")
+						print "\t<td class='sched-blank'>&nbsp;</td>"
 			else:
-				sys.stdout.write("\t--------|")
+				print "\t<td class='sched-blank'>&nbsp;</td>"
+
+		
 	
-		sys.stdout.write("\n")
-			
+		print """
+		</tr>
+		"""
+
+	print "</table>"			
 			
 
 # Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.
