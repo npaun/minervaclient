@@ -7,7 +7,6 @@ def timetable_report(text,report = 'timetable_default'):
 	timetable_html(timetable_struct(sched,report))
 	
 
-
 def timetable_struct(sched,report = 'timetable_default'):
 	columns = config.reports[report]['columns']
 	fmt_string = config.reports[report]['format']
@@ -144,4 +143,3 @@ def timetable_html(timetable):
 		"""
 
 	print "</table>"			
-			
