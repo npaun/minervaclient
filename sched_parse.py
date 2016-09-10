@@ -146,7 +146,7 @@ def timetable_struct(sched,report = 'timetable_default'):
 
 def timeslot_format(timeslot):
 	if timeslot[-2:] == "35":
-		return "*"
+		return timeslot[:-3] + "h30"
 	elif timeslot[-2:] == "05":
 		return timeslot[:-3]
 
