@@ -96,6 +96,9 @@ def print_sched_report(sched,report = 'default'):
 
 	columns = config.reports[report]['columns']
 	fmt_string = config.reports[report]['format']
+	sort = config.reports[report]['sort']
+
+	sched = multi_keysort(sched,sort)
 	for entry in sched:
 			vals = []
 			for col in columns:
@@ -103,6 +106,23 @@ def print_sched_report(sched,report = 'default'):
 				
 
 			print fmt_string % tuple(vals)
+
+# Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.
+def multi_keysort(items, columns):
+	if columns is None:
+		return items
+
+	from operator import itemgetter
+	comparers = [((itemgetter(col[1:].strip()), -1) if col.startswith('-') else
+			      (itemgetter(col.strip()), 1)) for col in columns]
+	def comparer(left, right):
+		for fn, mult in comparers:
+			result = cmp(fn(left), fn(right))
+			if result:
+			    return mult * result
+		else:
+			return 0
+	return sorted(items, cmp=comparer)
 
 def course_details_report(text,report = 'default'):
 	reg,wait = parse_schedule(text)
@@ -116,3 +136,5 @@ def course_details_report(text,report = 'default'):
 		print "* Waitlist:"
 		print_sched_report(wait,report)
 
+
+# vi: ft=python
