@@ -1,12 +1,12 @@
 import credentials_local
-import requests
+import requests,sys
 
 cookie_data = {}
 referer = ""
 s = requests.Session()
 
 def minerva_get(func):
-	print "? " + func
+	sys.stderr.write("? " + func + "\n")
 	global referer
 	url = "https://horizon.mcgill.ca/pban1/" + func
 	r = s.get(url,cookies = cookie_data, headers={'Referer': referer})
@@ -14,7 +14,7 @@ def minerva_get(func):
 	return r
 
 def minerva_post(func,req):
-	print "> " + func
+	sys.stderr.write("> " + func + "\n")
 	global referer
 	url = "https://horizon.mcgill.ca/pban1/" + func
 	r = s.post(url,data = req,cookies = cookie_data,headers = {'Referer': referer})
