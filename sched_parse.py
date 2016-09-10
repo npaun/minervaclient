@@ -199,7 +199,4 @@ def timetable_report(text,report = 'timetable_default'):
 	sched = parse_schedule(text,separate_wait = False)
 	timetable_html(timetable_struct(sched,report))
 	
-
-f = open('/home/np/minervaslammer/crsedetail.html').read()
-timetable_report(f)
 # vi: ft=python
