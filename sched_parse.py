@@ -177,7 +177,7 @@ def timetable_html(timetable,report = 'timetable_default'):
 					if day in day_code:
 						print "\t<td class='sched-entry'>{entry}</td>".format(entry=timetable[time][day_code][0])
 					else:
-						print "\t<td class='sched-blank'>&nbsp;</td>"
+						print "\t<td class='sched-blank'><br><br><br></td>"
 			else:
 				print "\t<td class='sched-blank'>&nbsp;</td>"
 
