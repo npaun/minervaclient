@@ -195,9 +195,6 @@ def timetable_html(timetable):
 			
 		col = 0
 		for day in days:
-			if col in spans:
-				pass
-				#print spans[col]
 
 			if time in timetable:
 				for day_code in timetable[time]:
