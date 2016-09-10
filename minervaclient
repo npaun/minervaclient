@@ -122,11 +122,14 @@ def exec_sched(args):
 		report = 'long'
 	elif args.short:
 		report = 'short'
+	elif args.visual:
+		report = 'timetable_default'
 	else:
 		report = 'default'
 
+
 	
-	sched.course_details(term,report)
+	sched.course_details(term,report,visual=args.visual)
 
 
 main()

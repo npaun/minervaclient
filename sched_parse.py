@@ -171,7 +171,7 @@ def make_day_header(days):
 	header += "</thead>\n"
 	return header
 
-def timetable_html(timetable,num_courses,report = 'timetable_default'):
+def timetable_html(timetable):
 	course_times = ['08h05','08h35','09h05','09h35','10h05','10h35','11h05','11h35','12h05','12h35','13h05','13h35','14h05','14h35','15h05','15h35','16h05','16h35','17h05','17h35']
 
 	if config.show_weekend:
@@ -267,9 +267,7 @@ def course_details_report(text,report = 'default'):
 
 def timetable_report(text,report = 'timetable_default'):
 	sched = parse_schedule(text,separate_wait = False)
-	timetable_html(timetable_struct(sched,report),len(sched),report)
+	timetable_html(timetable_struct(sched,report))
 	
 
-f = open('/home/np/minervaslammer/crsedetail.html').read()
-timetable_report(f)
 # vi: ft=python
