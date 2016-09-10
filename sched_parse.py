@@ -118,7 +118,6 @@ def timetable_struct(sched,report = 'timetable_default'):
 	sort = config.reports[report]['sort']
 
 	sched = multi_keysort(sched,sort)
-	course_times = ['8','8:30','9','9:30','10','10:30','11','11:30','12','12:30','13','13:30','14','14:30','15','15:30','16','16:30','17','17:30']
 	timetable = {}
 
 	i = 1
