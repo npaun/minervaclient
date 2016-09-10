@@ -4,12 +4,14 @@
 `minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule with custom reports, and can register for courses by CRN or course code. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
-<a href="http://i.imgur.com/J97ekip.png"><img src="http://i.imgur.com/J97ekip.png" width="80%"></a> <a href="http://i.imgur.com/SYRaUzk.png"><img src="http://i.imgur.com/SYRaUzk.png" width="80%"></a>
-![Registering for a course](http://i.imgur.com/9FciOtv.png)
+![Registering for a course](http://i.imgur.com/9FciOtv.png)  
+**[More screenshots](#screenshots)**
 
 ## Updates
 
-1. ****
+1. 
+ * A visual timetable feature has been implemented. (-V).
+2. ****
  * The command-line interface won't be modified anymore, only extended. Configuration format is still in flux.
  * Displaying course schedule information with custom reports.
  
@@ -43,6 +45,8 @@ It's way simpler than actually using Minerva!
 	* To display your schedule: `mnvc sched -t WINTER2017`
 	* To display more details, or less: `mnvc sched -lt SUMMER-2017` or `minervac sched -st 2016WINTER-SUP`
 	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
+	* To show your timetable in HTML: `minervac sched -t 2016SUMMER -V`
+	    * Edit `config.py` to change the way courses are formatted and `sched_timetable.css` to adjust the styling.
 * For a full description of available options: `mnvc -h`
 
 
@@ -59,7 +63,6 @@ It's way simpler than actually using Minerva!
 
 ## Further development
 
-* Producing a nicer looking timetable than Minerva.
 * Querying the unofficial transcript.
 * Displaying degree evaluation reports.
 * Monitoring schedules and transcripts for changes.
@@ -76,3 +79,7 @@ It's way simpler than actually using Minerva!
 5. This program was badly written, in a rush, and might have some serious design flaws.
 6. I'm not actually a Python programmer.
 7. May give CS hipsters a headache.
+
+## Screenshots
+
+<a href="http://i.imgur.com/J97ekip.png"><img src="http://i.imgur.com/J97ekip.png" width="80%"></a> <a href="http://i.imgur.com/SYRaUzk.png"><img src="http://i.imgur.com/SYRaUzk.png" width="80%"></a>
