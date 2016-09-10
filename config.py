@@ -17,6 +17,6 @@ reports['short']['columns'] = ['subject','course','credits','section','crn','_ac
 reports['short']['format'] = "%s %s (%s)\t%s\t% 5s\t%s"
 reports['short']['sort'] = ['_code']
 
-reports['timetable_default']['columns'] = ['subject','course','section','type','_building','_room']
-reports['timetable_default']['format'] = "<p class='sched-course'>%s %s</p><p class='sched-section'>%s (%s)</p><p class='sched-location'>%s %s</p>"
+reports['timetable_default']['columns'] = ['subject','course','section','type','_building','_room','time_range']
+reports['timetable_default']['format'] = "<p class='sched-course'>%s %s&ndash;%s (%s)</p><p class='sched-location'>%s %s</p><p class='sched-time'>%s</p>"
 reports['timetable_default']['sort'] = ['days','time_range','_code']

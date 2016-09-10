@@ -27,6 +27,8 @@ def parse_schedule(text,separate_wait = True):
 			fields = ['term','crn','status','wait_pos','wait_notify_expires','instructor','grade_mode','credits','level','campus']
 		for field,cell in zip(fields,course_table):
 			entry[field] = cell.text.strip()
+			if entry[field] == '':
+				entry[field] = None
 
 
 		if entry['credits'][-4:] == '.000': #Strip decimals when irrelevant
@@ -39,7 +41,7 @@ def parse_schedule(text,separate_wait = True):
 		
 		entry['_status_date'] = datetime.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
 
-		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] != '':
+		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] is not None:
 			entry['wait_notify_expires'] = datetime.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config.date_fmt['short_datetime'])
 			entry['_action_desc'] = "[\033[1;32mReg by " + entry['wait_notify_expires'] + "\033[0m]"
 		elif 'wait_pos' in entry:
@@ -69,7 +71,7 @@ def parse_schedule(text,separate_wait = True):
 		entry['_time']['end'] = t_end
 		entry['time_range'] = t_range
 
-		if 'wait_pos' in entry and 'wait_pos' != '' and separate_wait:
+		if 'wait_pos' in entry and 'wait_pos' is not None and separate_wait:
 			wait_entries.append(entry)
 		else:
 			entries.append(entry)
@@ -133,8 +135,12 @@ def timetable_struct(sched,report = 'timetable_default'):
 			vals.append(entry[col])
 
 		summary = fmt_string % tuple(vals)
+		if 'wait_pos' in entry and entry['wait_pos'] is not None:
+			wait = True
+		else:
+			wait = False
 
-		timetable[t_start][entry['days']][i] = ((entry['_time'],summary))
+		timetable[t_start][entry['days']][i] = ((entry['_time'],summary,wait))
 		i += 1
 	
 	return timetable
@@ -187,23 +193,30 @@ def timetable_html(timetable,num_courses,report = 'timetable_default'):
 		col = 0
 		for day in days:
 			if col in spans:
-				print spans[col]
+				pass
+				#print spans[col]
 
 			if time in timetable:
 				for day_code in timetable[time]:
 					if day in day_code:
 						course_num,entry = timetable[time][day_code].items()[0]
-						_time,summary = entry
+						_time,summary,wait = entry
 						rowspan = calc_rowspan(_time)
-						spans[col] = rowspan - 1
-						print str(col) + " Spans " + str(spans[col])
+						spans[col] = rowspan - 0
+
+						if wait:
+							summary = "<div class='waiting'>" + summary + "</div>"
+						else:
+							summary = "<div class='registered'>" + summary + "</div>"
+
+						#print str(col) + " Spans " + str(spans[col])
 						print "\t<td class='sched-entry sched-entry-{n}' rowspan='{rowspan}'>{entry}</td>".format(entry=summary,rowspan=rowspan,n=course_num)
 					elif col not in spans or spans[col] == 0:
 						print "\t<td class='sched-blank'><br><br><br></td>"
 
 					
 			elif col not in spans or spans[col] == 0:
-				print "\t<td class='sched-blank'>&nbsp;</td>"
+				print "\t<td class='sched-blank'><br><br><br></td>"
 	
 			if col in spans and spans[col] > 0:
 				spans[col] -= 1
