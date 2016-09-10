@@ -74,7 +74,10 @@ def parse_schedule(text,separate_wait = True):
 		else:
 			entries.append(entry)
 
-	return (entries,wait_entries)
+	if separate_wait:
+		return (entries,wait_entries)
+	else:
+		return entries
 
 def print_sched(sched,columns):
 
@@ -107,6 +110,61 @@ def print_sched_report(sched,report = 'default'):
 
 			print fmt_string % tuple(vals)
 
+def timetable_struct(sched,report = 'timetable_default'):
+	columns = config.reports[report]['columns']
+	fmt_string = config.reports[report]['format']
+	sort = config.reports[report]['sort']
+
+	sched = multi_keysort(sched,sort)
+	course_times = ['8','8:30','9','9:30','10','10:30','11','11:30','12','12:30','13','13:30','14','14:30','15','15:30','16','16:30','17','17:30']
+	timetable = {}
+
+	for entry in sched:
+		t_start = entry['_time']['start']
+		if t_start not in timetable:
+			timetable[t_start] = {}
+
+		if entry['days'] not in timetable[t_start]:
+			timetable[t_start][entry['days']] = []
+
+		vals = []
+		for col in columns:
+			vals.append(entry[col])
+
+		summary = fmt_string % tuple(vals)
+
+		timetable[t_start][entry['days']].append(summary)
+
+	
+	return timetable
+
+def timeslot_format(timeslot):
+	if timeslot[-2:] == "35":
+		return "*"
+	elif timeslot[-2:] == "05":
+		return timeslot[:-3]
+
+def timetable_html(timetable,report = 'timetable_default'):
+	course_times = ['8h05','8h35','9h05','9h35','10h05','10h35','11h05','11h35','12h05','12h35','13h05','13h35','14h05','14h35','15h05','15h35','16h05','16h35','17h05','17h35']
+	days = ['M','T','W','R','F','S','U']
+	day_names = {'M': 'Monday','T': 'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
+
+	for time in course_times:
+		sys.stdout.write(timeslot_format(time) + "\t")
+		for day in days:
+			if time in timetable:
+				for day_code in timetable[time]:
+					if day in day_code:
+						sys.stdout.write("\t" + timetable[time][day_code][0]+"|")
+					else:
+						sys.stdout.write("\t--------|")
+			else:
+				sys.stdout.write("\t--------|")
+	
+		sys.stdout.write("\n")
+			
+			
+
 # Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.
 def multi_keysort(items, columns):
 	if columns is None:
@@ -137,4 +195,11 @@ def course_details_report(text,report = 'default'):
 		print_sched_report(wait,report)
 
 
+def timetable_report(text,report = 'timetable_default'):
+	sched = parse_schedule(text,separate_wait = False)
+	timetable_html(timetable_struct(sched,report))
+	
+
+f = open('/home/np/minervaslammer/crsedetail.html').read()
+timetable_report(f)
 # vi: ft=python
