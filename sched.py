@@ -1,6 +1,6 @@
 import requests
 from minerva_common import *
-import sched_parse
+import sched_parse,sched_timetable
 
 def course_details(term,report = 'default',visual = False):
 	minerva_login()
@@ -9,4 +9,4 @@ def course_details(term,report = 'default',visual = False):
 	if not visual:
 		sched_parse.course_details_report(r.text,report)
 	else:
-		sched_parse.timetable_report(r.text,report)
+		sched_timetable.timetable_report(r.text,report)
