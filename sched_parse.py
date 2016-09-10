@@ -158,28 +158,32 @@ def calc_rowspan(time):
 	
 	return int(minutes / 25)
 
+def make_day_header(days):
+	day_names = {'M': 'Monday','T': 'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
+	header = """
+	<thead class='sched-header'>
+		<th></th>
+	"""
+
+	for day in days:
+		header += "<th>" + day_names[day] + "</th>\n"
+
+	header += "</thead>\n"
+	return header
+
 def timetable_html(timetable,num_courses,report = 'timetable_default'):
 	course_times = ['08h05','08h35','09h05','09h35','10h05','10h35','11h05','11h35','12h05','12h35','13h05','13h35','14h05','14h35','15h05','15h35','16h05','16h35','17h05','17h35']
-	days = ['M','T','W','R','F','S','U']
-	day_names = {'M': 'Monday','T': 'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
+
+	if config.show_weekend:
+		days = ['M','T','W','R','F','S','U']
+	else:
+		days = ['M','T','W','R','F']
 
 	print """
 	<link rel="stylesheet" href="sched.css"/>
 	<table class='sched-table'>
-		<thead class='sched-header'>
-			<tr>
-				<th>*</th>
-				<th>Monday</th>
-				<th>Tuesday</th>
-				<th>Wednesday</th>
-				<th>Thursday</th>
-				<th>Friday</th>
-				<th>Saturday</th>
-				<th>Sunday</th>
-			</tr>
-		</thead>
 	"""
-
+	print make_day_header(days)
 	spans = {}
 	
 	for time in course_times:

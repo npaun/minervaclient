@@ -34,9 +34,6 @@ thead th
  font-weight: normal;
 }
 
-td
-{
-}
 
 th
 {
@@ -44,9 +41,6 @@ background: #fafafa;
 border-right: 1px solid #ccc;
 }
 
-tbody th
-{
-}
 
 tr
 {
@@ -59,10 +53,19 @@ text-indent: -99999px;
 }
 
 
-td {
- width: 15vw;
- height: 1vh;
- padding: 0;
+td,th
+{
+height: 4vw;
+}
+
+th
+{
+width: 1vw;
+}
+
+td
+{
+width: 100vw;
 }
 
 .sched-blank {

@@ -1,6 +1,6 @@
 #### Formatting
 date_fmt = {'short_date': '%-m/%-d', 'short_datetime': '%-m/%-d %-H:%-M','short_time': '%Hh%M'}
-
+show_weekend = False
 
 #### Reports
 reports = {'long': {},'default': {},'short': {},'timetable_default': {}}
