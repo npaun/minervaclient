@@ -119,13 +119,14 @@ def timetable_struct(sched,report = 'timetable_default'):
 	course_times = ['8','8:30','9','9:30','10','10:30','11','11:30','12','12:30','13','13:30','14','14:30','15','15:30','16','16:30','17','17:30']
 	timetable = {}
 
+	i = 1
 	for entry in sched:
 		t_start = entry['_time']['start']
 		if t_start not in timetable:
 			timetable[t_start] = {}
 
 		if entry['days'] not in timetable[t_start]:
-			timetable[t_start][entry['days']] = []
+			timetable[t_start][entry['days']] = {}
 
 		vals = []
 		for col in columns:
@@ -133,8 +134,8 @@ def timetable_struct(sched,report = 'timetable_default'):
 
 		summary = fmt_string % tuple(vals)
 
-		timetable[t_start][entry['days']].append(summary)
-
+		timetable[t_start][entry['days']][i] = ((entry['_time'],summary))
+		i += 1
 	
 	return timetable
 
@@ -144,8 +145,16 @@ def timeslot_format(timeslot):
 	elif timeslot[-2:] == "05":
 		return timeslot[:-3]
 
-def timetable_html(timetable,report = 'timetable_default'):
-	course_times = ['8h05','8h35','9h05','9h35','10h05','10h35','11h05','11h35','12h05','12h35','13h05','13h35','14h05','14h35','15h05','15h35','16h05','16h35','17h05','17h35']
+def calc_rowspan(time):
+	t_start = datetime.strptime(time['start'],config.date_fmt['short_time'])
+	t_end = datetime.strptime(time['end'],config.date_fmt['short_time'])
+	delta = t_end - t_start
+	minutes = delta.total_seconds() / 60
+	
+	return int(minutes / 25)
+
+def timetable_html(timetable,num_courses,report = 'timetable_default'):
+	course_times = ['08h05','08h35','09h05','09h35','10h05','10h35','11h05','11h35','12h05','12h35','13h05','13h35','14h05','14h35','15h05','15h35','16h05','16h35','17h05','17h35']
 	days = ['M','T','W','R','F','S','U']
 	day_names = {'M': 'Monday','T': 'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
 
@@ -154,6 +163,7 @@ def timetable_html(timetable,report = 'timetable_default'):
 	<table class='sched-table'>
 		<thead class='sched-header'>
 			<tr>
+				<th>*</th>
 				<th>Monday</th>
 				<th>Tuesday</th>
 				<th>Wednesday</th>
@@ -165,24 +175,43 @@ def timetable_html(timetable,report = 'timetable_default'):
 		</thead>
 	"""
 
+	spans = {}
+	
 	for time in course_times:
 		print """
 		<tr class='sched-row'>
 			<th class='sched-timeslot'>{time}</th>
 		""".format(time=timeslot_format(time))
-
+	
+			
+		col = 0
 		for day in days:
+			if col in spans:
+				print spans[col]
+
 			if time in timetable:
 				for day_code in timetable[time]:
 					if day in day_code:
-						print "\t<td class='sched-entry'>{entry}</td>".format(entry=timetable[time][day_code][0])
-					else:
+						course_num,entry = timetable[time][day_code].items()[0]
+						_time,summary = entry
+						rowspan = calc_rowspan(_time)
+						spans[col] = rowspan - 1
+						print str(col) + " Spans " + str(spans[col])
+						print "\t<td class='sched-entry sched-entry-{n}' rowspan='{rowspan}'>{entry}</td>".format(entry=summary,rowspan=rowspan,n=course_num)
+					elif col not in spans or spans[col] == 0:
 						print "\t<td class='sched-blank'><br><br><br></td>"
-			else:
-				print "\t<td class='sched-blank'>&nbsp;</td>"
 
-		
+					
+			elif col not in spans or spans[col] == 0:
+				print "\t<td class='sched-blank'>&nbsp;</td>"
 	
+			if col in spans and spans[col] > 0:
+				spans[col] -= 1
+			else:
+				spans[col] = 0
+
+			col += 1
+
 		print """
 		</tr>
 		"""
@@ -222,7 +251,7 @@ def course_details_report(text,report = 'default'):
 
 def timetable_report(text,report = 'timetable_default'):
 	sched = parse_schedule(text,separate_wait = False)
-	timetable_html(timetable_struct(sched,report))
+	timetable_html(timetable_struct(sched,report),len(sched),report)
 	
 
 f = open('/home/np/minervaslammer/crsedetail.html').read()

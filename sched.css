@@ -1,3 +1,46 @@
 .sched-entry {
-	background-color: honeydew;
+	color: #222;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 0.2em;
+}
+
+table {
+ border-spacing: 2px;
+}
+
+td {
+ width: 10vw;
+ height: 5vh;
+}
+
+
+.sched-entry-1 {
+ 	border-color: #8CA0D4;
+	background-color:#CBD4EB;
+}
+
+.sched-entry-2 {
+	   border-color: #EC926E;
+	       background-color:#F6C8B6;
+}
+
+.sched-entry-3 {
+	    border-color: #8FC77B;
+	        background-color:#C0F4AE;
+}
+
+.sched-entry-4 {
+	    border-color: #CCCF79;
+	        background-color:#FAFE92;
+}
+
+.sched-entry-5 {
+	    border-color: #C785BD;
+	        background-color:#E8CAE3;
+}
+
+.sched-entry-6 {
+		  border-color: #7FD1B1;
+		      background-color:#A6FCDD;
 }
