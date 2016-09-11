@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime as dt
 from minerva_common import *
 import config
-import sys,urllib
+import sys,urllib,re
 
 def parse_schedule(text,separate_wait = True):
 	html = BeautifulSoup(text,'html.parser')
@@ -26,7 +26,7 @@ def parse_schedule(text,separate_wait = True):
 		elif len(course_table) == 10:
 			fields = ['term','crn','status','wait_pos','wait_notify_expires','instructor','grade_mode','credits','level','campus']
 		for field,cell in zip(fields,course_table):
-			entry[field] = cell.text.strip()
+			entry[field] = cell.text.strip().replace("\n","; ")
 			if entry[field] == '':
 				entry[field] = None
 
@@ -34,7 +34,6 @@ def parse_schedule(text,separate_wait = True):
 		if entry['credits'][-4:] == '.000': #Strip decimals when irrelevant
 			entry['credits'] = entry['credits'][:-4]
 
-		
 
 		entry['_status_desc'],entry['_status_date'] = entry['status'].split(" on ")
 		entry['_status_desc'] = get_status_code(entry['_status_desc'],short=True)
@@ -56,21 +55,34 @@ def parse_schedule(text,separate_wait = True):
 		for field,cell in zip(fields,sched_table):
 			entry[field] = cell.text.strip()
 
+
+		entry['_day_idx'] = day_index(entry['days'])		
 		entry['type'] = get_type_abbrev(entry['type'])
 		entry['location'] = get_bldg_abbrev(entry['location'])
 
-		entry['_building'],entry['_room'] = entry['location'].rsplit(" ",1)
+		loc_bits =  entry['location'].rsplit(" ",1)
+
+		if len(loc_bits) == 2:
+			entry['_building'],entry['_room'] = loc_bits
+		else:
+			entry['_building'] = loc_bits[0]
+			entry['_room'] = ''
+
 		entry['_building'] = entry['_building'].strip()
 		entry['_link_gmaps'] = "http://maps.google.com/?" + urllib.urlencode([('saddr','My Location'),('daddr',entry['_building'])]) 
-		
-		t_start,t_end = entry['time_range'].split(" - ")
-		t_start = dt.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
-		t_end = dt.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
-		t_range = '-'.join([t_start,t_end])
-		entry['_time'] = {}
-		entry['_time']['start'] = t_start
-		entry['_time']['end'] = t_end
-		entry['time_range'] = t_range
+	
+		t_bits = entry['time_range'].split(" - ")
+		if len(t_bits) == 2:	
+			t_start,t_end = entry['time_range'].split(" - ")
+			t_start = dt.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
+			t_end = dt.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
+			t_range = '-'.join([t_start,t_end])
+			entry['_time'] = {}
+			entry['_time']['start'] = t_start
+			entry['_time']['end'] = t_end
+			entry['time_range'] = t_range
+		else:
+			entry['time_range'] = t_bits[0]
 
 		d_start,d_end = entry['date_range'].split(" - ")
 		d_start = dt.strptime(d_start,'%b %d, %Y').strftime(config.date_fmt['full_date'])
@@ -110,20 +122,30 @@ def print_sched_report(sched,report = 'default'):
 def find_conflicts(sched,report = 'conflicts'):
 	(fmt,sched) = prepare_report(report,sched)
 
-	for i, curr in enumerate(sched[:-1]):
+	i = -1
+	for curr in sched[:-1]:
+		i += 1
 		next = sched[i+1]
 
 		if not set(curr['days']).intersection(set(next['days'])): #This isn't quite right
 			continue 
-	
-		next_start = dt.strptime(next['_time']['start'],config.date_fmt['short_time'])
+		
+		# If matching times are always together, conflicts will be seen
+		# But we must check the days. Same day will always be together.
+		# But different days could be an issue. We must devise a day index that sorts days together
+		# Setting just the days wouldn't work
+		# MWF,WF,W,F 
+		
+		next_start = dt.strptime(next['_time']['start'],config.date_fmt['short_time']) 
 		curr_end = dt.strptime(curr['_time']['end'],config.date_fmt['short_time'])
+			
 		diff = int((next_start - curr_end).total_seconds() / 60)
 			
 		if diff <= 0:
 			print "* Conflict for %d mins" % -diff
 			sys.stdout.write(apply_format(curr,fmt))
 			sys.stdout.write(apply_format(next,fmt))
+
 
 def prepare_report(report,sched):
 	if report not in config.reports:
@@ -144,6 +166,8 @@ def apply_format(entry,fmt):
 	return fmt_string % tuple(vals)
 
 
+
+
 # Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.
 def multi_keysort(items, columns):
 	if columns is None:
@@ -152,14 +176,32 @@ def multi_keysort(items, columns):
 	from operator import itemgetter
 	comparers = [((itemgetter(col[1:].strip()), -1) if col.startswith('-') else
 			      (itemgetter(col.strip()), 1)) for col in columns]
+
+	def nat(s, _nsre=re.compile('([0-9]+)')):
+		return [int(text) if text.isdigit() else text.lower() for text in re.split(_nsre, s)]   
+
 	def comparer(left, right):
 		for fn, mult in comparers:
-			result = cmp(fn(left), fn(right))
+			lval = nat(fn(left))
+			rval = nat(fn(right))
+			result = cmp(lval, rval)
 			if result:
 			    return mult * result
 		else:
 			return 0
+
+
 	return sorted(items, cmp=comparer)
+
+def day_index(days):
+	m_weekdays = get_minerva_weekdays()
+	index = ""
+	for day in days:
+		index += str(m_weekdays.index(day) + 1)
+
+
+	return days
+	return index.ljust(7,'0')
 
 def course_details_report(text,report = 'default'):
 	reg,wait = parse_schedule(text)

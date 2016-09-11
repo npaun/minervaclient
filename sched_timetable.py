@@ -13,6 +13,9 @@ def timetable_struct(sched,report = 'timetable_default'):
 	i = 1
 
 	for entry in sched:
+		if '_time' not in entry:
+			continue
+
 		t_start = entry['_time']['start']
 		if t_start not in timetable:
 			timetable[t_start] = {}

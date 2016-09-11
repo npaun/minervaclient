@@ -6,12 +6,12 @@ show_weekend = False
 reports = {'long': {},'default': {},'short': {},'conflicts': {},'timetable_default': {},'cal_default': {}}
 
 reports['long']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_building','_room','instructor','_action_desc']
-reports['long']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16s\t%s\n"
-reports['long']['sort'] = ['days','time_range','_code']
+reports['long']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16.24s\t%s\n"
+reports['long']['sort'] = ['_day_idx','time_range','_code']
 
 reports['default']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_action_desc']
 reports['default']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t%s\n"
-reports['default']['sort'] = ['days','time_range','_code']
+reports['default']['sort'] = ['_code']
 
 reports['short']['columns'] = ['subject','course','credits','section','crn','_action_desc']
 reports['short']['format'] = "%s %s (%s)\t%s\t% 5s\t%s\n"
@@ -19,7 +19,7 @@ reports['short']['sort'] = ['_code']
 
 reports['conflicts']['columns'] = ['_code','crn','days','time_range','_building','_room','_action_desc']
 reports['conflicts']['format'] = "\t%s\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n"
-reports['conflicts']['sort'] = ['days','time_range','_code'] #Don't modify the first two sort criteria or the report won't work
+reports['conflicts']['sort'] = ['time_range','_day_idx','_code'] #Don't modify the first two sort criteria or the report won't work
 
 reports['timetable_default']['columns'] = ['subject','course','section','type','_link_gmaps','_building','_room','time_range','_action_desc']
 reports['timetable_default']['format'] = """
@@ -29,7 +29,7 @@ reports['timetable_default']['format'] = """
 <p class='sched-action-desc'>%s</p>
 """
 
-reports['timetable_default']['sort'] = ['days','time_range','_code']
+reports['timetable_default']['sort'] = ['_day_idx','time_range','_code']
 
 reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],['_code','instructor','crn','_action_desc']]
 reports['cal_default']['format'] = ["%s %s (%s) %s","%s\\nInstructor: %s\\nCRN: %s\\n%s"]

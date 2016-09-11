@@ -68,7 +68,7 @@ def get_status_code(status,short = False):
 	return status_codes[status]
 
 def get_type_abbrev(type):
-	types = {'Lecture': 'Lec','Tutorial': 'Tut','Conference': 'Conf','Seminar': 'Sem'}
+	types = {'Lecture': 'Lec','Tutorial': 'Tut','Conference': 'Conf','Seminar': 'Sem','Laboratory': 'Lab','Student Services Prep Activity': 'StudSrvcs'}
 	if type in types:
 		return types[type]
 	else:
@@ -76,7 +76,7 @@ def get_type_abbrev(type):
 
 # Doesn't really do much. Just tries a few tricks to shorten the names of buildings
 def get_bldg_abbrev(location):
-	subs = {'Building': '','Biology': 'Bio.','Chemistry': 'Chem.','Physics': 'Phys.', 'Engineering': 'Eng.'}
+	subs = {'Building': '', 'Hall': '', 'Pavillion': '','Biology': 'Bio.','Chemistry': 'Chem.','Physics': 'Phys.', 'Engineering': 'Eng.'}
 	for sub in subs:
 		location = location.replace(sub,subs[sub])
 
