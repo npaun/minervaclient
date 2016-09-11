@@ -130,11 +130,6 @@ def find_conflicts(sched,report = 'conflicts'):
 		if not set(curr['days']).intersection(set(next['days'])): #This isn't quite right
 			continue 
 		
-		# If matching times are always together, conflicts will be seen
-		# But we must check the days. Same day will always be together.
-		# But different days could be an issue. We must devise a day index that sorts days together
-		# Setting just the days wouldn't work
-		# MWF,WF,W,F 
 		
 		next_start = dt.strptime(next['_time']['start'],config.date_fmt['short_time']) 
 		curr_end = dt.strptime(curr['_time']['end'],config.date_fmt['short_time'])
