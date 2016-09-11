@@ -68,7 +68,7 @@ def prepare_cal_report(report):
 def export_ics_sched(sched,report = 'cal'):
 	fmt = prepare_cal_report(report)
 
-	cal = """BEGIN:VCALENDAR
+	cal = u"""BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Minervac//icebergsys.net//"""
 	for entry in sched:
@@ -80,7 +80,7 @@ PRODID:-//Minervac//icebergsys.net//"""
 		summary = sched_parse.apply_format(entry,fmt[0]).replace("\033[1;32m","*").replace("\033[0m","*")
 		description = sched_parse.apply_format(entry,fmt[1]).replace("\033[1;32m","*").replace("\033[0m","*")
 		
-		cal += """
+		cal += u"""
 BEGIN:VEVENT
 SUMMARY:{summary}
 DTSTART;TZID=America/Montreal;VALUE=DATE-TIME:{dt_start}
@@ -88,14 +88,14 @@ DTEND;TZID=America/Montreal;VALUE=DATE-TIME:{dt_end}
 DESCRIPTION:{description}
 LOCATION:{location}
 RRULE:FREQ=WEEKLY;UNTIL={date_end};BYDAY={days}
-END:VEVENT""".format(summary=minervac_sanitize(summary),description=minervac_sanitize(description),location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end)
+END:VEVENT""".format(summary=summary,description=description,location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end)
 
-	cal += """
+	cal += u"""
 END:VCALENDAR"""
 
 	return cal
 
 def export_schedule(text,report = 'cal'):
-	print export_ics_sched(sched_parse.parse_schedule(text,separate_wait = False),report)
+	print export_ics_sched(sched_parse.parse_schedule(text,separate_wait = False),report).encode("utf8")
 
 # vi: ft=python
