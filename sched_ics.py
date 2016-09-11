@@ -1,5 +1,4 @@
 import sched_parse,config
-from icalendar import Calendar,Event
 from datetime import datetime as dt
 from minerva_common import *
 import pytz
