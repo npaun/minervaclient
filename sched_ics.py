@@ -13,6 +13,16 @@ def next_weekday(d, weekday):
 
 	return d + datetime.timedelta(days_ahead)
 
+def labor_day_swap(d_start,days):
+	if d_start.month == 9 and 'M' not in days and 'F' in days:
+		#1. Fall term
+		#2. Would not have come up anyway as a Monday
+		#3. Is a real Friday
+		first_day = d_start + datetime.timedelta(days=7) 
+		return first_day
+	else:
+		return False
+
 def find_first_day(days,d_start,t_start,t_end):
 	minerva_days = get_minerva_weekdays()
 	d_start = dt.strptime(d_start + " " + t_start,config.date_fmt['full_date'] + " " + config.date_fmt['short_time'])
@@ -21,6 +31,7 @@ def find_first_day(days,d_start,t_start,t_end):
 	best_weekday = dt(9999,1,1)
 	ics_days = []
 
+
 	for day in days:
 		idx = minerva_days.index(day)
 		cand_weekday = next_weekday(d_start,idx)
@@ -28,6 +39,9 @@ def find_first_day(days,d_start,t_start,t_end):
 			best_weekday = cand_weekday
 		
 		ics_days.append(get_ics_weekday(day))
+
+	possible_first_day = labor_day_swap(d_start,days)
+	if possible_first_day: best_weekday = possible_first_day		
 
 	dt_end = dt_end.replace(best_weekday.year,best_weekday.month,best_weekday.day)
 
