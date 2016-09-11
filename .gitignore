@@ -2,4 +2,5 @@
 credentials_local.py
 state.dat
 *.html
+*.ics
 *.pyc

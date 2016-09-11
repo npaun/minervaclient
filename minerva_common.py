@@ -1,5 +1,7 @@
 import credentials_local
 import requests,sys
+import datetime
+from datetime import datetime as dt
 
 cookie_data = {}
 referer = ""
@@ -79,3 +81,16 @@ def get_bldg_abbrev(location):
 		location = location.replace(sub,subs[sub])
 
 	return location
+
+def get_minerva_weekdays(weekend = False):
+	if weekend:
+		return ['M','T','W','R','F','S','U']
+	else:
+		return ['M','T','W','R','F']
+
+def get_real_weekday(minerva_day):
+	return get_real_weekday.map[minerva_day]
+get_real_weekday.map = {'M': 'Monday','T':'Tuesday','W': 'Wednesday','R': 'Thursday','F': 'Friday','S': 'Saturday','U': 'Sunday'}
+
+def get_ics_weekday(minerva_day):
+	return {'M': 'MO','T': 'TU','W': 'WE','R': 'TH','F': 'FR','S': 'SA', 'U': 'SU'}[minerva_day]

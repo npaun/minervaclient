@@ -1,5 +1,5 @@
 #### Formatting
-date_fmt = {'short_date': '%-m/%-d', 'short_datetime': '%-m/%-d %-H:%-M','short_time': '%Hh%M'}
+date_fmt = {'short_date': '%-m/%-d', 'short_datetime': '%-m/%-d %-H:%-M','short_time': '%Hh%M','full_date': '%Y-%m-%d'}
 show_weekend = False
 
 #### Reports

@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from datetime import datetime
+from datetime import datetime as dt
 from minerva_common import *
 import config
 import sys
@@ -39,10 +39,10 @@ def parse_schedule(text,separate_wait = True):
 		entry['_status_desc'],entry['_status_date'] = entry['status'].split(" on ")
 		entry['_status_desc'] = get_status_code(entry['_status_desc'],short=True)
 		
-		entry['_status_date'] = datetime.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
+		entry['_status_date'] = dt.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
 
 		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] is not None:
-			entry['wait_notify_expires'] = datetime.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config.date_fmt['short_datetime'])
+			entry['wait_notify_expires'] = dt.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config.date_fmt['short_datetime'])
 			entry['_action_desc'] = "[\033[1;32mReg by " + entry['wait_notify_expires'] + "\033[0m]"
 		elif 'wait_pos' in entry:
 			entry['_action_desc'] = "[#" + entry['wait_pos'] + " on waitlist]"
@@ -63,14 +63,22 @@ def parse_schedule(text,separate_wait = True):
 		entry['_building'] = entry['_building'].strip()
 
 		t_start,t_end = entry['time_range'].split(" - ")
-		t_start = datetime.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
-		t_end = datetime.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
+		t_start = dt.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
+		t_end = dt.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
 		t_range = '-'.join([t_start,t_end])
 		entry['_time'] = {}
 		entry['_time']['start'] = t_start
 		entry['_time']['end'] = t_end
 		entry['time_range'] = t_range
 
+		d_start,d_end = entry['date_range'].split(" - ")
+		d_start = dt.strptime(d_start,'%b %d, %Y').strftime(config.date_fmt['full_date'])
+		d_end = dt.strptime(d_end,'%b %d, %Y').strftime(config.date_fmt['full_date'])
+		d_range = ' / '.join([d_start,d_end]) #ISO made me do it
+		entry['_date'] = {'start': d_start,'end': d_end}
+		entry['date_range'] = d_range
+
+		
 		if 'wait_pos' in entry and 'wait_pos' is not None and separate_wait:
 			wait_entries.append(entry)
 		else:
@@ -107,8 +115,8 @@ def find_conflicts(sched,report = 'conflicts'):
 		if not set(curr['days']).intersection(set(next['days'])): #This isn't quite right
 			continue 
 	
-		next_start = datetime.strptime(next['_time']['start'],config.date_fmt['short_time'])
-		curr_end = datetime.strptime(curr['_time']['end'],config.date_fmt['short_time'])
+		next_start = dt.strptime(next['_time']['start'],config.date_fmt['short_time'])
+		curr_end = dt.strptime(curr['_time']['end'],config.date_fmt['short_time'])
 		diff = int((next_start - curr_end).total_seconds() / 60)
 			
 		if diff <= 0:
