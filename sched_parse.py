@@ -96,7 +96,7 @@ def print_sched(sched,columns):
 def print_sched_report(sched,report = 'default'):
 	(fmt,sched) = prepare_report(report,sched)
 
-	for entry in sched: apply_format(entry,fmt)
+	for entry in sched: sys.stdout.write(apply_format(entry,fmt))
 
 def find_conflicts(sched,report = 'conflicts'):
 	(fmt,sched) = prepare_report(report,sched)
@@ -113,9 +113,8 @@ def find_conflicts(sched,report = 'conflicts'):
 			
 		if diff <= 0:
 			print "* Conflict for %d mins" % -diff
-			apply_format(curr,fmt)
-			apply_format(next,fmt)
-
+			sys.stdout.write(apply_format(curr,fmt))
+			sys.stdout.write(apply_format(next,fmt))
 def prepare_report(report,sched):
 	if report not in config.reports:
 		print "Error! Report not found"
@@ -132,7 +131,7 @@ def apply_format(entry,fmt):
 		vals.append(entry[col])
 				
 
-	sys.stdout.write(fmt_string % tuple(vals))
+	return fmt_string % tuple(vals)
 
 
 # Copypasta from this Stackoverflow answer. http://stackoverflow.com/a/1144405. Python apparently sucks.

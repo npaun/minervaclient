@@ -8,14 +8,10 @@ def timetable_report(text,report = 'timetable_default'):
 	
 
 def timetable_struct(sched,report = 'timetable_default'):
-	columns = config.reports[report]['columns']
-	fmt_string = config.reports[report]['format']
-	sort = config.reports[report]['sort']
-
-	sched = sched_parse.multi_keysort(sched,sort)
+	(fmt,sched) = sched_parse.prepare_report(report,sched)
 	timetable = {}
-
 	i = 1
+
 	for entry in sched:
 		t_start = entry['_time']['start']
 		if t_start not in timetable:
@@ -23,17 +19,11 @@ def timetable_struct(sched,report = 'timetable_default'):
 
 		if entry['days'] not in timetable[t_start]:
 			timetable[t_start][entry['days']] = {}
+		
+		entry['_action_desc'] = entry['_action_desc'].replace('\033[1;32m','<strong>').replace('\033[0m','</strong>') #FIXME: This is really ugly.
+		summary = sched_parse.apply_format(entry,fmt)
 
-		vals = []
-		for col in columns:
-			vals.append(entry[col])
-
-		summary = fmt_string % tuple(vals)
-		if 'wait_pos' in entry and entry['wait_pos'] is not None:
-			wait = True
-		else:
-			wait = False
-
+		wait = 'wait_pos' in entry and entry['wait_pos'] is not None
 		timetable[t_start][entry['days']][i] = ((entry['_time'],summary,wait))
 		i += 1
 	
@@ -72,9 +62,9 @@ def timetable_cell(day,course_num,entry):
 	colspan(day,rowspan)
 
 	if wait:
-		summary = "<div class='waiting'>" + summary + "</div>"
+		summary = "<div class='waiting' title='Waitlisted'>" + summary + "</div>"
 	else:
-		summary = "<div class='registered'>" + summary + "</div>"
+		summary = "<div class='registered' title='Registered'>" + summary + "</div>"
 
 	return "\t<td class='sched-entry sched-entry-{n}' rowspan='{rowspan}'>{entry}</td>".format(entry=summary,rowspan=rowspan,n=course_num)
 
@@ -117,9 +107,19 @@ def timetable_html(timetable):
 		days = ['M','T','W','R','F']
 
 	
-	print make_style_header()
-	print """<table class='sched-table'>"""
-	print make_day_header(days)
+	print """
+	<!DOCTYPE html>
+	<html>
+		<head>
+		<title>Minervac Class Schedule</title>
+		{style}
+	</html>
+	<body>
+		<h1 class="sched-title">Class Schedule</h1>
+		<table class='sched_table'>
+			{days}
+
+	""".format(style=make_style_header(),days=make_day_header(days))
 	
 	for time in course_times:
 		print """
@@ -142,4 +142,8 @@ def timetable_html(timetable):
 		</tr>
 		"""
 
-	print "</table>"			
+	print """
+	</table>
+	</body>
+	</html>
+	"""
