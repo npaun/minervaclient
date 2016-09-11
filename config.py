@@ -25,8 +25,8 @@ reports['timetable_default']['columns'] = ['subject','course','section','type','
 reports['timetable_default']['format'] = "<p class='sched-course'>%s %s&ndash;%s (%s)</p><p class='sched-location'>%s %s</p><p class='sched-time'>%s</p><p class='sched-action-desc'>%s</p>"
 reports['timetable_default']['sort'] = ['days','time_range','_code']
 
-reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],['_code','instructor','_action_desc']]
-reports['cal_default']['format'] = ["%s %s (%s) %s","%s\\n%s\\n%s"]
+reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],['_code','instructor','crn','_action_desc']]
+reports['cal_default']['format'] = ["%s %s (%s) %s","%s\\nInstructor: %s\\nCRN: %s\\n%s"]
 reports['cal_default']['sort'] = None #Let the calendar program deal with this
 
 # vi: ft=python
