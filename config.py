@@ -24,3 +24,5 @@ reports['conflicts']['sort'] = ['days','time_range','_code'] #Don't modify the f
 reports['timetable_default']['columns'] = ['subject','course','section','type','_building','_room','time_range','_action_desc']
 reports['timetable_default']['format'] = "<p class='sched-course'>%s %s&ndash;%s (%s)</p><p class='sched-location'>%s %s</p><p class='sched-time'>%s</p><p class='sched-action-desc'>%s</p>"
 reports['timetable_default']['sort'] = ['days','time_range','_code']
+
+# vi: ft=python
