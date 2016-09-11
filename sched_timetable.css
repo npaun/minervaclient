@@ -137,3 +137,9 @@ font-style: italic;
     border-color: #AB5DA5;
         background-color:#FCA6F3;
 }
+
+a {
+    color: navy;
+        text-decoration: none;
+	    border-bottom: 1px dotted navy;
+	    }

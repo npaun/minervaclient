@@ -21,8 +21,14 @@ reports['conflicts']['columns'] = ['_code','crn','days','time_range','_building'
 reports['conflicts']['format'] = "\t%s\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n"
 reports['conflicts']['sort'] = ['days','time_range','_code'] #Don't modify the first two sort criteria or the report won't work
 
-reports['timetable_default']['columns'] = ['subject','course','section','type','_building','_room','time_range','_action_desc']
-reports['timetable_default']['format'] = "<p class='sched-course'>%s %s&ndash;%s (%s)</p><p class='sched-location'>%s %s</p><p class='sched-time'>%s</p><p class='sched-action-desc'>%s</p>"
+reports['timetable_default']['columns'] = ['subject','course','section','type','_link_gmaps','_building','_room','time_range','_action_desc']
+reports['timetable_default']['format'] = """
+<p class='sched-course'>%s %s&ndash;%s (%s)</p>
+<p class='sched-location'><a href='%s' title='Get directions to this building'>%s %s</a></p>
+<p class='sched-time'>%s</p>
+<p class='sched-action-desc'>%s</p>
+"""
+
 reports['timetable_default']['sort'] = ['days','time_range','_code']
 
 reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],['_code','instructor','crn','_action_desc']]

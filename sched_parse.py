@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime as dt
 from minerva_common import *
 import config
-import sys
+import sys,urllib
 
 def parse_schedule(text,separate_wait = True):
 	html = BeautifulSoup(text,'html.parser')
@@ -61,7 +61,8 @@ def parse_schedule(text,separate_wait = True):
 
 		entry['_building'],entry['_room'] = entry['location'].rsplit(" ",1)
 		entry['_building'] = entry['_building'].strip()
-
+		entry['_link_gmaps'] = "http://maps.google.com/?" + urllib.urlencode([('saddr','My Location'),('daddr',entry['_building'])]) 
+		
 		t_start,t_end = entry['time_range'].split(" - ")
 		t_start = dt.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
 		t_end = dt.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
