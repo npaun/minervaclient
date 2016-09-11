@@ -95,6 +95,7 @@ background-image: repeating-linear-gradient(45deg, transparent, transparent 35px
 background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1)), 
 linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1));
 background-size: 60px 60px;
+background-color: rgba(230,230,230,0.5);
 font-style: italic;
 }
 .sched-entry-1 div {
