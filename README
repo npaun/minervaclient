@@ -20,6 +20,7 @@ The program is implemented in Python and currently is very hacky. Pull requests 
 
 * You could try seeing an advisor.
 * If you don't need to make changes to your registration, use `Minervabot` instead. It is probably way better: https://github.com/zafarali/minerva-bot
+* When choosing courses, you may find the `McGill Enhanced` Chrome extension useful: https://github.com/demetrios-koziris/McGillEnhanced
 
 ## Goals
 
@@ -47,6 +48,7 @@ It's way simpler than actually using Minerva!
 	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
 	* To show your timetable in HTML: `minervac sched -t 2016SUMMER -V`
 	    * Edit `config.py` to change the way courses are formatted and `sched_timetable.css` to adjust the styling.
+	    * Hover over courses to see an explanation of the color code.
 * For a full description of available options: `mnvc -h`
 
 
@@ -81,4 +83,4 @@ It's way simpler than actually using Minerva!
 
 ## Screenshots
 
-<a href="http://i.imgur.com/J97ekip.png"><img src="http://i.imgur.com/J97ekip.png" width="80%"></a> <a href="http://i.imgur.com/SYRaUzk.png"><img src="http://i.imgur.com/SYRaUzk.png" width="80%"></a>
+<a href="http://i.imgur.com/J97ekip.png"><img src="http://i.imgur.com/J97ekip.png" width="80%"></a> <a href="http://i.imgur.com/kQfGPnb.png"><img src="http://i.imgur.com/kQfGPnb.png" width="80%"></a>
