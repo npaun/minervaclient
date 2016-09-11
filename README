@@ -11,6 +11,7 @@ The program is implemented in Python and currently is very hacky. Pull requests 
 
 1. ****
  * A visual timetable feature has been implemented. (-V).
+ * Calendar export is now available (vCalendar format only). (-C)
 2. ****
  * The command-line interface won't be modified anymore, only extended. Configuration format is still in flux.
  * Displaying course schedule information with custom reports.
