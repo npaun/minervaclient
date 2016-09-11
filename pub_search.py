@@ -1,4 +1,4 @@
-import requests,urllib,StringIO,csv
+import requests,urllib,StringIO,csv,sys
 from minerva_common import *
 
 def build_request(term,codes):
@@ -46,7 +46,7 @@ def build_request(term,codes):
 
 def search(term,course_codes):
 	request = build_request(term,course_codes)
-	print "> bwckgens.csv"
+	sys.stderr.write("> bwckgens.csv\n")
 	result = requests.post("https://horizon.mcgill.ca/rm-PBAN1/bwckgens.csv",request)
 	return parse_results(result.text)
 
