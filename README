@@ -49,7 +49,7 @@ It's way simpler than actually using Minerva!
 	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
 	* To export your timetable to a HTML file: `minervac sched -t 2016SUMMER -V > ~/summer-schedule.html`
 		* Edit `config.py` to change the way courses are formatted and `sched_timetable.css` to adjust the styling.
-		* Hover over courses to see an explanation of the color code.
+		* **Hint:** Click on a building name to get directions. Hover over courses to see an explanation of the color code.
 	* To export your course schedule to an iCalendar file: `mnvc sched -Ct 2017-WINTER > mcgill-winter-2017.ics`
 		* The resulting file can be imported into your favorite calendar application (Google Calendar works.)
 		* This format may also be called ICS or vCalendar.
