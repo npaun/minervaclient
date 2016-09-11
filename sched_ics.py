@@ -62,10 +62,10 @@ PRODID:-//Minervac//icebergsys.net//"""
 		date_end = find_last_day(entry['_date']['end'])
 
 		location = entry['_building'] + " " + entry['_room']
+	
+		summary = sched_parse.apply_format(entry,fmt[0]).replace("\033[1;32m","*").replace("\033[0m","*")
+		description = sched_parse.apply_format(entry,fmt[1]).replace("\033[1;32m","*").replace("\033[0m","*")
 		
-		summary = sched_parse.apply_format(entry,fmt[0])
-		description = sched_parse.apply_format(entry,fmt[1])
-
 		cal += """
 BEGIN:VEVENT
 SUMMARY:{summary}
@@ -82,6 +82,6 @@ END:VCALENDAR"""
 	return cal
 
 def export_schedule(text,report = 'cal'):
-	print export_ics_sched(parse_schedule(text,separate_wait = False),report)
+	print export_ics_sched(sched_parse.parse_schedule(text,separate_wait = False),report)
 
 # vi: ft=python

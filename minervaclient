@@ -29,7 +29,8 @@ def parse_sched(subp):
 	parser.add_argument("-l","--long",help="Show a detailed report of the schedule",action="store_true")
 	parser.add_argument("-s","--short",help="Show a brief report of the schedule",action="store_true")
 	parser.add_argument("-T","--transcript",help="[TODO] Show your transcript",action="store_true")
-	parser.add_argument("-V","--visual",help="Show a visual course timetable",action="store_true")
+	parser.add_argument("-V","--visual",help="Export a visual course timetable",action="store_true")
+	parser.add_argument("-C","--calendar",help="Export a calendar containing the course schedule",action="store_true")
 	parser.add_argument("--conflicts-only",help="Only show course conflicts",action="store_true")
 	parser.add_argument("--no-conflicts",help="Don't show course conflicts",action="store_true")
 	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
@@ -125,6 +126,8 @@ def exec_sched(args):
 		report = 'short'
 	elif args.visual:
 		report = 'timetable_default'
+	elif args.calendar:
+		report = 'cal_default'
 	elif args.conflicts_only:
 		report = 'conflicts'
 	else:
@@ -132,7 +135,7 @@ def exec_sched(args):
 
 
 	
-	sched.course_details(term,report,visual=args.visual,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
+	sched.course_details(term,report,visual=args.visual,calendar=args.calendar,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
 
 
 main()
