@@ -94,3 +94,6 @@ get_real_weekday.map = {'M': 'Monday','T':'Tuesday','W': 'Wednesday','R': 'Thurs
 
 def get_ics_weekday(minerva_day):
 	return {'M': 'MO','T': 'TU','W': 'WE','R': 'TH','F': 'FR','S': 'SA', 'U': 'SU'}[minerva_day]
+
+def minervac_sanitize(text):
+	return text.encode('ascii','ignore')

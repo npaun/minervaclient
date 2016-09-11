@@ -88,7 +88,7 @@ DTEND;TZID=America/Montreal;VALUE=DATE-TIME:{dt_end}
 DESCRIPTION:{description}
 LOCATION:{location}
 RRULE:FREQ=WEEKLY;UNTIL={date_end};BYDAY={days}
-END:VEVENT""".format(summary=summary,description=description,location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end)
+END:VEVENT""".format(summary=minervac_sanitize(summary),description=minervac_sanitize(description),location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end)
 
 	cal += """
 END:VCALENDAR"""
