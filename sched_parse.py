@@ -123,6 +123,7 @@ def find_conflicts(sched,report = 'conflicts'):
 			print "* Conflict for %d mins" % -diff
 			sys.stdout.write(apply_format(curr,fmt))
 			sys.stdout.write(apply_format(next,fmt))
+
 def prepare_report(report,sched):
 	if report not in config.reports:
 		print "Error! Report not found"
