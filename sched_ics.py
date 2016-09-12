@@ -63,38 +63,50 @@ def prepare_cal_report(report):
 	report = config.reports[report]
 	return [(report['columns'][0],report['format'][0]),(report['columns'][1],report['format'][1])]
 
+def ics_escape(text):
+	return text.replace("\033[1;32m","*") \
+	.replace("\033[0m","*") \
+	.replace(",","\,") \
+	.replace(";","\;")
+		
 
 def export_ics_sched(sched,report = 'cal'):
 	fmt = prepare_cal_report(report)
 
 	cal = u"""BEGIN:VCALENDAR
 VERSION:2.0
-PRODID:-//Minervac//icebergsys.net//"""
+PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
+
 	for entry in sched:
 		(days,dt_start,dt_end) = find_first_day(entry['days'],entry['_date']['start'],entry['_time']['start'],entry['_time']['end'])
 		date_end = find_last_day(entry['_date']['end'])
 
-		location = entry['_building'] + " " + entry['_room']
+		location = entry['_building'] + ' ' + entry['_room']
 	
-		summary = sched_parse.apply_format(entry,fmt[0]).replace("\033[1;32m","*").replace("\033[0m","*")
-		description = sched_parse.apply_format(entry,fmt[1]).replace("\033[1;32m","*").replace("\033[0m","*")
-		
+		summary = ics_escape(sched_parse.apply_format(entry,fmt[0]))
+		description = ics_escape(sched_parse.apply_format(entry,fmt[1]))
+		uid = entry['_code'] + "@minervac.icebergsys.net"
+		created = dt.utcnow().strftime("%Y%m%dT%H%M%SZ")
+
 		cal += u"""
 BEGIN:VEVENT
+UID:{uid}
 SUMMARY:{summary}
+DTSTAMP;VALUE=DATE-TIME:{dt_stamp}
 DTSTART;TZID=America/Montreal;VALUE=DATE-TIME:{dt_start}
 DTEND;TZID=America/Montreal;VALUE=DATE-TIME:{dt_end}
 DESCRIPTION:{description}
 LOCATION:{location}
 RRULE:FREQ=WEEKLY;UNTIL={date_end};BYDAY={days}
-END:VEVENT""".format(summary=summary,description=description,location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end)
+END:VEVENT""".format(uid=uid,summary=summary,description=description,location=location,dt_start=dt_start,dt_end=dt_end,days=days,date_end=date_end,dt_stamp=created)
 
 	cal += u"""
 END:VCALENDAR"""
 
-	return cal
+	return cal 
 
 def export_schedule(text,report = 'cal'):
-	print export_ics_sched(sched_parse.parse_schedule(text,separate_wait = False),report).encode("utf8")
+	sched = sched_parse.parse_schedule(text,separate_wait = False)
+	print export_ics_sched(sched,report).encode("utf8").replace("\n","\r\n")
 
 # vi: ft=python

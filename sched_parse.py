@@ -69,7 +69,8 @@ def parse_schedule(text,separate_wait = True):
 
 		entry['_building'] = entry['_building'].strip()
 		entry['_link_gmaps'] = "http://maps.google.com/?" + urllib.urlencode([('saddr','My Location'),('daddr',entry['_building'])]) 
-		entry['_building'] = get_bldg_abbrev(entry['_building'])
+		entry['_building'] = get_bldg_abbrev(entry['_building']).strip()
+
 		
 		t_bits = entry['time_range'].split(" - ")
 		if len(t_bits) == 2:	
