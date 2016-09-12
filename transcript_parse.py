@@ -95,7 +95,7 @@ def transcript_report(trans):
 
         gpa = trans[term]['gpa']
         
-        print '%s   Credits: %s  GPA: %s' % (term,gpa['term_earned'],gpa['tgpa'])
+        print '%s   %s credits,\tGPA: %s' % (term,gpa['term_earned'],gpa['tgpa'])
         print "U%s %s %s" % (info['year'], info['degree'], info['_program'])
 
         for entry in trans[term]['grades']:
