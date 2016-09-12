@@ -30,18 +30,26 @@ def parse_gpa_block(table):
     cells = table.find_all('tr')[1:]
     gpa = {}
     term_fields = ['nil','tgpa','transfer_credits','nil','term_att','term_earned','term_incl','term_points']
-    cumm_fields = ['nil','cgpa','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
+    cumm_fields = ['nil','cgpa','nil','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
     credit_fields = ['transfer_credits','total_credits','term_att','term_earned','term_incl','cumm_att','cumm_earned','cumm_incl']
     
     for cell,field in zip(cells[0].find_all('td'),term_fields):
         gpa[field] = cell.text.strip()
-        if field in credit_fields:
-            gpa[field] = gpa[field].replace('.00','')
+
 
     for cell,field in zip(cells[1].find_all('td'),cumm_fields):
         gpa[field] = cell.text.strip()
+
+
+    for field in gpa:
         if field in credit_fields:
             gpa[field] = gpa[field].replace('.00','')
+
+    gpa['mcgill_credits'] = int(gpa['total_credits']) - int(gpa['transfer_credits']) 
+    gpa['term_fail'] = int(gpa['term_att']) - int(gpa['term_earned'])
+    gpa['cumm_fail'] = int(gpa['term_att']) - int(gpa['term_earned'])
+
+
 
     return gpa
 
@@ -94,7 +102,7 @@ def transcript_report(trans):
         
         if 'gpa' in trans[term]:
             gpa = trans[term]['gpa']
-            print u'Credits: %s \u03a3%s,\tGPA: %s \u03a3%s' % (gpa['term_earned'],gpa['cumm_earned'],gpa['tgpa'],gpa['cgpa'])
+            print u'\t\t\tCredits: +%s, \u03a3%s;\tGPA: %s, \u03a3%s' % (gpa['term_earned'],gpa['cumm_earned'],gpa['tgpa'],gpa['cgpa'])
 
         for entry in trans[term]['grades']:
             print "% 3s\t%s %s\t\t% 1s | %s\t\t%- 2s | %- 2s\t\t%s" % (entry['status'],entry['course'],entry['section'],entry['credits_earned'],entry['credits'],entry['grade'],entry['class_avg'],entry['_grade_desc'])
