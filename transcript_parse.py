@@ -25,7 +25,25 @@ def parse_info_block(text): #This is the explanation of the degree and year
         info_block['_program'] = get_program_abbrev(program)
 
         return info_block
-   
+
+def parse_gpa_block(table):
+    cells = table.find_all('tr')[1:]
+    gpa = {}
+    term_fields = ['nil','tgpa','transfer_credits','nil','term_att','term_earned','term_incl','term_points']
+    cumm_fields = ['nil','cgpa','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
+    credit_fields = ['transfer_credits','total_credits','term_att','term_earned','term_incl','cumm_att','cumm_earned','cumm_incl']
+    
+    for cell,field in zip(cells[0].find_all('td'),term_fields):
+        gpa[field] = cell.text.strip()
+        if field in credit_fields:
+            gpa[field] = gpa[field].replace('.00','')
+
+    for cell,field in zip(cells[1].find_all('td'),cumm_fields):
+        gpa[field] = cell.text.strip()
+        if field in credit_fields:
+            gpa[field] = gpa[field].replace('.00','')
+
+    return gpa
 
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
@@ -40,7 +58,7 @@ def parse_transcript(text):
             cells = row.find_all('td',recursive=False)
             if len(cells) == 1:
                 if cells[0].table:
-                    print "GPA"
+                    curr['gpa'] = parse_gpa_block(cells[0].table)
                 else:
                     if not cells[0].span:
                         continue
@@ -72,7 +90,12 @@ def transcript_report(trans):
     for term in sorted(trans.keys()):
 
         info = trans[term]['info']
-        print '\033[1m', term, '\033[0m', '(' + info['status'] + ')'
+        if 'gpa' not in trans[term]:
+            continue
+
+        gpa = trans[term]['gpa']
+        
+        print '%s   Credits: %s  GPA: %s' % (term,gpa['term_earned'],gpa['tgpa'])
         print "U%s %s %s" % (info['year'], info['degree'], info['_program'])
 
         for entry in trans[term]['grades']:
