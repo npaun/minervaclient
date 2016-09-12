@@ -97,3 +97,63 @@ def get_ics_weekday(minerva_day):
 
 def minervac_sanitize(text):
 	return text.encode('ascii','ignore')
+
+def get_degree_abbrev(degree):
+	subs = {
+		'Bachelor of Science': 'BSc',
+		'Master of Science': 'MSc',
+		'Master of Science, Applied': 'MScA',
+		'Bachelor of Arts': 'BA',
+		'Master of Arts': 'MA',
+		'Bachelor of Arts and Science': 'BAsc',
+		'Bachelor of Engineering': 'BEng',
+		'Bachelor of Software Engineering': 'BSE',
+		'Master of Engineering': 'MEng',
+		'Bachelor of Commerce': 'BCom',
+		'Licentiate in Music': 'LMus',
+		'Bachelor of Music': 'BMus',
+		'Master of Music': 'MMus',
+		'Bachelor of Education': 'BEd',
+		'Master of Education': 'MEd',
+		'Bachelor of Theology': 'BTh',
+		'Master of Sacred Theology': 'STM',
+		'Master of Architecture': 'MArch',
+		'Bachelor of Civil Law': 'BCL',
+		'Bachelor of Laws': 'LLB',
+		'Master of Laws': 'LLM',
+		'Bachelor of Social Work': 'BSW',
+		'Master of Social Work': 'MSW',
+		'Master of Urban Planning': 'MUP',
+		'Master of Business Administration': 'MBA',
+		'Master of Management': 'MM',
+		'Bachelor of Nursing (Integrated)': 'BNI',
+		'Doctor of Philosophy': 'PhD',
+		'Doctor of Music': 'DMus'
+	} #Most of these degrees probably won't work with minervac, but this list may be slightly useful
+	for sub in subs:
+		degree = degree.replace(sub,subs[sub])
+	
+	return degree
+
+def get_program_abbrev(program):
+	program = program.replace('Concentration ','') #Who cares?
+	majors = []
+	minors = []
+	other = []
+
+	for line in program.split("\n"):
+		if line.startswith("Major"):
+			majors.append(line.split("Major ")[1])
+		elif line.startswith("Minor"):
+			minors.append(line.split("Minor ")[1])
+		else:
+			other.append(line)
+
+	
+	program = ", ".join(majors)
+	if minors:
+		program += "; Minor " + ", ".join(minors)
+	if other:
+		program += " [" + ", ".join(other) + "]"
+
+	return program	

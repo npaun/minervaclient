@@ -13,7 +13,7 @@ def parse_record(cells):
     return record
 
 def parse_transcript(text):
-        text = text.replace("&nbsp;"," ")
+        text = text.replace("&nbsp;"," ").replace("<br>","\n")
 	html = BeautifulSoup(text,'html.parser')
         transcript = {}
 	term = None
@@ -27,8 +27,12 @@ def parse_transcript(text):
                 if cells[0].table:
                     print "GPA"
                 else:
+                    if not cells[0].span:
+                        continue
 
                     heading  = cells[0].span.b
+                    text = cells[0].span.text
+
                     if heading:
                         try:
                             term = get_term_code(heading.text.replace(" ",""))
@@ -36,17 +40,31 @@ def parse_transcript(text):
                             term = heading.text
 
                         transcript[term] = {'grades': [],'summary': {}}
-                    elif cells[0].span.text.startswith('Standing'):
-                        nil,standing_text = cells[0].span.text.split(":")
-                        transcript[term]['summary']['standing'] = standing_text.strip()
+                        curr = transcript[term]
+                    elif text.startswith('Standing'): #This is your term standing
+                        nil,standing_text = text.split(":")
+                        curr['summary']['standing'] = standing_text.strip()
+                    elif "\n" in text: #This is the degree block
+                        degree,year_status,program = text.split("\n",2)
+                        info_block = {}
+                        info_block['degree'] = get_degree_abbrev(degree)
+                        year_status = year_status.split(" ")
+                        info_block['year'] = year_status[-1]
+                        info_block['status'] = year_status[0]
+                        info_block['programs'] = program.replace("\n",", ")
+                        info_block['_program'] = info_block['degree'] + " " + get_program_abbrev(program)
+
+                        print info_block
+                        curr['info'] = info_block
             else:
                 if term:
-                    transcript[term]['grades'].append(parse_record(cells))
+                    curr['grades'].append(parse_record(cells))
 
 
         transcript_report(transcript)
 
 def transcript_report(trans):
+    print trans.keys()
     term = trans['201509']
 
     print term['summary']['standing']
