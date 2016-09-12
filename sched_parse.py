@@ -132,22 +132,27 @@ def find_conflicts(sched,report = 'conflicts'):
 			instances.append((key,end,entry))
 
 	instances = sorted(instances)
+	conflict_pairs = []
 	
 	i = -1
 	for curr in instances[:-1]:
 		i += 1
 		(c_start,c_end,c_entry) = curr
 		(n_start,n_end,n_entry) = instances[i+1]
+		pair = c_entry['_code'] + "," + n_entry['_code']
 
 		if c_start[0] != n_start[0]: #We've run out of courses for the day
 			continue
-		elif (c_start < n_end) and (c_end > n_start):
-			print_conflict(fmt,weekdays[int(c_start[0])],c_entry,n_entry)
+		elif pair in conflict_pairs: #We already know what happens
+			continue
+		elif (c_start < n_end) and (c_end > n_start): #Formal definition of a time conflict
+			conflict_pairs.append(pair)
+			print_conflict(fmt,c_entry,n_entry)
 
 	
-def print_conflict(fmt,bad_day,curr,next):	
+def print_conflict(fmt,curr,next):	
 		intersect = "".join(list(set(curr['days']).intersection(set(next['days']))))
-		print "* Conflict between %s and %s on %s" % (next['_time']['start'], curr['_time']['end'], bad_day)
+		print "* Conflict: \033[1;31m%s %s-%s\033[0m" % (intersect,next['_time']['start'], curr['_time']['end'])
 		sys.stdout.write(apply_format(curr,fmt))
 		sys.stdout.write(apply_format(next,fmt))
 
