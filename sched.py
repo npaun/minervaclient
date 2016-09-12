@@ -19,4 +19,3 @@ def course_details(term,report = 'default',visual = False,calendar = False,confl
 			sched_parse.conflict_report(r.text,'conflicts')
 
 
-sched_ics.export_schedule(open('/home/np/minervaslammer/crsedetail.html').read(),'cal_default')
