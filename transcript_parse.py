@@ -9,8 +9,23 @@ def parse_record(cells):
     for field,cell in zip(fields,cells):
         record[field] =  cell.text.strip()
 
+    record['_grade_desc'] = get_grade_explanation(record['grade'])
 
     return record
+
+def parse_info_block(text): #This is the explanation of the degree and year
+        degree,year_status,program = text.split("\n",2)
+
+        info_block = {}
+        info_block['degree'] = get_degree_abbrev(degree)
+        year_status = year_status.split(" ")
+        info_block['year'] = year_status[-1]
+        info_block['status'] = year_status[0]
+        info_block['programs'] = program.replace("\n",", ")
+        info_block['_program'] = get_program_abbrev(program)
+
+        return info_block
+   
 
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
@@ -45,17 +60,7 @@ def parse_transcript(text):
                         nil,standing_text = text.split(":")
                         curr['summary']['standing'] = standing_text.strip()
                     elif "\n" in text: #This is the degree block
-                        degree,year_status,program = text.split("\n",2)
-                        info_block = {}
-                        info_block['degree'] = get_degree_abbrev(degree)
-                        year_status = year_status.split(" ")
-                        info_block['year'] = year_status[-1]
-                        info_block['status'] = year_status[0]
-                        info_block['programs'] = program.replace("\n",", ")
-                        info_block['_program'] = info_block['degree'] + " " + get_program_abbrev(program)
-
-                        print info_block
-                        curr['info'] = info_block
+                        curr['info'] = parse_info_block(text)
             else:
                 if term:
                     curr['grades'].append(parse_record(cells))
@@ -64,14 +69,16 @@ def parse_transcript(text):
         transcript_report(transcript)
 
 def transcript_report(trans):
-    print trans.keys()
-    term = trans['201509']
+    for term in sorted(trans.keys()):
 
-    print term['summary']['standing']
+        info = trans[term]['info']
+        print '\033[1m', term, '\033[0m', '(' + info['status'] + ')'
+        print "U%s %s %s" % (info['year'], info['degree'], info['_program'])
 
-    for entry in term['grades']:
-        print entry['course'], '\t' ,entry['credits'],entry['grade']
+        for entry in trans[term]['grades']:
+            print "% 3s\t%s %s\t\t% 1s | %s\t\t%- 2s | %- 2s\t\t%s" % (entry['status'],entry['course'],entry['section'],entry['credits_earned'],entry['credits'],entry['grade'],entry['class_avg'],entry['_grade_desc'])
 
+        print ""
 
 f = open('/home/np//minervaslammer/unofficial.html').read()
 

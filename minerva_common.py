@@ -156,4 +156,59 @@ def get_program_abbrev(program):
 	if other:
 		program += " [" + ", ".join(other) + "]"
 
-	return program	
+	return program
+
+def get_grade_explanation(grade,normal_grades = False):
+	explanation = { 
+		'HH': 'To be continued',
+		'IP': 'In progress',
+		'J': 'Absent',
+		'K': 'Incomplete',
+		'KE': 'Further extension granted',
+		'K*': 'Further extension granted',
+		'KF': 'Incomplete - Failed',
+		'KK': 'Completion requirement waived',
+		'L': 'Deferred',
+		'LE': 'Deferred - extension granted',
+		'L*': 'Deferred - extension granted',
+		'NA': 'Grade not yet available',
+		'&&': 'Grade not yet available',
+		'NE': 'No evaluation',
+		'NR': 'No grade reported by the instructor (recorded by the Registrar)',
+		'P': 'Pass',
+		'Q': 'Course continues in following term',
+		'R': 'Course credit',
+		'W': 'Permitted to withdraw',
+		'WF': 'Withdraw - failing',
+		'WL': 'Faculty permission to withdraw from a deferred examination',
+		'W--': 'No grade: student withdrew from the University',
+		'--': 'No grade: student withdrew from the University',
+		'CO': 'Complete [Academic Integrity Tutorial]',
+		'IC': 'Incomplete [Academic Integrity Tutorial]'
+	}
+
+	normal_explanation = {
+		'A': '85 - 100',
+		'A-': '80 - 84',
+		'B+': '75 - 79',
+		'B': '70 - 74',
+		'B-': '65 - 69',
+		'C+': '60 - 64',
+		'C': '55 - 59',
+		'D': '50 - 54',
+		'F': '0 - 49',
+		'S': 'Satisfactory',
+		'U': 'Unsatisfactory'
+	}
+
+	if normal_grades:
+		explanation.extend(normal_explanation)
+
+	if grade in explanation:
+		return explanation[grade]
+	else:
+		return ''
+
+def lg_to_gpa(letter_grade):
+	return {'A': '4.0','A-': '3.7','B+': '3.3', 'B': '3.0', 'B-': '2.7', 'C+': '2.3', 'C': '2.0','D': '1.0','F': '0'}[letter_grade]
+	
