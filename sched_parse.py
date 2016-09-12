@@ -58,7 +58,6 @@ def parse_schedule(text,separate_wait = True):
 
 		entry['_day_idx'] = day_index(entry['days'])		
 		entry['type'] = get_type_abbrev(entry['type'])
-		entry['location'] = get_bldg_abbrev(entry['location'])
 
 		loc_bits =  entry['location'].rsplit(" ",1)
 
@@ -70,7 +69,8 @@ def parse_schedule(text,separate_wait = True):
 
 		entry['_building'] = entry['_building'].strip()
 		entry['_link_gmaps'] = "http://maps.google.com/?" + urllib.urlencode([('saddr','My Location'),('daddr',entry['_building'])]) 
-	
+		entry['_building'] = get_bldg_abbrev(entry['_building'])
+		
 		t_bits = entry['time_range'].split(" - ")
 		if len(t_bits) == 2:	
 			t_start,t_end = entry['time_range'].split(" - ")
