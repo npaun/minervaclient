@@ -120,6 +120,8 @@ def print_sched_report(sched,report = 'default'):
 	for entry in sched: sys.stdout.write(apply_format(entry,fmt))
 
 def find_conflicts(sched,report = 'conflicts'):
+	(fmt,sched) = prepare_report(report,sched,sort = False)
+
 	instances = []
 	weekdays = get_minerva_weekdays()
 	for entry in sched:
@@ -127,36 +129,39 @@ def find_conflicts(sched,report = 'conflicts'):
 			weekday = weekdays.index(day)
 			key = str(weekday) + dt.strptime(entry['_time']['start'],config.date_fmt['short_time']).strftime('%H%M')
 			end = str(weekday) + dt.strptime(entry['_time']['end'],config.date_fmt['short_time']).strftime('%H%M')
-			instances.append((key,end,entry['_code']))
+			instances.append((key,end,entry))
 
 	instances = sorted(instances)
 	
 	i = -1
 	for curr in instances[:-1]:
 		i += 1
-		(c_start,c_end,c_code) = curr
-		(n_start,n_end,n_code) = instances[i+1]
+		(c_start,c_end,c_entry) = curr
+		(n_start,n_end,n_entry) = instances[i+1]
 
 		if c_start[0] != n_start[0]: #We've run out of courses for the day
 			continue
 		elif (c_start < n_end) and (c_end > n_start):
-			duration = c_end - n_start
-			print_conflict(duration,sched[c_code],sched[n_code])
+			print_conflict(fmt,weekdays[int(c_start[0])],c_entry,n_entry)
 
 	
-def print_conflict(len,curr,next):	
-		print "* Conflict for %d mins" % len
+def print_conflict(fmt,bad_day,curr,next):	
+		intersect = "".join(list(set(curr['days']).intersection(set(next['days']))))
+		print "* Conflict between %s and %s on %s" % (next['_time']['start'], curr['_time']['end'], bad_day)
 		sys.stdout.write(apply_format(curr,fmt))
 		sys.stdout.write(apply_format(next,fmt))
 
 
-def prepare_report(report,sched):
+def prepare_report(report,sched,sort = True):
 	if report not in config.reports:
 		print "Error! Report not found"
 		sys.exit(MinervaError.user_error)
 	
 	report = config.reports[report]
-	sorted = multi_keysort(sched,report['sort'])
+	if sort:
+		sorted = multi_keysort(sched,report['sort'])
+	else:
+		sorted = sched
 	return ((report['columns'],report['format']),sorted)
 
 def apply_format(entry,fmt):
@@ -221,6 +226,8 @@ def course_details_report(text,report = 'default'):
 def conflict_report(text,report = 'conflicts'):
 	sched = parse_schedule(text,separate_wait = False)
 	find_conflicts(sched,report)
+
+conflict_report(open('/home/np/minervaslammer/crsedetail.html').read())
 
 
 # vi: ft=python
