@@ -11,7 +11,7 @@ reports['long']['sort'] = ['_day_idx','time_range','_code']
 
 reports['default']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_action_desc']
 reports['default']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t%s\n"
-reports['default']['sort'] = ['_code']
+reports['default']['sort'] = ['_day_idx','time_range','_code']
 
 reports['short']['columns'] = ['subject','course','credits','section','crn','_action_desc']
 reports['short']['format'] = "%s %s (%s)\t%s\t% 5s\t%s\n"

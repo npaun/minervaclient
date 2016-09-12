@@ -232,7 +232,6 @@ def conflict_report(text,report = 'conflicts'):
 	sched = parse_schedule(text,separate_wait = False)
 	find_conflicts(sched,report)
 
-conflict_report(open('/home/np/minervaslammer/crsedetail.html').read())
 
 
 # vi: ft=python

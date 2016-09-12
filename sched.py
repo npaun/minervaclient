@@ -18,3 +18,5 @@ def course_details(term,report = 'default',visual = False,calendar = False,confl
 		if not no_conflicts:
 			sched_parse.conflict_report(r.text,'conflicts')
 
+
+sched_parse.course_details_report(open('/home/np/minervaslammer/crsedetail.html').read(),'default')
