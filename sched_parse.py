@@ -120,26 +120,34 @@ def print_sched_report(sched,report = 'default'):
 	for entry in sched: sys.stdout.write(apply_format(entry,fmt))
 
 def find_conflicts(sched,report = 'conflicts'):
-	(fmt,sched) = prepare_report(report,sched)
+	instances = []
+	weekdays = get_minerva_weekdays()
+	for entry in sched:
+		for day in entry['days']:
+			weekday = weekdays.index(day)
+			key = str(weekday) + dt.strptime(entry['_time']['start'],config.date_fmt['short_time']).strftime('%H%M')
+			end = str(weekday) + dt.strptime(entry['_time']['end'],config.date_fmt['short_time']).strftime('%H%M')
+			instances.append((key,end,entry['_code']))
 
+	instances = sorted(instances)
+	
 	i = -1
-	for curr in sched[:-1]:
+	for curr in instances[:-1]:
 		i += 1
-		next = sched[i+1]
+		(c_start,c_end,c_code) = curr
+		(n_start,n_end,n_code) = instances[i+1]
 
-		if not set(curr['days']).intersection(set(next['days'])): #This isn't quite right
-			continue 
-		
-		
-		next_start = dt.strptime(next['_time']['start'],config.date_fmt['short_time']) 
-		curr_end = dt.strptime(curr['_time']['end'],config.date_fmt['short_time'])
-			
-		diff = int((next_start - curr_end).total_seconds() / 60)
-			
-		if diff <= 0:
-			print "* Conflict for %d mins" % -diff
-			sys.stdout.write(apply_format(curr,fmt))
-			sys.stdout.write(apply_format(next,fmt))
+		if c_start[0] != n_start[0]: #We've run out of courses for the day
+			continue
+		elif (c_start < n_end) and (c_end > n_start):
+			duration = c_end - n_start
+			print_conflict(duration,sched[c_code],sched[n_code])
+
+	
+def print_conflict(len,curr,next):	
+		print "* Conflict for %d mins" % len
+		sys.stdout.write(apply_format(curr,fmt))
+		sys.stdout.write(apply_format(next,fmt))
 
 
 def prepare_report(report,sched):
