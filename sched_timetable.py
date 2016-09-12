@@ -49,13 +49,14 @@ def calc_rowspan(time):
 def make_day_header(days):
 	header = """
 	<thead class='sched-header'>
-		<th></th>
+		<tr>
+			<th></th>
 	"""
 
 	for day in days:
 		header += "<th>" + get_real_weekday(day) + "</th>\n"
 
-	header += "</thead>\n"
+	header += "</tr>\n</thead>\n"
 	return header
 
 def timetable_cell(day,course_num,entry):
@@ -109,13 +110,15 @@ def timetable_html(timetable):
 	<!DOCTYPE html>
 	<html>
 		<head>
-		<title>Minervac Class Schedule</title>
-		{style}
-	</html>
-	<body>
-		<h1 class="sched-title">Class Schedule</h1>
-		<table class='sched_table'>
-			{days}
+			<title>Minervac Class Schedule</title>
+			<meta charset="UTF-8" />
+			<meta name="generator" content="minervac" />
+			{style}
+		</head>
+		<body>
+			<h1 class="sched-title">Class Schedule</h1>
+			<table class='sched_table'>
+				{days}
 
 	""".format(style=make_style_header(),days=make_day_header(days))
 	
