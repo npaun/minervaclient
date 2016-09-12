@@ -1,3 +1,77 @@
+/* Page settings */
+.sched-title, .sched-table, .sched-table * {
+	box-sizing: border-box;
+}
+
+.sched-title, .sched-table {
+	font-family: "CMU Serif", Palatino, serif;
+	background: #fdfdfd;
+}
+
+.sched-title {
+	text-align: center;
+	display: none;
+	margin: 0;
+}
+
+
+/* The table */
+
+.sched-table {
+	border-spacing: 2px;
+	border-collapse: collapse;
+	width: 75%;
+	margin: auto;
+	border: #ccc solid 1.5px;
+}
+
+.sched-table tr {
+	border: #ccc solid 1px;
+}
+
+
+.sched-table td, .sched-table th {
+	height: 2vw;
+}
+
+
+.sched-table td {
+	width: 100vw;
+}
+
+
+.sched-table thead th {
+	padding: 1px;
+}
+
+.sched-table th {
+	background: #f5f5f5;
+	border-right: 1px solid #ccc;
+	width: 1vw;
+}
+
+.sched-blank {
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+}
+
+
+/* Timeslots */
+
+.sched-table tr:nth-child(2n) th {
+	text-indent: -99999px;
+}
+
+
+.sched-timeslot:after {
+	content: "h";
+	font-weight: normal;
+}
+
+
+
+/* Class block design */
+
 .sched-entry div {
 	color: #222;
 	border-width: 1px;
@@ -6,140 +80,70 @@
 	width: 100%;
 	height: 100%;
 	vertical-align: middle;
-	
-}
-
-* {
-	box-sizing: border-box;
-}
-
-body {
-  font-family: "CMU Serif", Palatino, serif;
-  background: #fdfdfd;
-
- }
-
-table {
- border-spacing: 2px;
- border-collapse: collapse;
- width: 75%;
- margin: auto;
- border: 1.5px solid #ccc;
-}
-
-thead th
-{
- padding: 1px;
-}
-
-th
-{
-background: #f5f5f5;
-border-right: 1px solid #ccc;
-}
-
-tr
-{
-border: 1px solid #ccc;
-}
-
-tr:nth-child(2n) th
-{
-text-indent: -99999px;
 }
 
 
-td,th
-{
-height: 2vw;
-}
-
-th
-{
-width: 1vw;
-}
-
-td
-{
-width: 100vw;
+.sched-entry p {
+	margin: 0;
 }
 
 
-.sched-blank {
- border-left: 1px solid #ddd;
- border-right: 1px solid #ddd;
+
+.sched-entry a {
+	color: navy;
+	text-decoration: none;
+	border-bottom: 1px dotted navy;
 }
 
-
-.sched-timeslot:after {
-content: "h";
-font-weight: normal;
-}
-
-.sched-entry p
-{
-margin: 0;
-}
-
-.sched-title
-{
-text-align: center;
-display: none;
-margin: 0;
-}
 
 .registered {
-background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.5) 35px, rgba(255,255,255,.5) 70px);
+	background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255, 255, 255, 0.5) 35px, rgba(255, 255, 255, 0.5) 70px);
 }
+
 .waiting {
-background-image: linear-gradient(45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1)), 
-linear-gradient(-45deg, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.1) 75%, rgba(0,0,0,0.1));
-background-size: 60px 60px;
-background-color: rgba(230,230,230,0.5) !important;
-font-style: italic;
+	background-image: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1)), linear-gradient(-45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1));
+	background-size: 60px 60px;
+	background-color: rgba(230, 230, 230, 0.5) !important;
+	font-style: italic;
 }
+
+/* Background colors */
 .sched-entry-1 div {
- 	border-color: #8CA0D4;
-	background-color:#CBD4EB;
+	border-color: #8CA0D4;
+	background-color: #CBD4EB;
 }
 
 .sched-entry-2 div {
-	   border-color: #EC926E;
-	       background-color:#F6C8B6;
+	border-color: #EC926E;
+	background-color: #F6C8B6;
 }
 
 .sched-entry-3 div {
-	    border-color: #8FC77B;
-	        background-color:#C0F4AE;
+	border-color: #8FC77B;
+	background-color: #C0F4AE;
 }
 
 .sched-entry-4 div {
-	    border-color: #CCCF79;
-	        background-color:#FAFE92;
+	border-color: #CCCF79;
+	background-color: #FAFE92;
 }
 
-.sched-entry-5 div{
-	    border-color: #C785BD;
-	        background-color:#E8CAE3;
+.sched-entry-5 div {
+	border-color: #C785BD;
+	background-color: #E8CAE3;
 }
 
 .sched-entry-6 div {
-		  border-color: #7FD1B1;
-		      background-color:#A6FCDD;
+	border-color: #7FD1B1;
+	background-color: #A6FCDD;
 }
 
 .sched-entry-7 div {
-    border-color: #896AD8;
-        background-color:#C0A6FC;
+	border-color: #896AD8;
+	background-color: #C0A6FC;
 }
 
 .sched-entry-8 div {
-    border-color: #AB5DA5;
-        background-color:#FCA6F3;
+	border-color: #AB5DA5;
+	background-color: #FCA6F3;
 }
-
-a {
-    color: navy;
-        text-decoration: none;
-	    border-bottom: 1px dotted navy;
-	    }

@@ -117,7 +117,7 @@ def timetable_html(timetable):
 		</head>
 		<body>
 			<h1 class="sched-title">Class Schedule</h1>
-			<table class='sched_table'>
+			<table class='sched-table'>
 				{days}
 
 	""".format(style=make_style_header(),days=make_day_header(days))
