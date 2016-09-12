@@ -90,13 +90,11 @@ def transcript_report(trans):
     for term in sorted(trans.keys()):
 
         info = trans[term]['info']
-        if 'gpa' not in trans[term]:
-            continue
-
-        gpa = trans[term]['gpa']
+        print "%s\nU%s %s %s" % (term,info['year'], info['degree'], info['_program'])
         
-        print '%s   %s credits,\tGPA: %s' % (term,gpa['term_earned'],gpa['tgpa'])
-        print "U%s %s %s" % (info['year'], info['degree'], info['_program'])
+        if 'gpa' in trans[term]:
+            gpa = trans[term]['gpa']
+            print u'Credits: %s \u03a3%s,\tGPA: %s \u03a3%s' % (gpa['term_earned'],gpa['cumm_earned'],gpa['tgpa'],gpa['cgpa'])
 
         for entry in trans[term]['grades']:
             print "% 3s\t%s %s\t\t% 1s | %s\t\t%- 2s | %- 2s\t\t%s" % (entry['status'],entry['course'],entry['section'],entry['credits_earned'],entry['credits'],entry['grade'],entry['class_avg'],entry['_grade_desc'])
