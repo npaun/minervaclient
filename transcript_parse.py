@@ -47,7 +47,10 @@ def parse_gpa_block(table,init):
     term_fields = ['nil','tgpa','transfer_credits','nil','term_att','term_earned','term_incl','term_points']
     cumm_fields = ['nil','cgpa','nil','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
     credit_fields = ['transfer_credits','total_credits','term_att','term_earned','term_incl','cumm_att','cumm_earned','cumm_incl']
-    
+   
+    if len(cells) != 2:
+        return {}
+        
     for cell,field in zip(cells[0].find_all('td'),term_fields):
         gpa[field] = cell.text.strip()
 
@@ -83,6 +86,7 @@ def parse_transcript(text):
             cells = row.find_all('td',recursive=False)
             if len(cells) == 1:
                 if cells[0].table:
+                    print "wtf"
                     curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
                 else:
                     if not cells[0].span:
@@ -100,13 +104,12 @@ def parse_transcript(text):
                     elif text.startswith('Standing'): #This is your term standing
                         nil,standing_text = text.split(":")
                         curr['info']['standing'] = standing_text.strip()
-
+                    elif term == '000000':
+                        curr['info'].update(parse_init_block(text,heading))
                     elif "\n" in text: #This is the degree block
-                        if term == '000000': #The "Previous education" block behaves differently
-                            curr['info'].update(parse_init_block(text,heading))
-                        else:
-                            curr['info'].update(parse_info_block(text))
+                        curr['info'].update(parse_info_block(text))
             else:
+                print "wtf"
                 if term:
                     curr['grades'].append(parse_record(cells))
 
@@ -130,6 +133,7 @@ def transcript_report(trans,terms = None,report = 'transcript_default',show_info
         if not show_header:
                 del trans['000000']
 
+        print trans
         if terms is not None:
                 iter = (term for term in terms)
         else:
@@ -155,7 +159,7 @@ def transcript_report(trans,terms = None,report = 'transcript_default',show_info
                                 sys.stdout.write(sched_parse.apply_format(grade,grades_fmt))
 
 
-f = open('/home/np//minervaslammer/unofficial.html').read()
-transcript_report(parse_transcript(f),report = 'transcript_default',show_header=True)
+f = open('/home/np//minervaslammer/trans1.html').read()
+transcript_report(parse_transcript(f),report = 'transcript_short',show_header=True)
 
 
