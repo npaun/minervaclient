@@ -16,7 +16,7 @@ def parse_record(cells):
 
 def parse_init_block(text,heading):
     prev_degree = heading.text.split("\n")[-1]
-    info = {'year': '', 'degree': prev_degree, '_program': ''}
+    info = {'year': '-', 'degree': prev_degree, '_program': ''}
     
     for line in text.split("\n"):
         if line.startswith("Credits Required"):
@@ -81,7 +81,7 @@ def parse_transcript(text):
             cells = row.find_all('td',recursive=False)
             if len(cells) == 1:
                 if cells[0].table:
-                    curr['gpa'] = parse_gpa_block(cells[0].table,transcript['000000']['info'])
+                    curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
                 else:
                     if not cells[0].span:
                         continue
@@ -117,8 +117,8 @@ def transcript_report(trans):
         info = trans[term]['info']
         print "%s\nU%s %s %s" % (term,info['year'], info['degree'], info['_program'])
         
-        if 'gpa' in trans[term]:
-            gpa = trans[term]['gpa']
+        if 'tgpa' in info:
+            gpa = trans[term]['info']
             print u'\t\t\tCredits: +%s, \u03a3%s, %s%%;\tGPA: %s, \u03a3%s' % (gpa['term_earned'],gpa['cumm_earned'],gpa['_credits_percent'],gpa['tgpa'],gpa['cgpa'])
 
         for entry in trans[term]['grades']:
