@@ -17,8 +17,8 @@ reports['short']['columns'] = ['subject','course','credits','section','crn','_ac
 reports['short']['format'] = "%s %s (%s)\t%s\t% 5s\t%s\n"
 reports['short']['sort'] = ['_code']
 
-reports['conflicts']['columns'] = ['_code','crn','days','time_range','_building','_room','_action_desc']
-reports['conflicts']['format'] = "\t%s\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n"
+reports['conflicts']['columns'] = ['_code','type','crn','days','time_range','_building','_room','_action_desc']
+reports['conflicts']['format'] = "\t%s (%s)\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n"
 reports['conflicts']['sort'] = None # A different algorithm is used to find conflicts
 
 reports['timetable_default']['columns'] = ['subject','course','section','type','_link_gmaps','_building','_room','time_range','_action_desc']
