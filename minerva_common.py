@@ -38,7 +38,9 @@ class MinervaError:
 
 def get_term_code(term):
 	part_codes = {'FALL': '09', 'FALL-SUP': '10', 'WINTER': '01', 'WINTER-SUP': '02', 'SUMMER': '05', 'SUMMER-SUP': '06'}
-	if term.isdigit(): # Term code
+	if term == "PREVIOUSEDUCATION":
+		return '000000' # Sort first
+	elif term.isdigit(): # Term code
 		return term
 	elif term[0].isdigit(): #Year first
 		year = term[0:4]
