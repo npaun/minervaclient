@@ -108,24 +108,20 @@ def parse_transcript(text):
                     curr['grades'].append(parse_record(cells))
 
 
-        transcript_report(transcript)
+        return transcript
 
-def transcript_report(trans):
-    for term in sorted(trans.keys()):
+def transcript_report(trans,terms = None,show_info = True,show_grades = True):
+        if terms is not None:
+                iter = (term for term in terms)
+        else:
+                iter = (term for term in sorted(trans.keys()))
 
-        info = trans[term]['info']
-        print "%s\nU%s %s %s" % (term,info['year'], info['degree'], info['_program'])
+        for term in iter:
+                print term
         
-        if 'tgpa' in info:
-            gpa = trans[term]['info']
-            print u'\t\t\tCredits: +%s, \u03a3%s, %s%%;\tGPA: %s, \u03a3%s' % (gpa['term_earned'],gpa['cumm_earned'],gpa['_credits_percent'],gpa['tgpa'],gpa['cgpa'])
-
-        for entry in trans[term]['grades']:
-            print "% 3s\t%s %s\t\t% 1s | %s\t\t%- 2s | %- 2s\t\t%s" % (entry['status'],entry['course'],entry['section'],entry['credits_earned'],entry['credits'],entry['grade'],entry['class_avg'],entry['_grade_desc'])
-
-        print ""
+    
 
 f = open('/home/np//minervaslammer/unofficial.html').read()
 
-parse_transcript(f)
+transcript_report(parse_transcript(f))
 
