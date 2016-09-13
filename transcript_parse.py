@@ -16,7 +16,7 @@ def parse_record(cells):
 
 def parse_init_block(text,heading):
     prev_degree = heading.text.split("\n")[-1]
-    info = {'year': '-', 'degree': prev_degree, '_program': ''}
+    info = {'year': '-', 'degree': prev_degree, '_program': ''}
     
     for line in text.split("\n"):
         if line.startswith("Credits Required"):
