@@ -90,17 +90,14 @@ def parse_transcript(text):
 
                     if cells[0].span.b:
                         heading = cells[0].span
-                        try:
-                            term = get_term_code(heading.b.text.replace(" ",""))
-                        except KeyError:
-                            term = heading.b.text
+                        term = get_term_code(heading.b.text.replace(" ",""))
                         transcript[term] = {'grades': [],'summary': {}}
                         curr = transcript[term]
                     elif text.startswith('Standing'): #This is your term standing
                         nil,standing_text = text.split(":")
                         curr['summary']['standing'] = standing_text.strip()
                     elif "\n" in text: #This is the degree block
-                        if term == '000000':
+                        if term == '000000': #The "Previous education" block behaves differently
                             curr['info'] = parse_init_block(text,heading)
                         else:
                             curr['info'] = parse_info_block(text)
