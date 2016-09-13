@@ -3,8 +3,6 @@ from minerva_common import *
 import sys
 import re
 
-print "Can't see this" #
-
 def parse_record(cells):
     fields = ['status','course','section','title','credits','unknown','grade','remarks','unknown2','credits_earned','class_avg']
     record = {}
