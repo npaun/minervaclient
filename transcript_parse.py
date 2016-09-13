@@ -66,6 +66,7 @@ def parse_gpa_block(table,init):
 
 
     return gpa
+                term
 
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
@@ -93,9 +94,11 @@ def parse_transcript(text):
                         term = get_term_code(heading.b.text.replace(" ",""))
                         transcript[term] = {'grades': [],'summary': {}}
                         curr = transcript[term]
+
                     elif text.startswith('Standing'): #This is your term standing
                         nil,standing_text = text.split(":")
                         curr['summary']['standing'] = standing_text.strip()
+
                     elif "\n" in text: #This is the degree block
                         if term == '000000': #The "Previous education" block behaves differently
                             curr['info'] = parse_init_block(text,heading)
