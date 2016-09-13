@@ -66,7 +66,6 @@ def parse_gpa_block(table,init):
 
 
     return gpa
-                term
 
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
