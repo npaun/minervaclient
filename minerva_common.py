@@ -138,7 +138,7 @@ def get_degree_abbrev(degree):
 	return degree
 
 def get_program_abbrev(program):
-	program = program.replace('Concentration ','') #Who cares?
+	program = program.replace('Major Concentration','Major').replace('Minor Concentration','Minor') #Who cares?
 	majors = []
 	minors = []
 	other = []
