@@ -12,6 +12,12 @@ def parse_record(cells):
     for field,cell in zip(fields,cells):
         record[field] =  cell.text.strip()
 
+    if record['course'] == '':
+        return None
+    
+    record['subject'],record['course'] = record['course'].split(" ")
+    record['_code'] = '-'.join([record['subject'],record['course'],record['section']])
+
     record['_grade_desc'] = get_grade_explanation(record['grade'])
 
     return record
@@ -76,11 +82,21 @@ def parse_transfer(text):
         source,num = re.match("From: (.*)? *- *(.*?) credits",text).groups()
         return {'xfer_source': source, 'xfer_credits': num}
 
-def parse_transfer_credits(table):
-        for row in table.find_all('tr'):
-                print row
+def parse_transfer_credits(table,info):
+        fields = ['subject','course','unknown1','unknown2']
+        records = []
+        source = info['xfer_source']
 
-        return []
+        for row in table.find_all('tr'):
+                record = {'credits_earned': '-','credits': '-','grade': '-','class_avg': '-','_grade_desc': 'Credits/Exemptions: ' + source,'status': '', 'remarks': '','section':'N/A'}
+                for cell,field in zip(row.find_all('td'),fields):
+                        record[field] = cell.text.strip()
+
+                record['_code'] = '-'.join([record['subject'],record['course']])        
+                records.append(record)
+
+        return records
+
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
 	html = BeautifulSoup(text,'html.parser')
@@ -99,7 +115,7 @@ def parse_transcript(text):
                     if first_cell == ' ':
                         curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
                     else:
-                        curr['grades'].extend(parse_transfer_credits(cells[0].table))
+                        curr['grades'].extend(parse_transfer_credits(cells[0].table,curr['info']))
                 else:
                     if not cells[0].span:
                         continue
@@ -124,7 +140,9 @@ def parse_transcript(text):
                         curr['info'].update(parse_info_block(text))
             else:
                 if term:
-                    curr['grades'].append(parse_record(cells))
+                    record = parse_record(cells)
+                    if record is not None:
+                        curr['grades'].append(parse_record(cells))
 
 
         return transcript
@@ -172,6 +190,6 @@ def transcript_report(trans,terms = None,report = 'transcript_default',show_info
 
 
 f = open('/home/np//minervaslammer/trans1.html').read()
-transcript_report(parse_transcript(f),report = 'transcript_short',show_header=True)
+transcript_report(parse_transcript(f),report = 'transcript_long',show_header=True)
 
 
