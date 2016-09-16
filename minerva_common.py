@@ -8,7 +8,9 @@ referer = ""
 s = requests.Session()
 
 def minerva_get(func):
-	sys.stderr.write("? " + func + "\n")
+	if verbose:
+		sys.stderr.write("? " + func + "\n")
+
 	global referer
 	url = "https://horizon.mcgill.ca/pban1/" + func
 	r = s.get(url,cookies = cookie_data, headers={'Referer': referer})
@@ -16,7 +18,9 @@ def minerva_get(func):
 	return r
 
 def minerva_post(func,req):
-	sys.stderr.write("> " + func + "\n")
+	if verbose:
+		sys.stderr.write("> " + func + "\n")
+
 	global referer
 	url = "https://horizon.mcgill.ca/pban1/" + func
 	r = s.post(url,data = req,cookies = cookie_data,headers = {'Referer': referer})
@@ -219,4 +223,8 @@ def get_grade_explanation(grade,normal_grades = False):
 
 def lg_to_gpa(letter_grade):
 	return {'A': '4.0','A-': '3.7','B+': '3.3', 'B': '3.0', 'B-': '2.7', 'C+': '2.3', 'C': '2.0','D': '1.0','F': '0'}[letter_grade]
-	
+
+verbose = False
+def set_loglevel(set_verbose):
+	global verbose
+	verbose = set_verbose

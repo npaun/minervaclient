@@ -61,6 +61,10 @@ def main():
 
 	args = ap.parse_args()
 
+
+	if args.verbose:
+		set_loglevel(True)
+
 	if args.which == 'reg':
 		exec_reg(args)
 	elif args.which == 'sched':
