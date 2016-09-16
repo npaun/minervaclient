@@ -1,7 +1,7 @@
 # Minervac
 ### The Minerva Client
 
-`minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule and register for courses by CRN or course code. Course schedules can be formatted with custom reports, conflicts are detected, and HTML timetables, as well as importable calendar files, can be produced. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
+`minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule or transcript, and register for courses by CRN or course code. Course schedules can be formatted with custom reports, conflicts are detected, and HTML timetables, as well as importable calendar files, can be produced. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
 ![Registering for a course](http://i.imgur.com/9FciOtv.png)  
@@ -10,9 +10,11 @@ The program is implemented in Python and currently is very hacky. Pull requests 
 ## Updates
 
 1. ****
+ * You can now query your transcript (`mnvc transcript`)
+2. ****
  * A visual timetable feature has been implemented. (-V).
  * Calendar export is now available (vCalendar format only). (-C)
-2. ****
+3. ****
  * The command-line interface won't be modified anymore, only extended. Configuration format is still in flux.
  * Displaying course schedule information with custom reports.
  
@@ -45,7 +47,7 @@ It's way simpler than actually using Minerva!
 	* **NOTE:** An option to search without logging in is provided. However, only waitlist information can be determined in this way, and its quality may be poor.
 * **Scheduling:** `mnvc sched`
 	* To display your schedule: `mnvc sched -t WINTER2017`
-	* To display more details, or less: `mnvc sched -lt SUMMER-2017` or `minervac sched -st 2016WINTER-SUP`
+	* To display more details (`-l`), or less (`-s`): `mnvc sched -lt SUMMER-2017` or `minervac sched -st 2016WINTER-SUP`
 	* To use a custom report (edit `config.py`): `mnvc sched -t WINTER2017 -r magicreport`
 	* To export your timetable to a HTML file: `minervac sched -t 2016SUMMER -V > ~/summer-schedule.html`
 		* Edit `config.py` to change the way courses are formatted and `sched_timetable.css` to adjust the styling.
@@ -53,7 +55,11 @@ It's way simpler than actually using Minerva!
 	* To export your course schedule to an iCalendar file: `mnvc sched -Ct 2017-WINTER > mcgill-winter-2017.ics`
 		* The resulting file can be imported into your favorite calendar application (Google Calendar works.)
 		* This format may also be called ICS or vCalendar.
-		
+* **Transcripts:*** `mnvc transcript`
+	* To display your transcript: `mnvc transcript`
+	* The term argument is optional, and more than one term can be specified: `minervac transcript -t FALL2016,2017-SUMMER`
+	* Reports (`-r`) and the long (`-l`) and short (`-s`) shortcuts can be used. (See *Scheduling* above.)
+	* To display only your program information (`-S`) and GPA (`-C`): `mnvc transcript -SC`
 * For a full description of available options: `mnvc -h`
 
 
