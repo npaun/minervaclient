@@ -53,10 +53,11 @@ def parse_gpa_block(table,init):
     term_fields = ['nil','tgpa','transfer_credits','nil','term_att','term_earned','term_incl','term_points']
     cumm_fields = ['nil','cgpa','nil','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
     credit_fields = ['transfer_credits','total_credits','term_att','term_earned','term_incl','cumm_att','cumm_earned','cumm_incl']
-   
+  
     if len(cells) != 2:
         return {}
-        
+    
+    
     for cell,field in zip(cells[0].find_all('td'),term_fields):
         gpa[field] = cell.text.strip()
 
@@ -112,8 +113,8 @@ def parse_transcript(text):
             if len(cells) == 1:
                 if cells[0].table:
                     first_cell = cells[0].table.tr.td.text
-                    if first_cell == ' ':
-                        curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
+                    if first_cell.startswith(' '):
+                        transcript[term]['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
                     else:
                         curr['grades'].extend(parse_transfer_credits(cells[0].table,curr['info']))
                 else:
@@ -170,7 +171,6 @@ def print_transcript(trans,terms = None,report = 'transcript_default',show = ['s
                 iter = (term for term in terms)
         else:
                 iter = (term for term in sorted(trans.keys()))
-
 
         for term in iter:
                 termv = trans[term]

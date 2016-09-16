@@ -34,8 +34,8 @@ reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],
 reports['cal_default']['format'] = ["%s %s (%s) %s","%s\\nInstructor: %s\\nCRN: %s\\n%s"]
 reports['cal_default']['sort'] = None #Let the calendar program deal with this
 
-reports['transcript_long']['columns'] = [['term','year','_program'],['term_att','term_earned','cumm_att','cumm_earned','tgpa','term_incl','cgpa','transfer_credits','standing'],['status','remarks','_code','credits_earned','credits','grade','class_avg','_grade_desc']]
-reports['transcript_long']['format'] = ["\n\033[1m%s:\033[0m\nU%s %s\n","%s/%s credits earned (%s/%s total)\tGPA: %s [%s cr.] (%s overall)\nTransfer credits: %s\t\t\tStanding: %s\n","%s %s\t%s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s\n"]
+reports['transcript_long']['columns'] = [['term','status','year','_program'],['term_att','term_earned','cumm_att','cumm_earned','tgpa','term_incl','cgpa','transfer_credits','standing'],['status','remarks','_code','credits_earned','credits','grade','class_avg','_grade_desc']]
+reports['transcript_long']['format'] = ["\n\033[1m%s:\033[0m [%s]\nU%s %s\n","%s/%s credits earned (%s/%s total)\tGPA: %s [%s cr.] (%s overall)\nTransfer credits: %s\t\t\tStanding: %s\n","%s %s\t%s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s\n"]
 reports['transcript_long']['sort'] = ['_code']
 
 

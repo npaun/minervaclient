@@ -184,7 +184,6 @@ def exec_transcript(args):
 	if args.grades:
 		show.append('grades')
 
-
 	transcript.get_transcript(terms,report,show)
 
 main()
