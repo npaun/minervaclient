@@ -162,7 +162,7 @@ def load_transcript_format(report):
 
         return (fmt_1,fmt_2,fmt_3)
 
-def print_transcript(trans,terms = None,report = 'transcript_default',show = ['info','grades','gpa']):
+def print_transcript(trans,terms = None,report = 'transcript_default',show = ['summary','credit','grades']):
         if 'header' not in show:
                 del trans['000000']
 
@@ -176,10 +176,10 @@ def print_transcript(trans,terms = None,report = 'transcript_default',show = ['i
                 termv = trans[term]
                 (info_fmt,gpa_fmt,grades_fmt) = load_transcript_format(report)
                         
-                if 'info' in show:    
+                if 'summary' in show:    
                         sys.stdout.write(sched_parse.apply_format(termv['info'],info_fmt))
                 
-                if 'gpa' in show and 'tgpa' in termv['info']:
+                if 'credit' in show and 'tgpa' in termv['info']:
                         sys.stdout.write(sched_parse.apply_format(termv['info'],gpa_fmt))
 
 
@@ -190,6 +190,6 @@ def print_transcript(trans,terms = None,report = 'transcript_default',show = ['i
                         for grade in grades:
                                 sys.stdout.write(sched_parse.apply_format(grade,grades_fmt))
 
-def transcript_report(text,terms = None,report = 'transcript_default',show = ['info','grades','gpa']):
+def transcript_report(text,terms = None,report = 'transcript_default',show = ['summary','credit','grades']):
         trans = parse_transcript(text)
         print_transcript(trans,terms,report,show)

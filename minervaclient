@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import reg,sched
+import reg,sched,transcript
 from minerva_common import *
 import config,credentials_local
 
@@ -36,12 +36,28 @@ def parse_sched(subp):
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.set_defaults(which='sched')
 
+def parse_transcript(subp):
+	parser = subp.add_parser('transcript',help='Display your transcript')
+	parser.add_argument("-t","--term",help="The term or terms, separated by commas for which to display the transcript. If no term is specified, records from all terms will be displayed")
+	parser.add_argument("-D","--diff-set",help="[TODO] Monitor the requested report for any changes compared with the previous reports in the diff set")
+	parser.add_argument("-r","--report",help="Choose which transcript report to display (see config.py to configure")
+	parser.add_argument("-l","--long",help="Show a detailed report of the transcript",action="store_true")
+	parser.add_argument("-s","--short",help="Show a brief report of the transcript",action="store_true")
+	parser.add_argument("-G","--grades",help="Include grades in the report",action="store_true")
+	parser.add_argument("-C","--credit",help="Include credit/GPA information in the report",action="store_true")
+	parser.add_argument("-S","--summary",help="Include a summary (program, status, etc). in the report",action="store_true")
+	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
+	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.set_defaults(which='transcript')
+
+
 def main():
 	ap = argparse.ArgumentParser()
 	subp = ap.add_subparsers(help = 'Minervaclient subcommands')
 
 	parse_reg(subp)
 	parse_sched(subp)
+	parse_transcript(subp)
 
 	args = ap.parse_args()
 
@@ -49,6 +65,8 @@ def main():
 		exec_reg(args)
 	elif args.which == 'sched':
 		exec_sched(args)
+	elif args.which == 'transcript':
+		exec_transcript(args)
 
 def course_ref_type(arg):
 	return arg[0].isalpha()
@@ -135,6 +153,39 @@ def exec_sched(args):
 	
 	sched.course_details(term,report,visual=args.visual,calendar=args.calendar,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
 
+
+def exec_transcript(args):
+	if args.term is None:
+		terms = None
+	else:
+		terms = []
+		for term in args.term.split(','):
+			terms.append(get_term_code(term))
+
+
+	if args.report is not None:
+		report = args.report
+	elif args.long:
+		report = 'transcript_long'
+	elif args.short:
+		report = 'transcript_short'
+	else:
+		report = 'transcript_default'
+
+
+	show = ['summary','credit','grades']
+	if args.summary or args.grades or args.credit:
+		show = []
+
+	if args.summary:
+		show.append('summary')
+	if args.credit:
+		show.append('credit')
+	if args.grades:
+		show.append('grades')
+
+
+	transcript.get_transcript(terms,report,show)
 
 main()
 
