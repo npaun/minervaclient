@@ -162,8 +162,8 @@ def load_transcript_format(report):
 
         return (fmt_1,fmt_2,fmt_3)
 
-def transcript_report(trans,terms = None,report = 'transcript_default',show_info = True,show_gpa = True,show_grades = True,show_header = False):
-        if not show_header:
+def print_transcript(trans,terms = None,report = 'transcript_default',show = ['info','grades','gpa']):
+        if 'header' not in show:
                 del trans['000000']
 
         if terms is not None:
@@ -176,22 +176,20 @@ def transcript_report(trans,terms = None,report = 'transcript_default',show_info
                 termv = trans[term]
                 (info_fmt,gpa_fmt,grades_fmt) = load_transcript_format(report)
                         
-                if show_info:    
+                if 'info' in show:    
                         sys.stdout.write(sched_parse.apply_format(termv['info'],info_fmt))
                 
-                if show_gpa and 'tgpa' in termv['info']:
+                if 'gpa' in show and 'tgpa' in termv['info']:
                         sys.stdout.write(sched_parse.apply_format(termv['info'],gpa_fmt))
 
 
-                if show_grades and termv['grades']:
+                if 'grades' in show and termv['grades']:
                         sort = config.reports[report]['sort']
                         grades = sched_parse.multi_keysort(termv['grades'],sort)
                         print ""
                         for grade in grades:
                                 sys.stdout.write(sched_parse.apply_format(grade,grades_fmt))
 
-
-f = open('/home/np//minervaslammer/trans1.html').read()
-transcript_report(parse_transcript(f),report = 'transcript_long',show_header=True)
-
-
+def transcript_report(text,terms = None,report = 'transcript_default',show = ['info','grades','gpa']):
+        trans = parse_transcript(text)
+        print_transcript(trans,terms,report,show)
