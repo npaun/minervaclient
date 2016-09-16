@@ -72,6 +72,15 @@ def parse_gpa_block(table,init):
 
     return gpa
 
+def parse_transfer(text):
+        source,num = re.match("From: (.*)? *- *(.*?) credits",text).groups()
+        return {'xfer_source': source, 'xfer_credits': num}
+
+def parse_transfer_credits(table):
+        for row in table.find_all('tr'):
+                print row
+
+        return []
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<br>","\n")
 	html = BeautifulSoup(text,'html.parser')
@@ -86,8 +95,11 @@ def parse_transcript(text):
             cells = row.find_all('td',recursive=False)
             if len(cells) == 1:
                 if cells[0].table:
-                    print "wtf"
-                    curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
+                    first_cell = cells[0].table.tr.td.text
+                    if first_cell == ' ':
+                        curr['info'].update(parse_gpa_block(cells[0].table,transcript['000000']['info']))
+                    else:
+                        curr['grades'].extend(parse_transfer_credits(cells[0].table))
                 else:
                     if not cells[0].span:
                         continue
@@ -104,12 +116,13 @@ def parse_transcript(text):
                     elif text.startswith('Standing'): #This is your term standing
                         nil,standing_text = text.split(":")
                         curr['info']['standing'] = standing_text.strip()
+                    elif text.startswith('From:'): #This is advanced standing stuff
+                        curr['info'].update(parse_transfer(text))
                     elif term == '000000':
                         curr['info'].update(parse_init_block(text,heading))
                     elif "\n" in text: #This is the degree block
                         curr['info'].update(parse_info_block(text))
             else:
-                print "wtf"
                 if term:
                     curr['grades'].append(parse_record(cells))
 
@@ -133,7 +146,6 @@ def transcript_report(trans,terms = None,report = 'transcript_default',show_info
         if not show_header:
                 del trans['000000']
 
-        print trans
         if terms is not None:
                 iter = (term for term in terms)
         else:

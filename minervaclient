@@ -57,14 +57,14 @@ def course_ref_type(arg):
 
 def save_state(job,data):
 	global state
-	f = open("state.dat","w")
+	f = open("/home/np/git/minervaclient/state.dat","w")
 	state[job].extend(data)
 	f.write(json.dumps(state))
 	f.close()
 
 def restore_state(job,courses):
 	global state
-	state = json.loads(open("state.dat").read())
+	state = json.loads(open("/home/np/git/minervaclient/state.dat").read())
 	if job in state:
 		courses = list(set(courses) - set(state[job]))
 		print courses
