@@ -22,19 +22,17 @@ def parse_reg(subp):
 	parser.set_defaults(which='reg')
 
 def parse_sched(subp):
-	parser = subp.add_parser('sched',help='Display your schedule or transcript')
-	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
+	parser = subp.add_parser('sched',help='Display your course schedule')
+	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) for which to display the schedule",required=True)
 	parser.add_argument("-D","--diff-set",help="[TODO] Monitor the requested report for any changes compared with the previous reports in the diff set")
 	parser.add_argument("-r","--report",help="Choose which schedule report to display (see config.py to configure")
 	parser.add_argument("-l","--long",help="Show a detailed report of the schedule",action="store_true")
 	parser.add_argument("-s","--short",help="Show a brief report of the schedule",action="store_true")
-	parser.add_argument("-T","--transcript",help="[TODO] Show your transcript",action="store_true")
 	parser.add_argument("-V","--visual",help="Export a visual course timetable",action="store_true")
 	parser.add_argument("-C","--calendar",help="Export a calendar containing the course schedule",action="store_true")
 	parser.add_argument("--conflicts-only",help="Only show course conflicts",action="store_true")
 	parser.add_argument("--no-conflicts",help="Don't show course conflicts",action="store_true")
 	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
-	parser.add_argument("-d","--delay",help="[TODO] Introduces random delays between requests and before starting, to help you better fit in as a human.")
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.set_defaults(which='sched')
 
