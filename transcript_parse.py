@@ -25,7 +25,7 @@ def parse_record(cells):
 def parse_init_block(text,heading):
     prev_degree = heading.text.split("\n")[-1]
     info = {'year': '-', 'degree': prev_degree, '_program': prev_degree}
-    
+
     for line in text.split("\n"):
         if line.startswith("Credits Required"):
             info['program_group'],info['program_credits'] = re.match("Credits Required for (.*?) *- *(.*?) credits",line).groups()
@@ -98,14 +98,14 @@ def parse_transfer_credits(table,info):
         return records
 
 def parse_transcript(text):
-        text = text.replace("&nbsp;"," ").replace("<br>","\n")
+        text = text.replace("&nbsp;"," ").replace("<BR>","\n")
 	html = BeautifulSoup(text,'html.parser')
         transcript = {}
 	term = None
-        tables = html.body.find_all('table',{'class': 'dataentrytable'})
-        tbl_personal = tables[0]
-        tbl_transcript = tables[1]
-        trans_rows = tbl_transcript.tbody.find_all('tr',recursive=False)
+        tables = html.body.find_all('table',{'class': 'main'})
+        #tbl_personal = tables[0]
+        tbl_transcript = tables[0]
+        trans_rows = tbl_transcript.find_all('tr',recursive=False)
 
         for row in trans_rows:
             cells = row.find_all('td',recursive=False)
@@ -120,7 +120,7 @@ def parse_transcript(text):
                     if not cells[0].span:
                         continue
 
-                    text = cells[0].span.text
+                    text = cells[0].span.text.strip()
 
                     if cells[0].span.b:
                         heading = cells[0].span
@@ -129,6 +129,8 @@ def parse_transcript(text):
                         curr = transcript[term]
                         curr['info']['term'] = heading.b.text.strip()
 
+                    elif text == '':
+                       continue
                     elif text.startswith('Standing'): #This is your term standing
                         nil,standing_text = text.split(":")
                         curr['info']['standing'] = standing_text.strip()
