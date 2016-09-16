@@ -26,9 +26,15 @@ def minerva_post(func,req):
 def minerva_login():
 	minerva_get("twbkwbis.P_WWWLogin")
 	minerva_post("twbkwbis.P_ValLogin",{'sid': credentials_local.id, 'PIN': credentials_local.pin})
-	r = minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")
+	minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_MainMnu")
+
+def minerva_reg_menu():
+	minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu")
 	minerva_get('twbkwbis.P_GenMenu?name=bmenu.P_RegMnu&param_name=SRCH_MODE&param_val=NON_NT')
 
+def minerva_records_menu():
+	minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_StuMainMnu")
+	minerva_get("twbkwbis.P_GenMenu?name=bmenu.P_AdminMnu")
 
 class MinervaState:
         register,wait,closed,possible,unknown,wait_places_remaining,full,full_places_remaining,only_waitlist_known = range(9)

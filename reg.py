@@ -28,6 +28,8 @@ def reg_courses(text,crns):
 # Example: fast_register('201609',['814'])
 def fast_register(term,crns,dry_run = False):
 	minerva_login()
+	minerva_reg_menu()
+
 	courses = get_registered(term)
 
 	print "* You will be registered in the following CRNs " + str(crns)
@@ -44,11 +46,14 @@ def check_register(term,course_codes,require_all = False,require_reg = False,dry
 		courses = pub_search.search(term,course_codes)
 	else:
 		minerva_login()
+		minerva_reg_menu()
 		courses = auth_search.search(term,course_codes)
 
 	crns,course_ok = check_courses(courses,course_codes,require_all,require_reg)
 
-	if public_search: minerva_login()
+	if public_search: 
+		minerva_login()
+		mineva_reg_menu()
 
 	current = get_registered(term)
 
