@@ -4,7 +4,7 @@ import sched_parse,sched_timetable,sched_ics
 
 def course_details(term,report = 'default',visual = False,calendar = False,conflicts_only = False,no_conflicts = False):
 	minerva_login()
-	mineva_reg_menu()
+	minerva_reg_menu()
 	minerva_get('bwskfshd.P_CrseSchdDetl')
 	r = minerva_post('bwskfshd.P_CrseSchdDetl',{'term_in': term})
 
