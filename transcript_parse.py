@@ -24,7 +24,7 @@ def parse_record(cells):
 
 def parse_init_block(text,heading):
     prev_degree = heading.text.split("\n")[-1]
-    info = {'year': '-', 'degree': prev_degree, '_program': prev_degree}
+    info = {'year': '-', 'degree': prev_degree, '_program': prev_degree,'status': 'General information'}
 
     for line in text.split("\n"):
         if line.startswith("Credits Required"):
@@ -98,14 +98,38 @@ def parse_transfer_credits(table,info):
 
         return records
 
+def parse_student_block(table):
+    info = {}
+    label_field = {'Student Name:': 'name', 'McGill ID:': 'sid', 'Permanent Code:': 'permcode', 'Advisor(s):': 'advisor'}
+
+    for row in table.find_all('tr'):
+        cells = row.find_all('td')
+        key_label = cells[0].text.strip()
+        key = label_field[key_label]
+
+        value = cells[1].text.strip()
+
+        info[key] = value
+
+    info['_sn'],info['_givenName'] = info['name'].split(', ')
+
+    return info
+
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<BR>","\n")
+        f = open('trasn','wu')
+        f.write(text.encode('ascii','ignore'))
+
 	html = BeautifulSoup(text,'html.parser')
         transcript = {}
 	term = None
         tables = html.body.find_all('table',{'class': 'main'})
-        #tbl_personal = tables[0]
         tbl_transcript = tables[0]
+
+        student_info_tables = html.body.find_all('table',{'class': 'student_info'})
+        tbl_student = student_info_tables[0]
+        student_info = parse_student_block(tbl_student) # Just in case someone wants their name, or Permanent code, etc.
+
         trans_rows = tbl_transcript.find_all('tr',recursive=False)
 
         for row in trans_rows:
@@ -147,6 +171,8 @@ def parse_transcript(text):
                     if record is not None:
                         curr['grades'].append(parse_record(cells))
 
+
+        transcript['000000']['info'].update(student_info)
 
         return transcript
 
