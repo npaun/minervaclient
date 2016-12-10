@@ -52,9 +52,9 @@ reports['transcript_short']['columns'] = [['term','year'],['term_earned','cumm_e
 reports['transcript_short']['format'] = ["\n\033[1m%s\033[0m (U%s)\n","Credits: %s (%s)\tGPA: %s/%s\n","%s %s\t%s\t%- 2s\t\t%s\n"]
 reports['transcript_short']['sort'] = ['_code']
 
-reports['exams_default']['columns'] = ['subject','course','section','_date_fmt','_time_fmt','building','room','rows','_desc']
+reports['exams_default']['columns'] = ['subject','course','section','date','time','_building','room','rows','_desc']
 reports['exams_default']['format'] = "%s %s (%s)\t\t%s\t@ %- 5s\t\t%-16.16s %-10s\t%-6s\t%s\n"
-reports['exams_default']['sort'] = ['date','time','_code']
+reports['exams_default']['sort'] = ['_date_sort','_time_sort','_code']
 
 reports['exams_notfound']['columns'] = ['_code','_reason']
 reports['exams_notfound']['format'] = "%s:\t%s\n"

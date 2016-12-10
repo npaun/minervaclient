@@ -40,8 +40,9 @@ def get_exam_sched(term):
     return r.json()
 
 def rewrite_record(record):
+    record['_date_sort'] = record['date']
     date_1 = dt.strptime(record['date'],'%Y-%m-%d')
-    record['_date_fmt'] = date_1.strftime(config.date_fmt['exam_date'])
+    record['date'] = date_1.strftime(config.date_fmt['exam_date'])
 
     if 'date_2' in record and date_2 != '':
         date_2 = dt.strptime(record['date_2'],'%Y-%m-%d')
@@ -51,10 +52,12 @@ def rewrite_record(record):
         else:
             date_2_fmt = date_2.strftime(config.date_fmt['exam_date'])
 
-        record['_date_fmt'] += "/" + date_2_fmt
+        record['date'] += "/" + date_2_fmt
 
-    
-    record['_time_fmt'] = dt.strptime(record['time'], '%H:%M').strftime(config.date_fmt['exam_time'])
+    record['_time_sort'] = record['time']
+    record['time'] = dt.strptime(record['time'], '%H:%M').strftime(config.date_fmt['exam_time'])
+
+    record['_building'] = get_bldg_abbrev(get_bldg_name(record['building']))
 
     record['_desc'] = record['_note_th'] + " " + record['_note_id']
 
