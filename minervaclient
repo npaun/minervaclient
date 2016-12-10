@@ -29,7 +29,7 @@ def parse_sched(subp):
 	parser.add_argument("-l","--long",help="Show a detailed report of the schedule",action="store_true")
 	parser.add_argument("-s","--short",help="Show a brief report of the schedule",action="store_true")
 	parser.add_argument("-V","--visual",help="Export a visual course timetable",action="store_true")
-	parser.add_argument("-C","--calendar",help="Export a calendar containing the course schedule",action="store_true")
+	parser.add_argument("-C","--calendar",help="Export a calendar for the course schedule (or exam schedule if -E is given)",action="store_true")
         parser.add_argument("-E","--exams",help="Show the final exam schedule for your courses.",action="store_true")
 	parser.add_argument("--conflicts-only",help="Only show course conflicts",action="store_true")
 	parser.add_argument("--no-conflicts",help="Don't show course conflicts",action="store_true")
@@ -145,10 +145,6 @@ def exec_sched(args):
 	
 	if args.report is not None:
 		report = args.report
-	elif args.long:
-		report = 'long'
-	elif args.short:
-		report = 'short'
 	elif args.visual:
 		report = 'timetable_default'
 	elif args.calendar:
@@ -157,6 +153,10 @@ def exec_sched(args):
 		report = 'conflicts'
         elif args.exams:
                 report = 'exams_default'
+	elif args.long:
+		report = 'long'
+	elif args.short:
+		report = 'short'
 	else:
 		report = 'default'
 
