@@ -21,6 +21,10 @@ def get_courses(term):
 def get_exam_sched(term):
     repo = config.data_source[0]
     url = repo + "exams-" + term + ".json"
+    
+    if minvera_common.is_verbose():
+        print "D?", url
+        
     r = requests.get(url)
     if r.status_code == 404:
         print """
