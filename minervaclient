@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import reg,sched,sched_exams,transcript
+import reg,sched,exams,transcript
 from minerva_common import *
 import config,credentials_local
 
@@ -16,7 +16,7 @@ def parse_reg(subp):
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
 	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
 	parser.add_argument("-P","--public-search",help="[BUGGY] Do not log into Minerva to search !!! This option can only be used to register for the waitlist !!!",action="store_true")
-	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.add_argument("-q","--quiet",help="[TODO] Only print output for successful registration",action="store_true")
 	parser.add_argument('course',nargs='+',help="A series of CRNs (e.g. 814 202) or course codes (POLI-244-001 COMP-251-002), but not both.")
 	parser.set_defaults(which='reg')
@@ -34,7 +34,7 @@ def parse_sched(subp):
 	parser.add_argument("--conflicts-only",help="Only show course conflicts",action="store_true")
 	parser.add_argument("--no-conflicts",help="Don't show course conflicts",action="store_true")
 	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
-	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.set_defaults(which='sched')
 
 def parse_transcript(subp):
@@ -49,12 +49,8 @@ def parse_transcript(subp):
 	parser.add_argument("-S","--summary",help="Include a summary (program, status, etc). in the report",action="store_true")
         parser.add_argument("-P","--header",help="Show the transcript header, which includes personal information and previous education, etc.",action="store_true")
 	parser.add_argument("-f","--format",help="[TODO] Choose text format for the displayed report")
-	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
+	parser.add_argument("-v", "--verbose", help="Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.set_defaults(which='transcript')
-
-
-
-
 
 def main():
 	ap = argparse.ArgumentParser()
@@ -163,7 +159,7 @@ def exec_sched(args):
         if not args.exams:
 	    sched.course_details(term,report,visual=args.visual,calendar=args.calendar,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
         else:
-            sched_exams.final_exam_schedule(term,report)
+            exams.final_exam_schedule(term,report)
 
 
 def exec_transcript(args):
