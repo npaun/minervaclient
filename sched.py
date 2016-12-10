@@ -2,6 +2,8 @@ import requests
 from minerva_common import *
 import sched_parse,sched_timetable,sched_ics
 
+
+
 def course_details(term,report = 'default',visual = False,calendar = False,conflicts_only = False,no_conflicts = False):
 	minerva_login()
 	minerva_reg_menu()

@@ -8,6 +8,7 @@ def get_courses(term):
     minerva_login()
     minerva_records_menu()
     r = minerva_get("bzsktran.P_Display_Form?user_type=S&tran_type=V")
+    trans = transcript_parse.parse_transcript(r.text)
 
     sn = dequebecify(trans['000000']['info']['_sn'].upper()) # The surname is used to find which exam room the student is assigned to
     courses = []
@@ -88,7 +89,7 @@ def find_exams(sched,(sn,courses)):
 	
     return (entries,notfound)
 
-def get_exams(term = None, report = 'exams_default'):
+def final_exam_schedule(term = None, report = 'exams_default'):
     sched = get_exam_sched(term)
     keys =  get_courses(term)
     exams,notfound = find_exams(sched,keys)
