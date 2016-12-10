@@ -51,6 +51,10 @@ def parse_transcript(subp):
 	parser.add_argument("-v", "--verbose", help="[TODO] Show details about the HTTP requests sent to Minerva",action="store_true")
 	parser.set_defaults(which='transcript')
 
+def parse_exams(subp):
+    parser = subp.add_argument('exams',help='Display your exam schedule')
+    parser.add_argument('-t'
+
 
 def main():
 	ap = argparse.ArgumentParser()

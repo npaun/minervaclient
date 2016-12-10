@@ -228,3 +228,15 @@ verbose = False
 def set_loglevel(set_verbose):
 	global verbose
 	verbose = set_verbose
+
+
+def dequebecify(input):
+    # From <http://stackoverflow.com/questions/517923>
+    # This function only transliterates French diacritics.
+    # If you need to separate Quebec from Canada, try:
+    # roc,qc = canada.sovereignty_referendum('quebec')
+
+    import unicodedata
+    return ''.join(c for c in unicodedata.normalize('NFD', input)
+            if unicodedata.category(c) != 'Mn')
+
