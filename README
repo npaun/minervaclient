@@ -1,20 +1,21 @@
 # Minervac
 ### The Minerva Client
 
-`minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule or transcript, and register for courses by CRN or course code. Course schedules can be formatted with custom reports, conflicts are detected, and HTML timetables, as well as importable calendar files, can be produced. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
+`minervac` is a CLI client for Minerva's course registration facilities. Currently, the program can display your current course schedule, final exam schedule, or transcript, and register for courses by CRN or course code. Course schedules can be formatted with custom reports, conflicts are detected, and HTML timetables, as well as importable calendar files, can be produced. Previously registered courses are recorded and `minervac` will only attempt registration for the remaining courses on each run.
 The program is implemented in Python and currently is very hacky. Pull requests welcome. If you have ideas for features or have found a bug, please open an issue.
 
 ![Registering for a course](http://i.imgur.com/9FciOtv.png)  
 **[More screenshots](#screenshots)**
 
 ## Updates
-
 1. ****
- * You can now query your transcript (`mnvc transcript`)
+ * You can now view your final exam schedule (`mnvc sched -E`)
 2. ****
+ * You can now query your transcript (`mnvc transcript`)
+3. ****
  * A visual timetable feature has been implemented. (-V).
  * Calendar export is now available (vCalendar format only). (-C)
-3. ****
+4. ****
  * The command-line interface won't be modified anymore, only extended. Configuration format is still in flux.
  * Displaying course schedule information with custom reports.
  
@@ -55,11 +56,13 @@ It's way simpler than actually using Minerva!
 	* To export your course schedule to an iCalendar file: `mnvc sched -Ct 2017-WINTER > mcgill-winter-2017.ics`
 		* The resulting file can be imported into your favorite calendar application (Google Calendar works.)
 		* This format may also be called ICS or vCalendar.
+	* To display your final exam schedule: `mnvc sched -t FALL2016 -E`
 * **Transcripts:*** `mnvc transcript`
 	* To display your transcript: `mnvc transcript`
 	* The term argument is optional, and more than one term can be specified: `minervac transcript -t FALL2016,2017-SUMMER`
 	* Reports (`-r`) and the long (`-l`) and short (`-s`) shortcuts can be used. (See *Scheduling* above.)
 	* To display only your program information (`-S`) and GPA (`-C`): `mnvc transcript -SC`
+	* To display some miscellaneous transcript information as well (`-P`): `mnvc transcript -P`
 * For a full description of available options: `mnvc -h`
 
 
@@ -75,7 +78,6 @@ It's way simpler than actually using Minerva!
 
 ## Further development
 
-* Querying the unofficial transcript.
 * Displaying degree evaluation reports.
 * Monitoring schedules and transcripts for changes.
 * **Won't implement:** While it would be trivial to support dropping courses, I am worried that this may mess up people's schedules as Minerva does not perform truly atomic transactions. Furthermore, it may mess up my own schedule and so I don't want to test it. If you're braver than I am, please send me a pull request.
@@ -86,11 +88,12 @@ It's way simpler than actually using Minerva!
 1. You are solely responsible for deciding if `minervac` is compliant with McGill's policies, and if you want to assume this risk.
     * Start reading here: [McGill Policy on the Responsible Use of IT Resources](http://www.mcgill.ca/secretariat/files/secretariat/responsible-use-of-mcgill-it-policy-on-the.pdf), but there are most definitely more policies that may be applicable to this program and its use.
 2. `minervac` might mess up your course schedule in a very bad sort of way.
-3. `minervac` might suddenly stop working if Minerva is changed.
-4. Minerva is a horrible, horrible program and may give you a serious headache if you try to extend this program.
-5. This program was badly written, in a rush, and might have some serious design flaws.
-6. I'm not actually a Python programmer.
-7. May give CS hipsters a headache.
+3. The exam data may be seriously incorrect, as it is generated from a messed-up PDF.
+4. `minervac` might suddenly stop working if Minerva is changed.
+5. Minerva is a horrible, horrible program and may give you a serious headache if you try to extend this program.
+6. This program was badly written, in a rush, and might have some serious design flaws.
+7. I'm not actually a Python programmer.
+8. May give CS hipsters a headache.
 
 ## Screenshots
 
