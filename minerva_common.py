@@ -1,4 +1,4 @@
-import credentials_local
+import config,credentials_local
 import requests,sys
 import datetime
 from datetime import datetime as dt
@@ -239,4 +239,36 @@ def dequebecify(input):
     import unicodedata
     return ''.join(c for c in unicodedata.normalize('NFD', input)
             if unicodedata.category(c) != 'Mn')
+
+def fetch_buildings_table():
+    repo = config.data_source[0]
+    url = repo + "buildings.json"
+
+    r = requests.get(url)
+    if r.status_code != 200:
+        print "\033[1;31mFailed to download buildings table."
+        sys.exit(1)
+
+    f = open('buildings.json','w')
+    f.write(r.text)
+    f.close()
+
+
+def get_bldg_name(code):
+    import json
+    try: 
+        f = open('buildings.json')
+    except Exception:
+        fetch_buildings_table()
+        get_bldg_name(code)
+
+    buildings = json.loads(f.read())
+
+    if code in buildings:
+        return buildings[code]['name']
+    else:
+        return code #If we don't know, just stick with what we have
+
+
+print get_bldg_abbrev(get_bldg_name('MORRICEHALL'))
 

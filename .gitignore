@@ -4,3 +4,4 @@ state.dat
 *.html
 *.ics
 *.pyc
+*.json
