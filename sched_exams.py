@@ -22,7 +22,7 @@ def get_exam_sched(term):
     repo = config.data_source[0]
     url = repo + "exams-" + term + ".json"
     
-    if minerva_common.is_verbose():
+    if is_verbose():
         print "D?", url
         
     r = requests.get(url)
