@@ -229,6 +229,9 @@ def set_loglevel(set_verbose):
 	global verbose
 	verbose = set_verbose
 
+def is_verbose():
+    global verbose
+    return verbose
 
 def dequebecify(input):
     # From <http://stackoverflow.com/questions/517923>
@@ -244,7 +247,10 @@ def fetch_buildings_table():
     repo = config.data_source[0]
     url = repo + "buildings.json"
 
-    r = requests.get(url)
+    if is_verbose():
+        print "D?", url
+
+    r  = requests.get(url)
     if r.status_code != 200:
         print "\033[1;31mFailed to download buildings table."
         sys.exit(1)
