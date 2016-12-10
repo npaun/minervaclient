@@ -23,7 +23,7 @@ def get_exam_sched(term):
     url = repo + "exams-" + term + ".json"
     
     if is_verbose():
-        print "D?", url
+        print "D", url
         
     r = requests.get(url)
     if r.status_code == 404:

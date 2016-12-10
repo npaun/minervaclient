@@ -248,7 +248,7 @@ def fetch_buildings_table():
     url = repo + "buildings.json"
 
     if is_verbose():
-        print "D?", url
+        print "D", url
 
     print "Downloading buildings database....."
 
@@ -278,5 +278,4 @@ def get_bldg_name(code):
         return code #If we don't know, just stick with what we have
 
 
-print get_bldg_abbrev(get_bldg_name('MORRICEHALL'))
 
