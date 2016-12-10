@@ -258,7 +258,7 @@ def fetch_buildings_table():
         sys.exit(1)
 
     f = open('buildings.json','w')
-    f.write(r.text)
+    f.write(r.text.encode('UTF-8'))
     f.close()
 
 
@@ -268,7 +268,7 @@ def get_bldg_name(code):
         f = open('buildings.json')
     except Exception:
         fetch_buildings_table()
-        get_bldg_name(code)
+        return get_bldg_name(code)
 
     buildings = json.loads(f.read())
 
