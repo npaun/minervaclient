@@ -250,6 +250,8 @@ def fetch_buildings_table():
     if is_verbose():
         print "D?", url
 
+    print "Downloading buildings database....."
+
     r  = requests.get(url)
     if r.status_code != 200:
         print "\033[1;31mFailed to download buildings table."
