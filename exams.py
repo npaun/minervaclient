@@ -65,7 +65,7 @@ def rewrite_record(record):
 
 
 
-def find_exams(sched,(sn,courses)):
+def search_exams(sched,(sn,courses)):
     entries = []
     notfound = []
     for course in courses:
@@ -96,10 +96,14 @@ def find_exams(sched,(sn,courses)):
 	
     return (entries,notfound)
 
-def final_exam_schedule(term = None, report = 'exams_default'):
+def find_exams(term):
     sched = get_exam_sched(term)
     keys =  get_courses(term)
-    exams,notfound = find_exams(sched,keys)
+    return search_exams(sched,keys)
+
+
+def exam_report(term, report = 'exams_default'):
+    exams,notfound = find_exams(term)
 
     if exams:
         sched_parse.print_sched_report(exams,report)

@@ -11,27 +11,16 @@ def find_exam_times(date,time):
 
     return (dt_start,dt_end)
 
-
-def export_ics_sched(sched,report = 'cal'):
-	fmt = sched_ics.prepare_cal_report(report)
-
-	cal = u"""BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
-
-	for entry in sched:
-                dt_start,dt_end = find_exam_times(entry['date'],entry['time'])
-                if 'date_2' in entry:
-                    print "Two day exams are not currently handled."
-
-		location = entry['_building'] + ' ' + entry['room']
+def gen_ics_event(entry,date,time,tag):
+    dt_start,dt_end = find_exam_times(entry['date'],entry['time'])
+    location = entry['_building'] + ' ' + entry['room']
 	
-		summary = sched_ics.ics_escape(sched_parse.apply_format(entry,fmt[0]))
-		description = sched_ics.ics_escape(sched_parse.apply_format(entry,fmt[1]))
-		uid = 'FINAL-' + entry['_code'] + "@minervac.icebergsys.net"
-		created = dt.utcnow().strftime("%Y%m%dT%H%M%SZ")
+    summary = sched_ics.ics_escape(sched_parse.apply_format(entry,fmt[0]))
+    description = sched_ics.ics_escape(sched_parse.apply_format(entry,fmt[1]))
+    uid = entry['_code'] + '-' + tag + "@minervac.icebergsys.net"
+    created = dt.utcnow().strftime("%Y%m%dT%H%M%SZ")
 
-		cal += u"""
+    cal = u"""
 BEGIN:VEVENT
 UID:{uid}
 SUMMARY:{summary}
@@ -42,7 +31,26 @@ DESCRIPTION:{description}
 LOCATION:{location}
 END:VEVENT""".format(uid=uid,summary=summary,description=description,location=location,dt_start=dt_start,dt_end=dt_end,dt_stamp=created)
 
+    return cal
+
+
+
+def export_ics_sched(sched,report = 'cal'):
+	fmt = sched_ics.prepare_cal_report(report)
+
+	cal = u"""BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
+
+	for entry in sched:
+                cal += gen_ics_event(entry,entry['_date_sort'],entry['_time_sort'],'final')
+                if 'date_2' in entry:
+                    cal += gen_ics_event(entry,entry['date_2'],entry['_time_sort'],'final-day-2')
+
 	cal += u"""
 END:VCALENDAR"""
 
 	return cal 
+
+def export_schedule(term,report = 'cal_exams'):
+    exams = exams.find_exams(term,)
