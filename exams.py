@@ -102,7 +102,7 @@ def find_exams(term):
     return search_exams(sched,keys)
 
 
-def exam_report(term, report = 'exams_default'):
+def final_exam_schedule(term, report = 'exams_default'):
     exams,notfound = find_exams(term)
 
     if exams:
