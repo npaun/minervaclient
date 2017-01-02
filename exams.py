@@ -8,6 +8,6 @@ def final_exams(term,report = 'exams_default',calendar = False):
 	if calendar:
 		exams_ics.export_schedule(term,report)
 	else:
-		exams_parse.final_exams_schedule(term,report)
+		exams_parse.final_exam_schedule(term,report)
 
 

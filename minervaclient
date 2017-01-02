@@ -148,7 +148,10 @@ def exec_sched(args):
 	elif args.visual:
 		report = 'timetable_default'
 	elif args.calendar:
-		report = 'cal_default'
+                if args.exams:
+                    report = 'cal_exams'
+                else:
+		    report = 'cal_default'
 	elif args.conflicts_only:
 		report = 'conflicts'
         elif args.exams:
@@ -163,7 +166,7 @@ def exec_sched(args):
         if not args.exams:
 	    sched.course_details(term,report,visual=args.visual,calendar=args.calendar,conflicts_only=args.conflicts_only,no_conflicts=args.no_conflicts)
         else:
-            exams.final_exam_schedule(term,report)
+            exams.final_exams(term,report,calendar=args.calendar)
 
 
 def exec_transcript(args):

@@ -278,4 +278,14 @@ def get_bldg_name(code):
         return code #If we don't know, just stick with what we have
 
 
+iso_date  = {
+        'date': '%Y-%m-%d',
+        'time': '%H:%M',
+        'full': '%Y%m%dT%H%M%S'
+}
 
+minerva_date = {
+        'date': '%b %d, %Y',
+        'time': '%I:%M %p',
+        'full': '%b %d, %Y %I:%M %p'
+}

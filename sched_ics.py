@@ -43,8 +43,8 @@ def find_first_day(days,d_start,t_start,t_end):
 
 	dt_end = dt_end.replace(best_weekday.year,best_weekday.month,best_weekday.day)
 
-	dt_start = best_weekday.strftime("%Y%m%dT%H%M%S")
-	dt_end = dt_end.strftime("%Y%m%dT%H%M%S")
+	dt_start = best_weekday.strftime(iso_date['full'])
+	dt_end = dt_end.strftime(iso_date['full'])
 	ics_days = ",".join(ics_days)
 
 	return (ics_days,dt_start,dt_end)	
@@ -52,7 +52,7 @@ def find_first_day(days,d_start,t_start,t_end):
 def find_last_day(d_end):
 	d_end = dt.strptime(d_end,config.date_fmt['full_date'])
 	d_end += datetime.timedelta(days=1)
-	return d_end.strftime("%Y%m%dT%H%M%S")
+	return d_end.strftime(iso_date['full'])
 
 def prepare_cal_report(report):	
 	if report not in config.reports:
@@ -85,7 +85,7 @@ PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
 		summary = ics_escape(sched_parse.apply_format(entry,fmt[0]))
 		description = ics_escape(sched_parse.apply_format(entry,fmt[1]))
 		uid = entry['_code'] + "@minervac.icebergsys.net"
-		created = dt.utcnow().strftime("%Y%m%dT%H%M%SZ")
+		created = dt.utcnow().strftime(iso_date['full']) + "Z"
 
 		cal += u"""
 BEGIN:VEVENT

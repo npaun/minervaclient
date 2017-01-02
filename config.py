@@ -3,11 +3,19 @@ data_source = ['http://cs.mcgill.ca/~npaun/mnvc-data/']
 
 
 #### Formatting
-date_fmt = {'short_date': '%-m/%-d', 'short_datetime': '%-m/%-d %-H:%-M','short_time': '%Hh%M','full_date': '%Y-%m-%d','exam_date': '%a, %b %e', 'exam_date_continued': '(%a) %d', 'exam_time': '%-l %p'}
+date_fmt = {
+        'short_date': '%-m/%-d',             
+        'short_datetime': '%-m/%-d %-H:%-M',
+        'short_time': '%Hh%M',
+        'full_date': '%Y-%m-%d',
+        'exam_date': '%a, %b %e',           
+        'exam_date_continued': '(%a) %-d',
+        'exam_time': '%-l %p'
+        }
 show_weekend = False
 
 #### Reports
-reports = {'long': {},'default': {},'short': {},'conflicts': {},'timetable_default': {},'cal_default': {},'transcript_default': {},'transcript_short': {},'transcript_long': {},'exams_default': {},'exams_notfound': {}}
+reports = {'long': {},'default': {},'short': {},'conflicts': {},'timetable_default': {},'cal_default': {},'transcript_default': {},'transcript_short': {},'transcript_long': {},'exams_default': {},'exams_notfound': {},'cal_exams': {}}
 
 reports['long']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_building','_room','instructor','_action_desc']
 reports['long']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16.24s\t%s\n"
@@ -54,11 +62,16 @@ reports['transcript_short']['sort'] = ['_code']
 
 reports['exams_default']['columns'] = ['subject','course','section','date','time','_building','room','rows','_desc']
 reports['exams_default']['format'] = "%s %s (%s)\t\t%s\t@ %- 5s\t\t%-16.16s %-10s\t%-6s\t%s\n"
-reports['exams_default']['sort'] = ['_date_sort','_time_sort','_code']
+reports['exams_default']['sort'] = ['_datetime','_code']
 
 reports['exams_notfound']['columns'] = ['_code','_reason']
 reports['exams_notfound']['format'] = "%s:\t%s\n"
 reports['exams_notfound']['sort'] = ['_code']
+
+reports['cal_exams']['columns'] = [['subject','course'],['_code','_building','room','rows','_desc','date','time']]
+reports['cal_exams']['format'] = ['%s %s (FINAL)','%s\\nBuilding: %s / Room: %s / Rows: %s\\n%s\\nDate: %s / Time: %s']
+reports['cal_exams']['sort'] = None # Let the calendar program deal with this
+
 
 
 # vi: ft=python

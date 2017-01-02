@@ -41,7 +41,7 @@ def parse_schedule(text,separate_wait = True):
 		entry['_status_date'] = dt.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
 
 		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] is not None:
-			entry['wait_notify_expires'] = dt.strptime(entry['wait_notify_expires'],'%b %d, %Y %I:%M %p').strftime(config.date_fmt['short_datetime'])
+			entry['wait_notify_expires'] = dt.strptime(entry['wait_notify_expires'],minerva_date['full']).strftime(config.date_fmt['short_datetime'])
 			entry['_action_desc'] = "[\033[1;32mReg by " + entry['wait_notify_expires'] + "\033[0m]"
 		elif 'wait_pos' in entry:
 			entry['_action_desc'] = "[#" + entry['wait_pos'] + " on waitlist]"
@@ -75,8 +75,8 @@ def parse_schedule(text,separate_wait = True):
 		t_bits = entry['time_range'].split(" - ")
 		if len(t_bits) == 2:	
 			t_start,t_end = entry['time_range'].split(" - ")
-			t_start = dt.strptime(t_start,'%I:%M %p').strftime(config.date_fmt['short_time'])
-			t_end = dt.strptime(t_end,'%I:%M %p').strftime(config.date_fmt['short_time'])
+			t_start = dt.strptime(t_start,minerva_date['time']).strftime(config.date_fmt['short_time'])
+			t_end = dt.strptime(t_end,minerva_date['time']).strftime(config.date_fmt['short_time'])
 			t_range = '-'.join([t_start,t_end])
 			entry['_time'] = {}
 			entry['_time']['start'] = t_start
@@ -86,8 +86,8 @@ def parse_schedule(text,separate_wait = True):
 			entry['time_range'] = t_bits[0]
 
 		d_start,d_end = entry['date_range'].split(" - ")
-		d_start = dt.strptime(d_start,'%b %d, %Y').strftime(config.date_fmt['full_date'])
-		d_end = dt.strptime(d_end,'%b %d, %Y').strftime(config.date_fmt['full_date'])
+		d_start = dt.strptime(d_start,minerva_date['date']).strftime(config.date_fmt['full_date'])
+		d_end = dt.strptime(d_end,minerva_date['date']).strftime(config.date_fmt['full_date'])
 		d_range = ' / '.join([d_start,d_end]) #ISO made me do it
 		entry['_date'] = {'start': d_start,'end': d_end}
 		entry['date_range'] = d_range
