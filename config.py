@@ -1,18 +1,18 @@
 #### Datasets
-data_source = ['http://cs.mcgill.ca/~npaun/mnvc-data/']
+data_source = ['http://cs.mcgill.ca/~npaun/mnvc-data/'] # Where should common datasets be downloaded from? There is only one option for now.
 
 
 #### Formatting
 date_fmt = {
-        'short_date': '%-m/%-d',             
-        'short_datetime': '%-m/%-d %-H:%-M',
-        'short_time': '%Hh%M',
-        'full_date': '%Y-%m-%d',
-        'exam_date': '%a, %b %e',           
-        'exam_date_continued': '(%a) %-d',
-        'exam_time': '%-l %p'
+        'short_date': '%-m/%-d', # Short date          
+        'short_datetime': '%-m/%-d %-H:%-M', # Short date and time
+        'short_time': '%Hh%M', # Quebec style time format
+        'full_date': '%Y-%m-%d', # ISO date format
+        'exam_date': '%a, %b %e', # Provides day of the week, abbreviated month and day          
+        'exam_date_continued': '(%a) %-d', # When two day exams are scheduled
+        'exam_time': '%-l %p' # Starting time for exams
         }
-show_weekend = False
+show_weekend = False # When generating timetables, should the weekend be shown? (Do you have weekend courses?)
 
 #### Reports
 
