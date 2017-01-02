@@ -2,11 +2,7 @@ import sched_parse,sched_ics,exams_parse,config
 from datetime import datetime as dt
 from minerva_common import *
 
-def find_exam_times(date,time):
-    date_fmt = config.date_fmt['exam_date'].replace('%e','%d').replace('%-','%') # Dirty hack because python refuses to parse some stuff it emits 
-    time_fmt = config.date_fmt['exam_time'].replace('%-l','%I').replace('%-','%') # Ditto
-
-    start = dt.strptime(date + " " + time, date_fmt + " " + time_fmt)
+def find_exam_times(start):
     end = start + datetime.timedelta(hours = +3) # (voiceover) "All exams are three hours in duration."
 
     dt_start = start.strftime(iso_date['full'])
@@ -14,8 +10,8 @@ def find_exam_times(date,time):
 
     return (dt_start,dt_end)
 
-def gen_ics_event(entry,date,time,fmt,tag):
-    dt_start,dt_end = find_exam_times(date,time)
+def gen_ics_event(entry,datetime,fmt,tag):
+    dt_start,dt_end = find_exam_times(datetime)
     location = entry['_building'] + ' ' + entry['room']
 	
     summary = sched_ics.ics_escape(sched_parse.apply_format(entry,fmt[0]))
@@ -46,9 +42,9 @@ VERSION:2.0
 PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
 
 	for entry in sched:
-                cal += gen_ics_event(entry,entry['date'],entry['time'],fmt,'final')
+                cal += gen_ics_event(entry,entry['_datetime'][0],fmt,'final')
                 if 'date_2' in entry:
-                    cal += gen_ics_event(entry,entry['date_2'],entry['time'],fmt,'final-day-2')
+                    cal += gen_ics_event(entry,entry['_datetime'][1],fmt,'final-day-2')
 
 	cal += u"""
 END:VCALENDAR"""
