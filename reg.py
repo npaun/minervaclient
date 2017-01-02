@@ -26,7 +26,7 @@ def reg_courses(text,crns):
                     result = reg_parse.quick_add_issue("Waitlist really is full.")
                     
 
-	elif result == MinervaError.reg_fail:
+	if result == MinervaError.reg_fail:
 		sys.exit(MinervaError.reg_fail)
 
 # Attempts to register for a course by CRN without checking for room
