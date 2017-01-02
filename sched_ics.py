@@ -1,7 +1,6 @@
 import sched_parse,config
 from datetime import datetime as dt
 from minerva_common import *
-import pytz
 
 
 
