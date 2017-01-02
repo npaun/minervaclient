@@ -1,4 +1,4 @@
-import sched_parse,sched_ics,,config
+import sched_parse,sched_ics,exams_parse,config
 from datetime import datetime as dt
 from minerva_common import *
 
@@ -35,7 +35,7 @@ END:VEVENT""".format(uid=uid,summary=summary,description=description,location=lo
 
 
 
-def export_ics_sched(sched,report = 'cal'):
+def export_ics_sched(sched,report = 'cal_exams'):
 	fmt = sched_ics.prepare_cal_report(report)
 
 	cal = u"""BEGIN:VCALENDAR
@@ -53,4 +53,5 @@ END:VCALENDAR"""
 	return cal 
 
 def export_schedule(term,report = 'cal_exams'):
-    exams = exams.find_exams(term,)
+    exams = exams_parse.find_exams(term)
+    print export_ics_sched(exams,report).encode("utf8").replace("\n","\r\n")
