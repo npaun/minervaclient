@@ -15,63 +15,131 @@ date_fmt = {
 show_weekend = False
 
 #### Reports
-reports = {'long': {},'default': {},'short': {},'conflicts': {},'timetable_default': {},'cal_default': {},'transcript_default': {},'transcript_short': {},'transcript_long': {},'exams_default': {},'exams_notfound': {},'cal_exams': {}}
 
-reports['long']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_building','_room','instructor','_action_desc']
-reports['long']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16.24s\t%s\n"
-reports['long']['sort'] = ['_day_idx','time_range','_code']
+reports = {
+            ### long, short, default: For standard course schedule reports, containing various amounts of detail.
+            'long': {
+                        'columns': ['subject','course','credits','section','type','crn','days','time_range','_building','_room','instructor','_action_desc'],
+                        'format': "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16.24s\t%s\n",
+                        'sort': ['_day_idx','time_range','_code']
+            },
 
-reports['default']['columns'] = ['subject','course','credits','section','type','crn','days','time_range','_action_desc']
-reports['default']['format'] = "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t%s\n"
-reports['default']['sort'] = ['_day_idx','time_range','_code']
+            'default': {
+                        'columns': ['subject','course','credits','section','type','crn','days','time_range','_action_desc'],
+                        'format': "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t%s\n",
+                        'sort': ['_day_idx','time_range','_code']
+            },
 
-reports['short']['columns'] = ['subject','course','credits','section','crn','_action_desc']
-reports['short']['format'] = "%s %s (%s)\t%s\t% 5s\t%s\n"
-reports['short']['sort'] = ['_code']
+            'short': {
+                        'columns': ['subject','course','credits','section','crn','_action_desc'],
+                        'format': "%s %s (%s)\t%s\t% 5s\t%s\n",
+                        'sort': ['_code']
+            },
 
-reports['conflicts']['columns'] = ['_code','type','crn','days','time_range','_building','_room','_action_desc']
-reports['conflicts']['format'] = "\t%s (%s)\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n"
-reports['conflicts']['sort'] = None # A different algorithm is used to find conflicts
+            ### conflicts: For displaying course conflicts to the user.
+            'conflicts': {
+                            'columns': ['_code','type','crn','days','time_range','_building','_room','_action_desc'],
+                            'format': "\t%s (%s)\t% 5s\t\t% 3s \033[1;31m%s\033[0m\t\t%-16.16s %s %s\n",
+                            'sort':  None # A different algorithm is used to find conflicts
+            },
 
-reports['timetable_default']['columns'] = ['subject','course','section','type','_link_gmaps','_building','_room','time_range','_action_desc']
-reports['timetable_default']['format'] = """
+            ### timetable_default: Formats information for each course's timetable cell (in HTML)
+            'timetable_default': {
+                                    'columns': ['subject','course','section','type','_link_gmaps','_building','_room','time_range','_action_desc'],
+                                    'format': """
 <p class='sched-course'>%s %s&ndash;%s (%s)</p>
 <p class='sched-location'><a href='%s' title='Get directions to this building'>%s %s</a></p>
 <p class='sched-time'>%s</p>
 <p class='sched-action-desc'>%s</p>
-"""
-reports['timetable_default']['sort'] = ['days','time_range','_code']
+                                    """,
+                                    'sort':  ['days','time_range','_code']
+            },
 
-reports['cal_default']['columns'] = [['subject','course','type','_action_desc'],['_code','instructor','crn','_action_desc']]
-reports['cal_default']['format'] = ["%s %s (%s) %s","%s\\nInstructor: %s\\nCRN: %s\\n%s"]
-reports['cal_default']['sort'] = None #Let the calendar program deal with this
+            ### cal_default: The first element stores the entry title and the second its description
+            'cal_default': {
+                            'columns': [
+                                        ['subject','course','type','_action_desc'],
+                                        ['_code','instructor','crn','_action_desc']
+                            ],
+                            'format': [
+                                        "%s %s (%s) %s",
+                                        "%s\\nInstructor: %s\\nCRN: %s\\n%s"
+                            ],
+                            'sort': None #Let the calendar program deal with this
+            },
 
-reports['transcript_long']['columns'] = [['term','status','year','_program'],['term_att','term_earned','cumm_att','cumm_earned','tgpa','term_incl','cgpa','transfer_credits','standing'],['status','remarks','_code','credits_earned','credits','grade','class_avg','_grade_desc']]
-reports['transcript_long']['format'] = ["\n\033[1m%s:\033[0m [%s]\nU%s %s\n","%s/%s credits earned (%s/%s total)\tGPA: %s [%s cr.] (%s overall)\nTransfer credits: %s\t\t\tStanding: %s\n","%s %s\t%s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s\n"]
-reports['transcript_long']['sort'] = ['_code']
+            ### transcript_{long,default,short}: Standard reports for the unofficial transcript
+            ### Elements: [0] Program information, [1] Term results [2] Course grades
+            'transcript_long': {
+                                'columns': [
+                                            ['term','status','year','_program'],
+                                            ['term_att','term_earned','cumm_att','cumm_earned','tgpa','term_incl','cgpa','transfer_credits','standing'],
+                                            ['status','remarks','_code','credits_earned','credits','grade','class_avg','_grade_desc']
+                                ],
+                                'format': [
+                                            "\n\033[1m%s:\033[0m [%s]\nU%s %s\n",
+                                            "%s/%s credits earned (%s/%s total)\tGPA: %s [%s cr.] (%s overall)\nTransfer credits: %s\t\t\tStanding: %s\n",
+                                            "%s %s\t%s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s\n"
+                                ],
+                                'sort': ['_code']
+            },
+
+            'transcript_default': {
+                                    'columns': [
+                                                ['term','year','_program'],
+                                                ['term_earned','cumm_earned','transfer_credits','tgpa','cgpa'],
+                                                ['subject','course','credits_earned','credits','grade','class_avg','remarks','_grade_desc']
+                                    ],
+                                    'format': [
+                                                "\n\033[1m%s:\033[0m\nU%s %s\n",
+                                                "%s credits (%s total) [%s xfer]\tGPA: %s (%s overall)\n",
+                                                "%s %s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s %s\n"
+                                    ],
+                                    'sort': ['_code']
+            },
+
+            'transcript_short': {
+                                    'columns': [
+                                                ['term','year'],
+                                                ['term_earned','cumm_earned','tgpa','cgpa'],
+                                                ['subject','course','credits_earned','grade','_grade_desc']
+                                    ],
+                                    'format': [
+                                                "\n\033[1m%s\033[0m (U%s)\n",
+                                                "Credits: %s (%s)\tGPA: %s/%s\n",
+                                                "%s %s\t%s\t%- 2s\t\t%s\n"
+                                    ],
+                                    'sort': ['_code']
+            },
+
+            ### exams_default: A default format for final exam schedules
+            'exams_default': {
+                                'columns': ['subject','course','section','date','time','_building','room','rows','_desc'],
+                                'format': "%s %s (%s)\t\t%s\t@ %- 5s\t\t%-16.16s %-10s\t%-6s\t%s\n",
+                                'sort': ['_datetime','_code']
+            },
+
+            ### exams_notfound: Used to display courses without final exams, just so you won't forget about them
+            'exams_notfound': {
+                                'columns': ['_code','_reason'],
+                                'format': "%s:\t%s\n",
+                                'sort': ['_code']
+            },                                  
 
 
-reports['transcript_default']['columns'] = [['term','year','_program'],['term_earned','cumm_earned','transfer_credits','tgpa','cgpa'],['subject','course','credits_earned','credits','grade','class_avg','remarks','_grade_desc']]
-reports['transcript_default']['format'] = ["\n\033[1m%s:\033[0m\nU%s %s\n","%s credits (%s total) [%s xfer]\tGPA: %s (%s overall)\n","%s %s\t% 1s | % 1s\t\t%- 2s . %- 2s\t\t%s %s\n"]
-reports['transcript_default']['sort'] = ['_code']
-
-
-reports['transcript_short']['columns'] = [['term','year'],['term_earned','cumm_earned','tgpa','cgpa'],['subject','course','credits_earned','grade','_grade_desc']]
-reports['transcript_short']['format'] = ["\n\033[1m%s\033[0m (U%s)\n","Credits: %s (%s)\tGPA: %s/%s\n","%s %s\t%s\t%- 2s\t\t%s\n"]
-reports['transcript_short']['sort'] = ['_code']
-
-reports['exams_default']['columns'] = ['subject','course','section','date','time','_building','room','rows','_desc']
-reports['exams_default']['format'] = "%s %s (%s)\t\t%s\t@ %- 5s\t\t%-16.16s %-10s\t%-6s\t%s\n"
-reports['exams_default']['sort'] = ['_datetime','_code']
-
-reports['exams_notfound']['columns'] = ['_code','_reason']
-reports['exams_notfound']['format'] = "%s:\t%s\n"
-reports['exams_notfound']['sort'] = ['_code']
-
-reports['cal_exams']['columns'] = [['subject','course'],['_code','_building','room','rows','_desc','date','time']]
-reports['cal_exams']['format'] = ['%s %s (FINAL)','%s\\nBuilding: %s / Room: %s / Rows: %s\\n%s\\nDate: %s / Time: %s']
-reports['cal_exams']['sort'] = None # Let the calendar program deal with this
-
+            ### cal_exams: Used to generate calendar entries for final exam schedules
+            'cal_exams': {
+                            'columns': [
+                                        ['subject','course'],
+                                        ['_code','_building','room','rows','_desc','date','time']
+                            ],
+                            'format': [
+                                        '%s %s (FINAL)',
+                                        '%s\\nBuilding: %s / Room: %s / Rows: %s\\n%s\\nDate: %s / Time: %s'
+                            ],
+                            'sort': None # Let the calendar program deal with this.
+            }                                     
+}
 
 
 # vi: ft=python
