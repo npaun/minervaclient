@@ -11,7 +11,7 @@ state = {}
 def parse_reg(subp):
 	parser = subp.add_parser('reg',help='Register for a set of courses')
 	parser.add_argument("-t","--term",help="The term (e.g. FALL2016, 201609, etc.) in which to register for these courses",required=True)
-	parser.add_argument("-j","--job",help="A unique name used to track which CRNs remain to be registered for (for automation purposes)")
+        parser.add_argument("-j","--job",help="A unique name. When this argument is given, only registration will only be attempted for remaining courses in the job.\n\nNOTE: It is recommended that you use the -R option with this feature (https://github.com/nicholaspaun/minervaclient/wiki/Registrable-courses-and-jobs). ")
 	parser.add_argument("-A","--require-all",help="Only register for courses if all of the requested courses are available. NOTE: Only allowed when course codes are given.",action="store_true")
 	parser.add_argument("-R","--require-reg",help="Only register for courses if you can enter the class or the waitlist. NOTE: Only allowed when course codes are given..",action="store_true")
 	parser.add_argument("-n","--no-register",help="Don't actually perform registration.",action="store_true")
