@@ -19,8 +19,13 @@ def reg_courses(text,crns):
 	result = reg_parse.quick_add_status(r.text)
 	if result == MinervaError.reg_wait:
 		wait_request = reg_parse.quick_add_wait(r.text)
-		r = minerva_post('bwckcoms.P_Regs',wait_request)
-		result = reg_parse.quick_add_status(r.text)
+                if wait_request:
+		    r = minerva_post('bwckcoms.P_Regs',wait_request)
+		    result = reg_parse.quick_add_status(r.text)
+                else:
+                    result = reg_parse.quick_add_issue("Waitlist really is full.")
+                    
+
 	elif result == MinervaError.reg_fail:
 		sys.exit(MinervaError.reg_fail)
 
