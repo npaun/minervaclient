@@ -19,7 +19,7 @@ def build_request(term,codes):
 	('call_value_in','UNSECURED'),
 	('display_mode_in','LIST'),
 	('search_mode_in',''),
-	('term_in','201609'),
+	('term_in',term),
 	('sel_subj','dummy'),
 	('sel_day','dummy'),
 	('sel_ptrm','dummy'),
