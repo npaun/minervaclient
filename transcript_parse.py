@@ -117,8 +117,6 @@ def parse_student_block(table):
 
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<BR>","\n")
-        f = open('trasn','wu')
-        f.write(text.encode('ascii','ignore'))
 
 	html = BeautifulSoup(text,'html.parser')
         transcript = {}
