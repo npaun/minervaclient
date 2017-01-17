@@ -112,7 +112,6 @@ def find_exams(term,return_notfound = True):
 
 def final_exam_schedule(term, report = 'exams_default'):
     exams,notfound = find_exams(term,return_notfound = True)
-    print exams
 
     if exams:
         sched_parse.print_sched_report(exams,report)

@@ -192,7 +192,18 @@ def multi_keysort(items, columns):
 			      (itemgetter(col.strip()), 1)) for col in columns]
 
 	def nat(s, _nsre=re.compile('([0-9]+)')):
-		return [int(text) if text.isdigit() else text.lower() for text in re.split(_nsre, s)]   
+            def value(text):
+                if text.isdigit():
+                    return int(text)
+                elif type(text) == str:
+                    return text.lower()
+                else:
+                    return text
+
+            if type(s) == str:
+                return [value(text) for text in re.split(_nsre, s)]   
+            else:
+                return [s]
 
 	def comparer(left, right):
 		for fn, mult in comparers:
