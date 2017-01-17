@@ -116,7 +116,7 @@ reports = {
             'exams_default': {
                                 'columns': ['subject','course','section','date','time','_building','room','rows','_desc'],
                                 'format': "%s %s (%s)\t\t%s\t@ %- 5s\t\t%-16.16s %-10s\t%-6s\t%s\n",
-                                'sort': ['_datetime','_code']
+                                'sort': ['date','time','_code']
             },
 
             ### exams_notfound: Used to display courses without final exams, just so you won't forget about them
