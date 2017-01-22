@@ -100,12 +100,14 @@ def parse_transfer_credits(table,info):
 
 def parse_student_block(table):
     info = {}
-    label_field = {'Student Name:': 'name', 'McGill ID:': 'sid', 'Permanent Code:': 'permcode', 'Advisor(s):': 'advisor'}
+    label_field = {'Student Name': 'name','Student Name with Preferred First Name': 'name', 'McGill ID': 'sid', 'Permanent Code': 'permcode', 'Advisor(s)': 'advisor'}
+    # ^ For students with preferred first names, their name field is displayed differently. For our purposes, we will just treat the preferred name as the name.
 
     for row in table.find_all('tr'):
         cells = row.find_all('td')
-        key_label = cells[0].text.strip()
-        key = label_field[key_label]
+        key_label = cells[0].text.strip()[:-1] # Strip off the colon
+        if key_label in label_field: # If we actually want to record this information.
+            key = label_field[key_label]
 
         value = cells[1].text.strip()
 
