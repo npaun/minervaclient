@@ -4,11 +4,11 @@ data_source = ['http://cs.mcgill.ca/~npaun/mnvc-data/'] # Where should common da
 
 #### Formatting
 date_fmt = {
-        'short_date': '%-m/%-d', # Short date          
+        'short_date': '%-m/%-d', # Short date
         'short_datetime': '%-m/%-d %-H:%-M', # Short date and time
         'short_time': '%Hh%M', # Quebec style time format
         'full_date': '%Y-%m-%d', # ISO date format
-        'exam_date': '%a, %b %e', # Provides day of the week, abbreviated month and day          
+        'exam_date': '%a, %b %e', # Provides day of the week, abbreviated month and day
         'exam_date_continued': '(%a) %-d', # When two day exams are scheduled
         'exam_time': '%-l %p' # Starting time for exams
         }
@@ -124,7 +124,7 @@ reports = {
                                 'columns': ['_code','_reason'],
                                 'format': "%s:\t%s\n",
                                 'sort': ['_code']
-            },                                  
+            },
 
 
             ### cal_exams: Used to generate calendar entries for final exam schedules
@@ -138,7 +138,7 @@ reports = {
                                         '%s\\nBuilding: %s / Room: %s / Rows: %s\\n%s\\nDate: %s / Time: %s'
                             ],
                             'sort': None # Let the calendar program deal with this.
-            }                                     
+            }
 }
 
 

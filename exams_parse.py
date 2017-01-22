@@ -21,15 +21,15 @@ def get_courses(term):
 def get_exam_sched(term):
     repo = config.data_source[0]
     url = repo + "exams-" + term + ".json"
-    
+
     if is_verbose():
         print "D", url
-        
+
     r = requests.get(url)
     if r.status_code == 404:
         print """
-* \033[1;31mExam schedule not found for requested term.\033[0m 
-    If the university has published a final exam schedule, contact <\x6e\151chol\141s.p\141u\x6e@\x6d\141\151l.\x6dcg\151ll.c\141> 
+* \033[1;31mExam schedule not found for requested term.\033[0m
+    If the university has published a final exam schedule, contact <\x6e\151chol\141s.p\141u\x6e@\x6d\141\151l.\x6dcg\151ll.c\141>
     to prod the developer and get him to generate the dataset.
         """
         sys.exit(1)
@@ -59,7 +59,7 @@ def rewrite_record(record):
         record['date'] += "/" + date_2_fmt
     else:
         record['_datetime'] = [dt.combine(date_1,time)]
-   
+
 
     record['_building'] = get_bldg_abbrev(get_bldg_name(record['building']))
 

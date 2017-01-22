@@ -16,7 +16,7 @@ def labor_day_swap(d_start,days):
 		#1. Fall term
 		#2. Would not have come up anyway as a Monday
 		#3. Is a real Friday
-		first_day = d_start + datetime.timedelta(days=7) 
+		first_day = d_start + datetime.timedelta(days=7)
 		return first_day
 	else:
 		return False
@@ -102,7 +102,7 @@ END:VEVENT""".format(uid=uid,summary=summary,description=description,location=lo
 	cal += u"""
 END:VCALENDAR"""
 
-	return cal 
+	return cal
 
 def export_schedule(text,report = 'cal'):
 	sched = sched_parse.parse_schedule(text,separate_wait = False)

@@ -5,7 +5,7 @@ def make_course_request(term,subjects):
 	request = [
 			('rsts','dummy'),
 			('crn','dummy'), 	# This is the CRN
-			('term_in', term), 		# Term of search 
+			('term_in', term), 		# Term of search
 			('sel_day','dummy'),
 			('sel_schd','dummy'),
 			('sel_insm','dummy'),
@@ -36,7 +36,7 @@ def make_course_request(term,subjects):
 			('end_ap','a'),
 			('SUB_BTN','Get Course Sections'),
 			('path','1')
-		])	#This is seriously what Minerva shoves into a search form 
+		])	#This is seriously what Minerva shoves into a search form
 
 	return urllib.urlencode(request)
 

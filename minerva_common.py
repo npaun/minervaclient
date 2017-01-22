@@ -171,7 +171,7 @@ def get_program_abbrev(program):
 	return program
 
 def get_grade_explanation(grade,normal_grades = False):
-	explanation = { 
+	explanation = {
 		'HH': 'To be continued',
 		'IP': 'In progress',
 		'J': 'Absent',
@@ -264,7 +264,7 @@ def fetch_buildings_table():
 
 def get_bldg_name(code):
     import json
-    try: 
+    try:
         f = open('buildings.json')
     except Exception:
         fetch_buildings_table()

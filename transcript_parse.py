@@ -8,13 +8,13 @@ import sched_parse
 def parse_record(cells):
     fields = ['status','course','section','title','credits','unknown','grade','remarks','unknown2','credits_earned','class_avg']
     record = {}
-  
+
     for field,cell in zip(fields,cells):
         record[field] =  cell.text.strip()
 
     if record['course'] == '':
         return None
-    
+
     record['subject'],record['course'] = record['course'].split(" ")
     record['_code'] = '-'.join([record['subject'],record['course'],record['section']])
 
@@ -53,11 +53,11 @@ def parse_gpa_block(table,init):
     term_fields = ['nil','tgpa','transfer_credits','nil','term_att','term_earned','term_incl','term_points']
     cumm_fields = ['nil','cgpa','nil','total_credits','nil','cumm_att','cumm_earned','cumm_incl','cumm_points']
     credit_fields = ['transfer_credits','total_credits','term_att','term_earned','term_incl','cumm_att','cumm_earned','cumm_incl']
-  
+
     if len(cells) != 2:
         return {}
-    
-    
+
+
     for cell,field in zip(cells[0].find_all('td'),term_fields):
         gpa[field] = cell.text.strip()
 
@@ -70,7 +70,7 @@ def parse_gpa_block(table,init):
         if field in credit_fields:
             gpa[field] = gpa[field].replace('.00','')
 
-    gpa['_mcgill_credits'] = int(gpa['total_credits']) - int(gpa['transfer_credits']) 
+    gpa['_mcgill_credits'] = int(gpa['total_credits']) - int(gpa['transfer_credits'])
     gpa['_term_fail'] = int(gpa['term_att']) - int(gpa['term_earned'])
     gpa['_cumm_fail'] = int(gpa['term_att']) - int(gpa['term_earned'])
     gpa['_credits_remaining'] = int(init['program_credits']) - int(gpa['cumm_earned'])
@@ -93,7 +93,7 @@ def parse_transfer_credits(table,info):
                 for cell,field in zip(row.find_all('td'),fields):
                         record[field] = cell.text.strip()
 
-                record['_code'] = '-'.join([record['subject'],record['course']])        
+                record['_code'] = '-'.join([record['subject'],record['course']])
                 records.append(record)
 
         return records
@@ -201,10 +201,10 @@ def print_transcript(trans,terms = None,report = 'transcript_default',show = ['s
         for term in iter:
                 termv = trans[term]
                 (info_fmt,gpa_fmt,grades_fmt) = load_transcript_format(report)
-                        
-                if 'summary' in show:    
+
+                if 'summary' in show:
                         sys.stdout.write(sched_parse.apply_format(termv['info'],info_fmt))
-                
+
                 if 'credit' in show and 'tgpa' in termv['info']:
                         sys.stdout.write(sched_parse.apply_format(termv['info'],gpa_fmt))
 

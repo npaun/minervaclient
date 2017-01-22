@@ -16,10 +16,10 @@ def quick_add_insert(text,crns):
 
 	for input in inputs:
 		
-		if not input.has_attr('name'): 
+		if not input.has_attr('name'):
 			if input.has_attr('id'):
 				print "This is an actual problem"
-			else: 
+			else:
 				continue
 
 		
@@ -70,10 +70,10 @@ def quick_add_wait(text):
 
 	for input in inputs:
 		
-		if not input.has_attr('name'): 
+		if not input.has_attr('name'):
 			if input.has_attr('id'):
 				print "This is an actual problem"
-			else: 
+			else:
 				continue
 
 		

@@ -49,7 +49,7 @@ PRODID:-//Minervaclient//NONSGML minervac.icebergsys.net//EN"""
 	cal += u"""
 END:VCALENDAR"""
 
-	return cal 
+	return cal
 
 def export_schedule(term,report = 'cal_exams'):
     exams = exams_parse.find_exams(term,return_notfound=False)

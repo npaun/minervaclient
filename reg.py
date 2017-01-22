@@ -24,7 +24,7 @@ def reg_courses(text,crns):
 		    result = reg_parse.quick_add_status(r.text)
                 else:
                     result = reg_parse.quick_add_issue("Waitlist really is full.")
-                    
+
 
 	if result == MinervaError.reg_fail:
 		sys.exit(MinervaError.reg_fail)
@@ -56,7 +56,7 @@ def check_register(term,course_codes,require_all = False,require_reg = False,dry
 
 	crns,course_ok = check_courses(courses,course_codes,require_all,require_reg)
 
-	if public_search: 
+	if public_search:
 		minerva_login()
 		mineva_reg_menu()
 
@@ -111,7 +111,7 @@ def check_courses(courses,codes,require_all = False,require_reg = False):
 				course_ok.append(course['_code'])
 		elif course['select'] == MinervaState.only_waitlist_known:
 			if course['_state'] == MinervaState.wait:
-				print "* Minerva indicates room on waitlist." 
+				print "* Minerva indicates room on waitlist."
 				valid_state = True
 				crns.append(course['crn'])
 				course_ok.append(course['_code'])
@@ -119,7 +119,7 @@ def check_courses(courses,codes,require_all = False,require_reg = False):
 				print "* Minerva does not show room on waitlist."
 		else:
 			print "* Minerva prohibits registration."
-			print "\t\t The status on Minerva is " + course['status'] 
+			print "\t\t The status on Minerva is " + course['status']
 
 
 	if require_all and len(courses) != len(crns):
