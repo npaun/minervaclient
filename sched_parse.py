@@ -246,4 +246,3 @@ def conflict_report(text,report = 'conflicts'):
 
 
 
-# vi: ft=python

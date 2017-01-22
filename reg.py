@@ -132,4 +132,3 @@ def check_courses(courses,codes,require_all = False,require_reg = False):
 	return (crns,course_ok)
 
 
-#vi: ft=python
