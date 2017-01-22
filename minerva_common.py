@@ -88,7 +88,12 @@ def get_type_abbrev(type):
 
 # Doesn't really do much. Just tries a few tricks to shorten the names of buildings
 def get_bldg_abbrev(location):
-        subs = {'Building': '', 'Hall': '', 'Pavilion': '','House': '','Centre': '','Biology': 'Bio.','Chemistry': 'Chem.','Physics': 'Phys.', 'Engineering': 'Eng.','Anatomy': 'Anat.', 'Dentistry': 'Dent.','Medical': 'Med.', 'Life Sciences': 'Life. Sc.'}
+        subs = {
+                'Building': '', 'Hall': '', 'Pavilion': '','House': '','Centre': '', 'Complex': '',
+                'Library': 'Lib.', 'Laboratory': 'Lab.',
+                'Biology': 'Bio.', 'Chemistry': 'Chem.',' Physics': 'Phys.', 'Engineering': 'Eng.', 'Anatomy': 'Anat.', 'Dentistry': 'Dent.', 'Medical': 'Med.', 'Life Sciences': 'Life Sc.'
+        }
+
 	for sub in subs:
 		location = location.replace(sub,subs[sub])
 
