@@ -28,9 +28,10 @@ def parse_schedule(text,separate_wait = True):
 		for field,cell in zip(fields,course_table):
 			entry[field] = cell.text.strip().replace("\n","; ")
 			if entry[field] == '':
-				entry[field] = None
+				entry[field] = '{0}'
 
-                entry['instructor'] = entry['instructor'].replace(', ',' ')
+                entry['instructor'] = entry['instructor'].replace(', ','')            
+                entry['_instructor_sn'] = entry['instructor'].split('; ')[0].split(' ')[-1]
 
 		if entry['credits'][-4:] == '.000': #Strip decimals when irrelevant
 			entry['credits'] = entry['credits'][:-4]

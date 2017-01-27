@@ -19,7 +19,7 @@ show_weekend = False # When generating timetables, should the weekend be shown? 
 reports = {
             ### long, short, default: For standard course schedule reports, containing various amounts of detail.
             'long': {
-                        'columns': ['subject','course','credits','section','type','crn','days','time_range','_building','_room','instructor','_action_desc'],
+                        'columns': ['subject','course','credits','section','type','crn','days','time_range','_building','_room','_instructor_sn','_action_desc'],
                         'format': "%s %s (%s)\t%s (%s)\t% 5s\t\t% 3s %s\t\t%-16.16s %s\t\t%-16.24s\t%s\n",
                         'sort': ['_day_idx','time_range','_code']
             },
