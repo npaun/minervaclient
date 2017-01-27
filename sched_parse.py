@@ -48,6 +48,9 @@ def parse_schedule(text,separate_wait = True):
 		else:
 			entry['_action_desc'] = ''
 
+                if entry['_status_desc'] == 'W':
+                    entry['_action_desc'] = '[Withdrawn from this course]'
+
 
 		sched_table = sched.findAll('td')
 		fields = ['time_range','days','location','date_range','type','instructors']
@@ -93,7 +96,7 @@ def parse_schedule(text,separate_wait = True):
 		entry['date_range'] = d_range
 
 		
-		if 'wait_pos' in entry and 'wait_pos' is not None and separate_wait:
+		if ('wait_pos' in entry and 'wait_pos' is not None and separate_wait) or entry['_status_desc'] == 'W':
 			wait_entries.append(entry)
 		else:
 			entries.append(entry)
@@ -232,12 +235,12 @@ def course_details_report(text,report = 'default'):
 	reg,wait = parse_schedule(text)
 	if reg:
 		print ""
-		print "* Registered courses:"
+		print "* Registered:"
 		print_sched_report(reg,report)
 	
 	if wait:
 		print ""
-		print "* Waitlist:"
+                print "* Waitlist / Withdrawn / Other:"
 		print_sched_report(wait,report)
 
 def conflict_report(text,report = 'conflicts'):

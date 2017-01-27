@@ -73,11 +73,11 @@ def get_term_code(term):
 
 def get_status_code(status,short = False):
 	if short:
-		status_codes = {'Registered': 'R','Web Registered': 'R','(Add(ed) to Waitlist)': 'W', 'Web Drop': 'DROP'}
+            status_codes = {'Registered': 'R','Web Registered': 'R','(Add(ed) to Waitlist)': 'W', 'Web Drop': 'DROP','Web Withdrawn Course': 'W'}
 	else:
-		status_codes = {'Registered': 'R','Web Registered': 'RW','(Add(ed) to Waitlist)': 'LW', 'Web Drop': 'DW'}
+            status_codes = {'Registered': 'R','Web Registered': 'RW','(Add(ed) to Waitlist)': 'LW', 'Web Drop': 'DW', 'Web Withdrawn Course': 'WW'}
 
-	return status_codes[status]
+	return status_codes[status] if status in status_codes else status
 
 def get_type_abbrev(type):
 	types = {'Lecture': 'Lec','Tutorial': 'Tut','Conference': 'Conf','Seminar': 'Sem','Laboratory': 'Lab','Student Services Prep Activity': 'StudSrvcs'}
