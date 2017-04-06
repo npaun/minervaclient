@@ -120,7 +120,7 @@ def parse_student_block(table):
 def parse_transcript(text):
         text = text.replace("&nbsp;"," ").replace("<BR>","\n")
 
-	html = BeautifulSoup(text,'html.parser')
+	html = BeautifulSoup(text,'html5lib')
         transcript = {}
 	term = None
         tables = html.body.find_all('table',{'class': 'main'})

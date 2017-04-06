@@ -7,7 +7,7 @@ import codecs
 from minerva_common import *
 
 def quick_add_insert(text,crns):
-	html = BeautifulSoup(text,'html.parser')
+	html = BeautifulSoup(text,'html5lib')
 	forms = html.body.find_all('form')
 	reg = forms[1]
 	inputs = reg.find_all(['input','select'])
@@ -40,7 +40,7 @@ def quick_add_insert(text,crns):
 	return urllib.urlencode(request)
 
 def quick_add_status(text):
-	html = BeautifulSoup(text,'html.parser')
+	html = BeautifulSoup(text,'html5lib')
 	errtable = html.body.find('table',{'summary':'This layout table is used to present Registration Errors.'})
 	if errtable is not None:
 			error = errtable.findAll('td',{'class': "dddefault"})[0].a.text
@@ -61,7 +61,7 @@ def quick_add_issue(message):
 
 
 def quick_add_wait(text):
-	html = BeautifulSoup(text,'html.parser')
+	html = BeautifulSoup(text,'html5lib')
 	forms = html.body.find_all('form')
 	reg = forms[1]
 	inputs = reg.find_all(['input','select'])

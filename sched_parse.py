@@ -5,7 +5,7 @@ import config
 import sys,urllib,re
 
 def parse_schedule(text,separate_wait = True):
-	html = BeautifulSoup(text,'html.parser')
+	html = BeautifulSoup(text,'html5lib')
 	tbls_course = html.body.find_all('table',{'summary': 'This layout table is used to present the schedule course detail'})
 	tbls_sched = html.body.find_all('table',{'summary': 'This table lists the scheduled meeting times and assigned instructors for this class..'})
 
