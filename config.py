@@ -10,7 +10,7 @@ date_fmt = {
         'full_date': '%Y-%m-%d', # ISO date format
         'exam_date': '%a, %b %e', # Provides day of the week, abbreviated month and day
         'exam_date_continued': '(%a) %-d', # When two day exams are scheduled
-        'exam_time': '%-l %p' # Starting time for exams
+        'exam_time': '%-l:%M %p' # Starting time for exams
         }
 show_weekend = False # When generating timetables, should the weekend be shown? (Do you have weekend courses?)
 

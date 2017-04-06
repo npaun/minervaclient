@@ -14,7 +14,8 @@ def get_courses(term):
     courses = []
 
     for course in trans[term]['grades']: # You can only write exams for one term at a time (At least I hope so for the sake of everyone's sanity)
-        courses.append(course['_code'])
+        if course['grade'] == '': #Don't show exams for stuff you've already been assigned a grade
+            courses.append(course['_code'])
 
     return sn,courses
 
