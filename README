@@ -32,8 +32,8 @@ The goals of this project are to create a simple and high-quality interface for 
 
 ## Installation
 
-1. `minervac` uses the `requests` and `beautifulsoup4` modules for Python.
-	* I think it's easiest to install them with `pip`? `sudo pip install requests beautifulsoup4`
+1. `minervac` uses the `requests`, `beautifulsoup4`, and `html5lib` modules for Python.
+	* The easiest way to install them is probably with `pip`: `sudo pip install requests beautifulsoup4 html5lib`
 2. Copy `credentials.py` to `credentials_local.py` and fill in your credentials.
 3. Edit `config.py` to setup various settings
 
