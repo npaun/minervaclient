@@ -123,15 +123,12 @@ def parse_transcript(text):
 	html = BeautifulSoup(text,'html5lib')
         transcript = {}
 	term = None
-        tables = html.body.find_all('table',{'class': 'main'})
-        tbl_transcript = tables[0]
-
-        student_info_tables = html.body.find_all('table',{'class': 'student_info'})
-        tbl_student = student_info_tables[0]
+        tables = html.body.find_all('table',{'class': 'dataentrytable'})
+        tbl_transcript = tables[1]
+        tbl_student = tables[0]
         student_info = parse_student_block(tbl_student) # Just in case someone wants their name, or Permanent code, etc.
 
-        trans_rows = tbl_transcript.find_all('tr',recursive=False)
-
+        trans_rows = tbl_transcript.tbody.find_all('tr',recursive=False)
         for row in trans_rows:
             cells = row.find_all('td',recursive=False)
             if len(cells) == 1:
