@@ -6,3 +6,4 @@ state.dat
 *.pyc
 *.json
 *.mp4
+.DS_Store
