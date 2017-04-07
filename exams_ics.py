@@ -1,3 +1,8 @@
+# exams_ics.py: Export final exam schedule to vCalendar format
+# This file is from Minervac, a command-line client for Minerva
+# <http://npaun.ca/projects/minervac>
+# (C) Copyright 2016-2017 Nicholas Paun
+
 import sched_parse,sched_ics,exams_parse,config
 from datetime import datetime as dt
 from minerva_common import *

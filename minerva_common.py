@@ -1,3 +1,8 @@
+# minerva_common.py: Common functions and definitions for working with Minerva
+# This file is from Minervac, a command-line client for Minerva
+# <http://npaun.ca/projects/minervac>
+# (C) Copyright 2016-2017 Nicholas Paun
+
 import config,credentials_local
 import requests,sys
 import datetime

@@ -1,3 +1,8 @@
+# sched_parse.py: Parse course schedule from Minerva into a dict representation
+# This file is from Minervac, a command-line client for Minerva
+# <http://npaun.ca/projects/minervac>
+# (C) Copyright 2016-2017 Nicholas Paun
+
 from bs4 import BeautifulSoup
 from datetime import datetime as dt
 from minerva_common import *

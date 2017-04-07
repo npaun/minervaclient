@@ -1,3 +1,8 @@
+# pub_search.py: Search for available places in requested courses (via the Display Dynamic Schedule interface)
+# This file is from Minervac, a command-line client for Minerva
+# <http://npaun.ca/projects/minervac>
+# (C) Copyright 2016-2017 Nicholas Paun
+
 import requests,urllib,StringIO,csv,sys
 from minerva_common import *
 

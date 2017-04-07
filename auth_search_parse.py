@@ -1,3 +1,8 @@
+# auth_search_parse.py: Parse course search results to determine CRNs and availability (via the Minerva interface)
+# This file is from Minervac, a command-line client for Minerva
+# <http://npaun.ca/projects/minervac>
+# (C) Copyright 2016-2017 Nicholas Paun
+
 from minerva_common import *
 from bs4 import BeautifulSoup
 

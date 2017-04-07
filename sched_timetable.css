@@ -1,3 +1,10 @@
+/*
+ * sched_timetable.css: Styling for HTML timetables (copied into resulting file)
+ * This file is from Minervac, a command-line client for Minerva
+ * <http://npaun.ca/projects/minervac>
+ * (C) Copyright 2016-2017 Nicholas Paun
+ */
+
 /* Page settings */
 .sched-title, .sched-table, .sched-table * {
 	box-sizing: border-box;
