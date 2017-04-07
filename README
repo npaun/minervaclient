@@ -55,7 +55,7 @@ It's way simpler than actually using Minerva!
 		* **Hint:** Click on a building name to get directions. Hover over courses to see an explanation of the color code.
 	* To export your course schedule to an iCalendar file: `mnvc sched -Ct 2017-WINTER > mcgill-winter-2017.ics`
 		* You can also export your final exam schedule, like this: `mnvc sched -ECt FALL2016 > mcgill-fall-2016-finals.ics`.
-		* The resulting file can be imported into your favorite calendar application (Google Calendar works.)
+		* The resulting file can be imported into your favorite calendar application (Google Calendar, and the Mac OS X Calendar work.)
 		* This format may also be called ICS or vCalendar.
 	* To display your final exam schedule: `mnvc sched -t FALL2016 -E`
 * **Transcripts:*** `mnvc transcript`
