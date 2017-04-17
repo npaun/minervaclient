@@ -7,3 +7,4 @@ state.dat
 *.json
 *.mp4
 .DS_Store
+*.out
