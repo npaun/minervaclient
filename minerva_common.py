@@ -166,6 +166,8 @@ def get_program_abbrev(program):
 	for line in program.split("\n"):
 		if line.startswith("Major"):
 			majors.append(line.split("Major ")[1])
+                elif line.startswith("Honours"):
+                        majors.append(line)
 		elif line.startswith("Minor"):
 			minors.append(line.split("Minor ")[1])
 		else:
