@@ -65,6 +65,9 @@ It's way simpler than actually using Minerva!
 	* To display only your program information (`-S`) and GPA (`-C`): `mnvc transcript -SC`
 	* To display some miscellaneous transcript information as well (`-P`): `mnvc transcript -P`
 * For a full description of available options: `mnvc -h`
+* A few useful extra scripts are included in the `extras/` folder:
+	* `grablrs.py`: Downloads LRS lecture recordings.
+	* `transcript-monitor.sh`: Allows you to monitor your unofficial transcript for new grades.
 
 
 ## Scheduling registration
