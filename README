@@ -66,6 +66,7 @@ It's way simpler than actually using Minerva!
 	* To display some miscellaneous transcript information as well (`-P`): `mnvc transcript -P`
 * For a full description of available options: `mnvc -h`
 * A few useful extra scripts are included in the `extras/` folder:
+	* *Note*: These tools are more experimental than `mnvc` itself and might not work so well.
 	* `grablrs.py`: Downloads LRS lecture recordings.
 	* `transcript-monitor.sh`: Allows you to monitor your unofficial transcript for new grades.
 
@@ -83,7 +84,6 @@ It's way simpler than actually using Minerva!
 ## Further development
 
 * Displaying degree evaluation reports.
-* Monitoring schedules and transcripts for changes.
 * **Won't implement:** While it would be trivial to support dropping courses, I am worried that this may mess up people's schedules as Minerva does not perform truly atomic transactions. Furthermore, it may mess up my own schedule and so I don't want to test it. If you're braver than I am, please send me a pull request.
 * Support output formatters and more control over what this program prints.
 * Allow querying for courses from the CLI, and use a SQL database to allow for fancy queries.
