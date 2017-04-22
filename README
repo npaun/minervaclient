@@ -58,7 +58,7 @@ It's way simpler than actually using Minerva!
 		* The resulting file can be imported into your favorite calendar application (Google Calendar, and the Mac OS X Calendar work.)
 		* This format may also be called ICS or vCalendar.
 	* To display your final exam schedule: `mnvc sched -t FALL2016 -E`
-* **Transcripts:*** `mnvc transcript`
+* **Transcripts:** `mnvc transcript`
 	* To display your transcript: `mnvc transcript`
 	* The term argument is optional, and more than one term can be specified: `minervac transcript -t FALL2016,2017-SUMMER`
 	* Reports (`-r`) and the long (`-l`) and short (`-s`) shortcuts can be used. (See *Scheduling* above.)
@@ -66,7 +66,7 @@ It's way simpler than actually using Minerva!
 	* To display some miscellaneous transcript information as well (`-P`): `mnvc transcript -P`
 * For a full description of available options: `mnvc -h`
 * A few useful extra scripts are included in the `extras/` folder:
-	* *Note*: These tools are more experimental than `mnvc` itself and might not work so well.
+	* **Note**: These tools are more experimental than `mnvc` itself and might not work so well.
 	* `grablrs.py`: Downloads LRS lecture recordings.
 	* `transcript-monitor.sh`: Allows you to monitor your unofficial transcript for new grades.
 
