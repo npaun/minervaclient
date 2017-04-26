@@ -104,7 +104,7 @@ It's way simpler than actually using Minerva!
 
 ## Applicability outside McGill
 
-Minerva is a Banner installation, so you may be able to adapt the program to work for your university or college. Try to edit `minerva_common.py` with the correct URL to your student information system. A quick way to check if you've got Banner is to Google for "bwckgens" and your institution's name.
+Minerva is a Banner installation (Release 8.7, to be precise), so you may be able to adapt the program to work for your university or college. Try to edit `minerva_common.py` with the correct URL to your student information system. A quick way to check if you've got Banner is to Google for "bwckgens" and your institution's name.
 
 ## Screenshots
 
