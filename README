@@ -101,6 +101,11 @@ It's way simpler than actually using Minerva!
 6. This program was badly written, in a rush, and might have some serious design flaws.
 7. May give CS hipsters a headache.
 
+
+## Applicability outside McGill
+
+Minerva is a Banner installation, so you may be able to adapt the program to work for your university or college. Try to edit `minerva_common.py` with the correct URL to your student information system. A quick way to check if you've got Banner is to Google for "bwckgens" and your institution's name.
+
 ## Screenshots
 
 <a href="http://i.imgur.com/J97ekip.png"><img src="http://i.imgur.com/J97ekip.png" width="80%"></a> <a href="http://i.imgur.com/kQfGPnb.png"><img src="http://i.imgur.com/kQfGPnb.png" width="80%"></a>
