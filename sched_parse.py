@@ -47,7 +47,8 @@ def parse_schedule(text,separate_wait = True):
 		
 		entry['_status_date'] = dt.strptime(entry['_status_date'],'%b %d, %Y').strftime(config.date_fmt['short_date'])
 
-		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] is not None:
+                print entry
+		if 'wait_notify_expires' in entry and entry['wait_notify_expires'] is not None and entry['wait_notify_expires'] != '{0}':
 			entry['wait_notify_expires'] = dt.strptime(entry['wait_notify_expires'],minerva_date['full']).strftime(config.date_fmt['short_datetime'])
 			entry['_action_desc'] = "[\033[1;32mReg by " + entry['wait_notify_expires'] + "\033[0m]"
 		elif 'wait_pos' in entry:
