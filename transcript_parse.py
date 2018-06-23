@@ -129,7 +129,12 @@ def parse_transcript(text):
         transcript = {}
 	term = None
         tables = html.body.find_all('table',{'class': 'dataentrytable'})
-        tbl_transcript = tables[1]
+        try:
+            tbl_transcript = tables[1]
+        except IndexError:
+            print("Transcript not available. Probably not registered.")
+            sys.exit(MinervaError.user_error)
+            
         tbl_student = tables[0]
         student_info = parse_student_block(tbl_student) # Just in case someone wants their name, or Permanent code, etc.
 
