@@ -12,6 +12,7 @@ from minerva_common import *
 def quick_add_insert(text,crns):
 	html = BeautifulSoup(text,'html5lib')
 	forms = html.body.find_all('form')
+
 	reg = forms[1]
 	inputs = reg.find_all(['input','select'])
 	request = []
@@ -21,7 +22,7 @@ def quick_add_insert(text,crns):
 		
 		if not input.has_attr('name'):
 			if input.has_attr('id'):
-				print "This is an actual problem"
+				print "A problem occurred:"
 			else:
 				continue
 
@@ -33,11 +34,12 @@ def quick_add_insert(text,crns):
 
 		if val == 'Class Search':  #We want to register and not search,
 			continue
-
-		if crns and input['name'] == 'CRN_IN' and val == '':  # Shove our CRN in the first blank field
-			val = crns.pop(0)
-
-		request.append((input['name'], val))
+			if crns and input['name'] == 'CRN_IN' and val == '':  # Shove our CRN in the first blank field
+				val = crns.pop(0)
+		try:
+			request.append((input['name'], val))
+		except KeyError:
+			sys.exit(quick_add_issue("Wrong McGill ID or password."))
 	
 	
 	return urllib.urlencode(request)
@@ -66,7 +68,11 @@ def quick_add_issue(message):
 def quick_add_wait(text):
 	html = BeautifulSoup(text,'html5lib')
 	forms = html.body.find_all('form')
-	reg = forms[1]
+	try:
+		reg = forms[1]
+	except IndexError:
+		sys.exit(quick_add_issue("Registration not open yet."))
+
 	inputs = reg.find_all(['input','select'])
 	request = []
         actual_wait = False
@@ -75,7 +81,7 @@ def quick_add_wait(text):
 		
 		if not input.has_attr('name'):
 			if input.has_attr('id'):
-				print "This is an actual problem"
+				print "A problem occurred:"
 			else:
 				continue
 
